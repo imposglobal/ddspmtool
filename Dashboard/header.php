@@ -11,7 +11,11 @@ if(isset($_SESSION['username'])) {
     header("Location: ../index.php");
     exit();
 }
+<<<<<<< HEAD
 
+=======
+require('../API/function.php');
+>>>>>>> 123a59b8352d328a5784c66848cc0942dda35cd4
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,10 +64,8 @@ if(isset($_SESSION['username'])) {
 </div><!-- End Logo -->
 
 <div class="search-bar">
-  <form class="search-form d-flex align-items-center" method="POST" action="#">
-    <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-  </form>
+  <?php getprensentStatus($db,$eid);?>
+    <a href="../API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
 </div><!-- End Search Bar -->
 
 <nav class="header-nav ms-auto">
