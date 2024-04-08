@@ -75,6 +75,7 @@ require('../API/function.php');
         
       </div>
       <?php 
+      //for project pagination 
       $sql = "SELECT COUNT(*) AS total FROM projects";
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
