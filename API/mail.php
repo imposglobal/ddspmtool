@@ -21,7 +21,7 @@ try {
     $mail->Port = 465; // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('your@example.com', 'Your Name');
+    $mail->setFrom('info@doodlodesigns.com', 'Doodlo Design Studio');
     $mail->addAddress($email, $employeeName); // Add recipient
 
     // Content
@@ -33,6 +33,7 @@ try {
         <p>Your account has been successfully created, and here are your login credentials:</p>
         <p>User ID: $username</p>
         <p>Password: $password</p>
+        <p>Access Link:<a href='http://dds.doodlodesign.com/'>http://dds.doodlodesign.com/</p>
         <p>Please keep this information secure and do not share it with anyone. If you have any concerns regarding your account security or need assistance, feel free to reach out to our IT support team at <a href='mailto:rushikesh@imposglobal.com'>rushikesh@imposglobal.com</a>.</p>
         <p>With Doodlo Designs Studio Project Management Tool, you'll have access to a range of features designed to simplify project planning, task management, communication, and more. We believe this tool will greatly facilitate our workflow and help us achieve our project goals efficiently.</p>
         <p>To get started, simply log in using the provided credentials and explore the various functionalities available to you. We encourage you to familiarize yourself with the platform, and should you have any questions or require guidance, do not hesitate to contact our designated project management team or refer to the user guide provided.</p>
