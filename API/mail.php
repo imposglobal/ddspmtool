@@ -22,7 +22,7 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
     // Headers
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Support@doodlodesign.com" . "\r\n";
+    $headers .= "From: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n";
     $headers .= "Reply-To: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n"; // Set the reply-to address
     $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n"; // Add information about the mailer
     $headers .= "X-Priority: 1" . "\r\n"; // Set the priority of the email (1 is highest)
@@ -37,5 +37,5 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
     }
 }
 
-welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
+//welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
 ?>
