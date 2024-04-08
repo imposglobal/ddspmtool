@@ -1,5 +1,5 @@
 <?php 
-require 'phpmailer/vendor/autoload.php'; // Path to Composer autoload.php
+require 'phpmailer/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -9,24 +9,20 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
     $mail = new PHPMailer(true);
 
     try {
-        //Server settings
         $mail->isSMTP();
-        $mail->Host = 'mail.doodlodesigns.com';  // Specify your SMTP server
+        $mail->Host = 'mail.doodlodesigns.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'dds@doodlodesigns.com'; // SMTP username
-        $mail->Password = 'doodlo@2024'; // SMTP password
+        $mail->Username = 'dds@doodlodesigns.com';
+        $mail->Password = 'doodlo@2024';
         $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465; // TCP port to connect to
+        $mail->Port = 465;
 
-        //Recipients
         $mail->setFrom('dds@doodlodesigns.com', 'Doodlo Design Studio');
-        $mail->addAddress($email, $employeeName); // Add recipient
+        $mail->addAddress($email, $employeeName);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Welcome to Doodlo Designs Studio Project Management Tool!';
-        $mail->Body = "
-            <p>Dear $employeeName,</p>
+        $mail->Body = "<p>Dear $employeeName,</p>
             <p>Welcome to Doodlo Designs Studio Project Management Tool! We are thrilled to have you join us in our endeavor to streamline our project management processes and enhance collaboration within our team.</p>
             <p>Your account has been successfully created, and here are your login credentials:</p>
             <p>User ID: $username</p>
@@ -37,8 +33,7 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
             <p>To get started, simply log in using the provided credentials and explore the various functionalities available to you. We encourage you to familiarize yourself with the platform, and should you have any questions or require guidance, do not hesitate to contact our designated project management team or refer to the user guide provided.</p>
             <p>Thank you for being a part of the Doodlo Designs Studio team. We look forward to working together and achieving great success on our projects.</p>
             <p>Best regards,</p>
-            <p>Doodlo Designs Studio</p>
-        ";
+            <p>Doodlo Designs Studio</p>";
 
         $mail->send();
         echo 'Email has been sent';
