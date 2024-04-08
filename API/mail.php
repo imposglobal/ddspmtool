@@ -13,15 +13,15 @@ $mail = new PHPMailer(true);
 try {
     //Server settings
     $mail->isSMTP();
-    $mail->Host = 'mail.imposglobal.com';  // Specify your SMTP server
+    $mail->Host = 'mail.doodlodesigns.com';  // Specify your SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = 'rushikesh@imposglobal.com'; // SMTP username
-    $mail->Password = 'Impos@2023'; // SMTP password
+    $mail->Username = 'dds@doodlodesigns.com'; // SMTP username
+    $mail->Password = 'doodlo@2024'; // SMTP password
     $mail->SMTPSecure = 'ssl';
     $mail->Port = 465; // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('info@doodlodesigns.com', 'Doodlo Design Studio');
+    $mail->setFrom('dds@doodlodesigns.com', 'Doodlo Design Studio');
     $mail->addAddress($email, $employeeName); // Add recipient
 
     // Content
