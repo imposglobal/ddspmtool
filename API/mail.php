@@ -1,5 +1,5 @@
 <?php 
-require 'phpmailer/vendor/autoload.php'; 
+//require 'phpmailer/vendor/autoload.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -10,9 +10,9 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
 
     try {
         $mail->isSMTP();
-        $mail->Host = 'mail.doodlodesigns.com';
+        $mail->Host = 'mail.doodlodesign.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'dds@doodlodesigns.com';
+        $mail->Username = 'dds@doodlodesign.com';
         $mail->Password = 'doodlo@2024';
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
