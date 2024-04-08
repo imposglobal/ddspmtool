@@ -5,7 +5,9 @@ require('header.php');
 <?php 
 require('sidebar.php');
 ?>
- 
+<?php include '../API/function.php'; 
+$task_count = get_task_count($role, $eid, $db);
+?>
 
   <main id="main" class="main">
 
@@ -51,7 +53,8 @@ require('sidebar.php');
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>145</h6>
+                   
+                      <h6><?php echo $task_count; ?></h6>
                       <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
