@@ -65,13 +65,13 @@ switch ($operation) {
         // Convert difference to hours
         $timeframe = $difference_seconds / 3600; // 3600 seconds = 1 hour
   
-        // $sql = "INSERT INTO task (sdate, edate, task_type, eid, pid, title, description, status, timeframe, created_at) VALUES
-        // ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$timeframe', '$created_at')";
-        // if ($db->query($sql) === TRUE) {
-        //   echo "Task Added successfully";
-        //   } else {
-        //       echo "Error: " . $sql . "<br>" . $db->error;
-        //   }
+        $sql = "INSERT INTO task (sdate, edate, task_type, eid, pid, title, description, status, timeframe, created_at) VALUES
+        ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$timeframe', '$created_at')";
+        if ($db->query($sql) === TRUE) {
+          echo "Task Added successfully";
+          } else {
+              echo "Error: " . $sql . "<br>" . $db->error;
+          }
          
         break;
 
