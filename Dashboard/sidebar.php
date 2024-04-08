@@ -71,7 +71,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
+        <a class="nav-link collapsed" href="view_employee.php">
           <i class="bi bi-person-circle"></i>
           <span>View Employee</span>
         </a>
@@ -89,9 +89,9 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
+        <a class="nav-link collapsed" href="logout.php">
           <i class="bi bi-box-arrow-in-left"></i>
-          <span>Logout</span>
+          <span>Sign Out</span>
         </a>
       </li><!-- End Login Page Nav -->
     </ul>
