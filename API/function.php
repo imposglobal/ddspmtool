@@ -101,5 +101,21 @@ function pagination($currentPage, $totalPages){
     echo '</td></tr>';
 }
 
+//get task count
+function get_task_count($role, $eid, $db)
+{
+  if($role==0)
+  {
+    $sql = "SELECT COUNT(*) FROM task";
+    $result = mysqli_query($db, $sql);
+  }
+  else{
+    $sql = "SELECT COUNT(*) FROM task WHERE eid = '$eid'";
+    $result = mysqli_query($db, $sql);
+  }
 
+  // Assuming you want to return the count value
+  $count = mysqli_fetch_array($result)[0];
+  return $count;
+}
 ?>
