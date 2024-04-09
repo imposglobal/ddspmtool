@@ -1,10 +1,12 @@
 <?php 
 require('header.php');
 ?>
-<title>Dashboard - DDS</title>
+<title>Employees - DDS</title>
 <?php 
 require('sidebar.php');
+require('../API/operation.php');
 require('../API/function.php');
+
 ?>
 <style>
     .ctitle {
@@ -49,10 +51,12 @@ require('../API/function.php');
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Project Name</th>
-                    <th scope="col">Created </th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Email </th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Department</th>
                     <th scope="col">View Details</th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -61,7 +65,7 @@ require('../API/function.php');
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
 
-                    get_projects($db, $page, $recordsPerPage);
+                    get_employees($db, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>
@@ -76,7 +80,7 @@ require('../API/function.php');
       </div>
       <?php 
       //for project pagination 
-      $sql = "SELECT COUNT(*) AS total FROM projects";
+      $sql = "SELECT COUNT(*) AS total FROM employees";
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];
