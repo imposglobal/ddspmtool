@@ -139,6 +139,34 @@ function get_project_count($role, $eid, $db)
     return $count;
 }
 
+// get projects by current date
+function get_projects_by_current_date($role, $eid, $db)
+{
+    $date = date("y-m-d");
+    //echo $date;
+    if ($role == 0) {
+        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+    } else {
+        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+    }
+$i =1;
+
+    $result = mysqli_query($db, $sql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<tr>';
+            echo '<th scope="row">'.$i++.'</th>';
+            echo '<td>' . $row["task_type"] . '</td>';
+            echo '<td>' . $row["title"] . '</td>';
+            echo '<td>' . $row["m_status"] . '</td>';
+            echo '</tr>';
+        }
+    } else {
+        echo "<tr><td colspan='5'>No results found.</td></tr>";
+    }
+}
+
+
 //for check present or not
 function getprensentStatus($db,$eid){
     $date = date('Y-m-d');
