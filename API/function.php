@@ -1,5 +1,4 @@
 <?php
-session_start();
 require("db.php");
 
 function get_projects($db, $page = 1, $recordsPerPage = 10){
