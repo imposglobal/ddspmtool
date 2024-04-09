@@ -17,12 +17,12 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="../task/tasks.php">
+            <a href="<?php echo $base_url;?>/Dashboard/task/tasks.php">
               <i class="bi bi-circle"></i><span>Add Task</span>
             </a>
           </li>
           <li>
-            <a href="../task/view_task.php">
+            <a href="<?php echo $base_url;?>/Dashboard/task/view_task.php">
               <i class="bi bi-circle"></i><span>View Tasks</span>
             </a>
           </li>
@@ -52,12 +52,12 @@
         </a>
         <ul id="projects" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="../project/projects.php">
+            <a href="<?php echo $base_url;?>/Dashboard/project/projects.php">
               <i class="bi bi-circle"></i><span>Add Project</span>
             </a>
           </li>
           <li>
-            <a href="../project/view_projects.php">
+            <a href="<?php echo $base_url;?>/Dashboard/project/view_projects.php">
               <i class="bi bi-circle"></i><span>View Projects</span>
             </a>
           </li>
@@ -65,13 +65,13 @@
       </li>
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../employee/add_employee.php">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/employee/add_employee.php">
           <i class="bi bi-person-plus-fill"></i>
           <span>Add Employee</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../employee/view_employee.php">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/employee/view_employee.php">
           <i class="bi bi-person-circle"></i>
           <span>View Employee</span>
         </a>
@@ -89,7 +89,7 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../logout.php">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/logout.php">
           <i class="bi bi-box-arrow-in-left"></i>
           <span>Sign Out</span>
         </a>

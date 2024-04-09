@@ -6,7 +6,7 @@ if(isset($_SESSION['username'])) {
     $desgn = $_SESSION['design'];
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
-    $base_url="http://".$_SERVER['SERVER_NAME'];
+    $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
 
 } else {
     // Redirect user to the login page if not logged in
