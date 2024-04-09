@@ -7,6 +7,7 @@ require('sidebar.php');
 ?>
 <?php include '../API/function.php'; 
 $task_count = get_task_count($role, $eid, $db);
+$project_count = get_project_count($role, $eid, $db);
 ?>
 
   <main id="main" class="main">
@@ -138,7 +139,7 @@ $task_count = get_task_count($role, $eid, $db);
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1244</h6>
+                      <h6><?php echo $project_count; ?></h6>
                       <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
 
                     </div>

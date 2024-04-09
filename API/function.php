@@ -118,4 +118,25 @@ function get_task_count($role, $eid, $db)
   $count = mysqli_fetch_array($result)[0];
   return $count;
 }
+
+// get projects count
+
+function get_project_count($role, $eid, $db)
+{
+    if($role==0)
+    {
+      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid";
+      $result = mysqli_query($db, $sql);
+    }
+    else{
+      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid 
+      WHERE task.eid = '$eid';";  
+      $result = mysqli_query($db, $sql);
+    }
+  
+    // Assuming you want to return the count value
+    $count = mysqli_fetch_array($result)[0];
+    return $count;
+}
+
 ?>
