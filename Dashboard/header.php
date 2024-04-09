@@ -11,11 +11,6 @@ if(isset($_SESSION['username'])) {
     header("Location: ../index.php");
     exit();
 }
-<<<<<<< HEAD
-
-=======
-require('../API/function.php');
->>>>>>> 123a59b8352d328a5784c66848cc0942dda35cd4
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +59,6 @@ require('../API/function.php');
 </div><!-- End Logo -->
 
 <div class="search-bar">
-  <?php getprensentStatus($db,$eid);?>
     <a href="../API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
 </div><!-- End Search Bar -->
 
