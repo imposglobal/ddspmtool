@@ -101,5 +101,81 @@ function pagination($currentPage, $totalPages){
     echo '</td></tr>';
 }
 
+//get task count
+function get_task_count($role, $eid, $db)
+{
+  if($role==0)
+  {
+    $sql = "SELECT COUNT(*) FROM task";
+    $result = mysqli_query($db, $sql);
+  }
+  else{
+    $sql = "SELECT COUNT(*) FROM task WHERE eid = '$eid'";
+    $result = mysqli_query($db, $sql);
+  }
+
+  // Assuming you want to return the count value
+  $count = mysqli_fetch_array($result)[0];
+  return $count;
+}
+
+// get projects count
+
+function get_project_count($role, $eid, $db)
+{
+    if($role==0)
+    {
+      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid";
+      $result = mysqli_query($db, $sql);
+    }
+    else{
+      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid 
+      WHERE task.eid = '$eid';";  
+      $result = mysqli_query($db, $sql);
+    }
+  
+    // Assuming you want to return the count value
+    $count = mysqli_fetch_array($result)[0];
+    return $count;
+}
+
+//for check present or not
+function getprensentStatus($db,$eid){
+    $date = date('Y-m-d');
+    $sql = "SELECT * FROM attendance WHERE login_time IS NOT NULL AND date = '$date' AND eid = '$eid'";
+    $result = mysqli_query($db, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        echo "present";
+    }else{
+        echo "absent";
+    }
+}
+
+// get projects by current date
+function get_projects_by_current_date($role, $eid, $db)
+{
+    $date = date("y-m-d");
+    //echo $date;
+    if ($role == 0) {
+        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+    } else {
+        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+    }
+$i =1;
+
+    $result = mysqli_query($db, $sql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<tr>';
+            echo '<th scope="row">'.$i++.'</th>';
+            echo '<td>' . $row["task_type"] . '</td>';
+            echo '<td>' . $row["title"] . '</td>';
+            echo '<td>' . $row["m_status"] . '</td>';
+            echo '</tr>';
+        }
+    } else {
+        echo "<tr><td colspan='5'>No results found.</td></tr>";
+    }
+}
 
 ?>
