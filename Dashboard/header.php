@@ -7,6 +7,11 @@ if(isset($_SESSION['username'])) {
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
     $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
+    if($base_url == "http://dds.doodlodesign.com"){
+      $base_url="http://".$_SERVER['SERVER_NAME'];
+    }else{
+      $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
+    }
 
 } else {
     // Redirect user to the login page if not logged in
