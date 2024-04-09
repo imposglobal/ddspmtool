@@ -6,8 +6,8 @@ if(isset($_SESSION['username'])) {
     $desgn = $_SESSION['design'];
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
-    $base_url="https://".$_SERVER['SERVER_NAME']."/ddspmtool";
-    if($base_url == "https://dds.doodlodesign.com"){
+    $base_url="http://".$_SERVER['SERVER_NAME'];
+    if($base_url == "http://dds.doodlodesign.com"){
       $base_url="https://".$_SERVER['SERVER_NAME'];
     }else{
       $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
