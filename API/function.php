@@ -139,4 +139,15 @@ function get_project_count($role, $eid, $db)
     return $count;
 }
 
+//for check present or not
+function getprensentStatus($db,$eid){
+    $date = date('Y-m-d');
+    $sql = "SELECT * FROM attendance WHERE login_time IS NOT NULL AND date = '$date' AND eid = '$eid'";
+    $result = mysqli_query($db, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        echo "present";
+    }else{
+        echo "absent";
+    }
+}
 ?>

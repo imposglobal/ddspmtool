@@ -6,11 +6,13 @@ if(isset($_SESSION['username'])) {
     $desgn = $_SESSION['design'];
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
+
 } else {
     // Redirect user to the login page if not logged in
     header("Location: ../index.php");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +60,11 @@ if(isset($_SESSION['username'])) {
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
 
-<div class="search-bar">
+<div id="clockin"  class="search-bar">
     <a href="../API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
+</div><!-- End Search Bar -->
+<div id="clockout" class="search-bar">
+    <a id="clockin" href="../API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
 </div><!-- End Search Bar -->
 
 <nav class="header-nav ms-auto">
