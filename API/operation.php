@@ -28,4 +28,8 @@ function get_employees($db, $page = 1, $recordsPerPage = 10){
     
 }
 
+// get employee profile by their id
+
+
+
 ?>
