@@ -1,9 +1,9 @@
 <?php 
-require('header.php');
+require('../header.php');
 ?>
 <title>My Tasks - DDS</title>
 <?php 
-require('sidebar.php');
+require('../sidebar.php');
 require('../API/function.php');
 ?>
 <style>

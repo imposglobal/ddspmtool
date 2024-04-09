@@ -82,7 +82,7 @@
       <li class="nav-heading">Accounts</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="employee/user-profile.php">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/employee/user-profile.php">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
