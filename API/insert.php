@@ -111,3 +111,23 @@ switch ($operation) {
 }else{
     echo"Bad Request";
 }
+
+
+
+
+// if(isset($_POST['update']))
+// {
+//   $fname = $_POST['fname'];
+//   $lname = $_POST['lname'];
+//   $email = $_POST['email'];
+//   $designation = $_POST['designation'];
+//   $phone = $_POST['phone'];
+//   $department = $_POST['department'];
+//   $sql = "UPDATE `employees` SET `fname`='$fname',`lname`='$lname',`email`='$email',`phone`=' $phone',`designation`='$designation', `department`='$department' WHERE 1";
+//           if ($db->query($sql) === TRUE) {
+//               echo "updated";
+//           } else {
+//              echo "false";
+//           }
+// }
+?> 
