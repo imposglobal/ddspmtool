@@ -6,10 +6,11 @@ if(isset($_SESSION['username'])) {
     $desgn = $_SESSION['design'];
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
+    $base_url="http://".$_SERVER['SERVER_NAME'];
 
 } else {
     // Redirect user to the login page if not logged in
-    header("Location: ../index.php");
+    header("Location: https://dds.doodlodesign.com/index.php");
     exit();
 }
 
@@ -26,24 +27,24 @@ if(isset($_SESSION['username'])) {
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="../assets/img/favicon.png" rel="icon">
-  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://dds.doodlodesign.com/assets/img/favicon.png" rel="icon">
+  <link href="https://dds.doodlodesign.com/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="../assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="../assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="../assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="https://dds.doodlodesign.com/assets/css/style.css" rel="stylesheet">
 
  
 </head>
@@ -54,17 +55,18 @@ if(isset($_SESSION['username'])) {
 
 <div class="d-flex align-items-center justify-content-between">
   <a href="index.html" class="logo d-flex align-items-center">
-    <img src="../assets/img/logo.png" alt="">
+    <img src="https://dds.doodlodesign.com/assets/img/logo.png" alt="">
     <span class="d-none d-lg-block">DDS</span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
 
 <div id="clockin"  class="search-bar">
-    <a href="../API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
+  <?php echo $base_url; ?>
+    <a href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
 </div><!-- End Search Bar -->
 <div id="clockout" class="search-bar">
-    <a id="clockin" href="../API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
+    <a id="clockin" href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
 </div><!-- End Search Bar -->
 
 <nav class="header-nav ms-auto">
@@ -169,7 +171,7 @@ if(isset($_SESSION['username'])) {
 
         <li class="message-item">
           <a href="#">
-            <img src="../assets/img/messages-1.jpg" alt="" class="rounded-circle">
+            <img src="https://dds.doodlodesign.com/assets/img/messages-1.jpg" alt="" class="rounded-circle">
             <div>
               <h4>Maria Hudson</h4>
               <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -183,7 +185,7 @@ if(isset($_SESSION['username'])) {
 
         <li class="message-item">
           <a href="#">
-            <img src="../assets/img/messages-2.jpg" alt="" class="rounded-circle">
+            <img src="https://dds.doodlodesign.com/assets/img/messages-2.jpg" alt="" class="rounded-circle">
             <div>
               <h4>Anna Nelson</h4>
               <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -197,7 +199,7 @@ if(isset($_SESSION['username'])) {
 
         <li class="message-item">
           <a href="#">
-            <img src="../assets/img/messages-3.jpg" alt="" class="rounded-circle">
+            <img src="https://dds.doodlodesign.com/assets/img/messages-3.jpg" alt="" class="rounded-circle">
             <div>
               <h4>David Muldon</h4>
               <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>

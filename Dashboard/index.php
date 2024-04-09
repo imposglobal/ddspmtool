@@ -192,6 +192,6 @@ $project_count = get_project_count($role, $eid, $db);
 
   </main><!-- End #main -->
 <?php 
-require('../footer.php');
+require('footer.php');
 ?>
   
