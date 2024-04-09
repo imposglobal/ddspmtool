@@ -13,7 +13,6 @@ function get_employees($db, $page = 1, $recordsPerPage = 10){
         // Output data of each row
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
-    
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"]." ". $row["lname"].'</td>';
