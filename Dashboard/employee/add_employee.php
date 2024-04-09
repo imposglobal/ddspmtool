@@ -176,7 +176,7 @@ $(document).ready(function() {
             // AJAX request
             $.ajax({
                 type: "POST",
-                url: "../API/insert.php",
+                url: "../../API/insert.php",
                 data: { ops: 'register', empid: empid, fname: fname, lname:lname, email:email, phone:phone, department:department, designation:designation},
                 success: function(response) {
                     // Use SweetAlert for displaying success message

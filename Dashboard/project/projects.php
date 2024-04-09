@@ -88,7 +88,7 @@ $(document).ready(function() {
             // AJAX request
             $.ajax({
                 type: "POST",
-                url: "../API/insert.php",
+                url: "../../API/insert.php",
                 data: { ops: 'project', pname: pname, description: description },
                 success: function(response) {
                     // Use SweetAlert for displaying success message

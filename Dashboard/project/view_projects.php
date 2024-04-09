@@ -3,7 +3,7 @@ require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
-require('sidebar.php');
+require('../sidebar.php');
 require('../../API/function.php');
 ?>
 <style>
