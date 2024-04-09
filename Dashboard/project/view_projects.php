@@ -1,10 +1,10 @@
 <?php 
-require('header.php');
+require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
 require('sidebar.php');
-require('../API/function.php');
+require('../../API/function.php');
 ?>
 <style>
     .ctitle {
@@ -90,5 +90,5 @@ require('../API/function.php');
 
  
 <?php 
-require('footer.php');
+require('../footer.php');
 ?>

@@ -1,9 +1,9 @@
 <?php 
-require('header.php');
+require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
-require('sidebar.php');
+require('../sidebar.php');
 ?>
 <style>
     .ctitle {
@@ -74,7 +74,7 @@ require('sidebar.php');
 
  
 <?php 
-require('footer.php');
+require('../footer.php');
 ?>
 <script>
    // Function to handle form submission with jQuery AJAX

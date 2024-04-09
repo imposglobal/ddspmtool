@@ -1,5 +1,5 @@
 <?php 
-require('header.php');
+require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
@@ -198,5 +198,5 @@ require('../API/function.php');
 
  
 <?php 
-require('footer.php');
+require('../footer.php');
 ?>

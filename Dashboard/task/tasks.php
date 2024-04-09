@@ -1,10 +1,10 @@
 <?php 
-require('header.php');
+require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
-require('sidebar.php');
-require('../API/function.php');
+require('../sidebar.php');
+require('../../API/function.php');
 ?>
 <style>
   #status > option:nth-child(2) {
@@ -157,7 +157,7 @@ require('../API/function.php');
 
   </main><!-- End #main -->
 <?php 
-require('footer.php');
+require('../footer.php');
 ?>
 <script>
    // Function to handle form submission with jQuery AJAX

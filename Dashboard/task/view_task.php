@@ -1,12 +1,10 @@
 <?php 
 require('header.php');
 ?>
-<title>Employees - DDS</title>
+<title>My Tasks - DDS</title>
 <?php 
 require('sidebar.php');
-require('../API/operation.php');
 require('../API/function.php');
-
 ?>
 <style>
     .ctitle {
@@ -22,21 +20,16 @@ require('../API/function.php');
         font-weight: 600;
         font-family: "Poppins", sans-serif;
     }
-    .icon{
-      font-size:20px;
-      margin:0 5px;
-      cursor: pointer;
-    }
 </style>
 
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Employees</h1>
+      <h1>Tasks</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">View</li>
+          <li class="breadcrumb-item active">Tasks</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -50,18 +43,18 @@ require('../API/function.php');
             <div class="row">   
                 <div class="col-lg-12">
                     <div class="card-body">
-                        <h5 class="card-title pb-1 pt-4">Employees</h5>
+                        <h5 class="card-title pb-1 pt-4"> Tasks</h5>
                         <hr>
                         <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Employee Name</th>
-                    <th scope="col">Email </th>
-                    <th scope="col">Designation</th>
-                    <th scope="col">Department</th>
-                    <th scope="col">Actions</th>
-
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Timeframe</th>
+                    <th scope="col">My Status</th>
+                    <th scope="col">Manager Status</th>
+                    <th scope="col">View Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -70,7 +63,7 @@ require('../API/function.php');
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
 
-                    get_employees($db, $page, $recordsPerPage);
+                    get_tasks($role,$eid,$db, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>
@@ -84,8 +77,7 @@ require('../API/function.php');
         
       </div>
       <?php 
-      //for project pagination 
-      $sql = "SELECT COUNT(*) AS total FROM employees";
+      $sql = "SELECT COUNT(*) AS total FROM task";
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];
@@ -99,5 +91,5 @@ require('../API/function.php');
 
  
 <?php 
-require('footer.php');
+require('../footer.php');
 ?>

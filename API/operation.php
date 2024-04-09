@@ -19,7 +19,7 @@ function get_employees($db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. $row["email"].'</td>';
             echo '<td>'. $row["designation"].'</td>';
             echo '<td>'. $row["department"].'</td>';
-            echo '<td><a href="project.php?empid='. $row["emp_id"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i class="icon text-danger bi bi-trash3"></i></td>';
+            echo '<td><a href="project.php?empid='. $row["emp_id"].'"><i class="icon bi bi-pencil-square"></i></a> </i> <i class="icon text-danger bi bi-trash3"></i></td>';
             echo '</tr>';
         }
     } else {

@@ -17,12 +17,12 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tasks.php">
+            <a href="../task/tasks.php">
               <i class="bi bi-circle"></i><span>Add Task</span>
             </a>
           </li>
           <li>
-            <a href="view_task.php">
+            <a href="../task/view_task.php">
               <i class="bi bi-circle"></i><span>View Tasks</span>
             </a>
           </li>
@@ -52,12 +52,12 @@
         </a>
         <ul id="projects" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="projects.php">
+            <a href="../project/projects.php">
               <i class="bi bi-circle"></i><span>Add Project</span>
             </a>
           </li>
           <li>
-            <a href="view_projects.php">
+            <a href="../project/view_projects.php">
               <i class="bi bi-circle"></i><span>View Projects</span>
             </a>
           </li>
@@ -65,13 +65,13 @@
       </li>
       
       <li class="nav-item">
-        <a class="nav-link collapsed" href="add_employee.php">
+        <a class="nav-link collapsed" href="../employee/add_employee.php">
           <i class="bi bi-person-plus-fill"></i>
           <span>Add Employee</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="view_employee.php">
+        <a class="nav-link collapsed" href="../employee/view_employee.php">
           <i class="bi bi-person-circle"></i>
           <span>View Employee</span>
         </a>
@@ -82,7 +82,7 @@
       <li class="nav-heading">Accounts</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="employee/user-profile.php">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
