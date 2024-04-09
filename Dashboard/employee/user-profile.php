@@ -3,8 +3,9 @@ require('../header.php');
 ?>
 <title>Dashboard - DDS</title>
 <?php 
-require('sidebar.php');
-require('../API/function.php');
+require('../sidebar.php');
+require('../../API/function.php');
+require("../../API/db.php");
 ?>
 <style>
     .ctitle {
@@ -21,6 +22,18 @@ require('../API/function.php');
         font-family: "Poppins", sans-serif;
     }
 </style>
+
+<?php
+
+  $sql = "SELECT * FROM employees WHERE eid = '$eid'";
+  $result = mysqli_query($db, $sql);
+
+$result = mysqli_query($db, $sql);
+if ($result && mysqli_num_rows($result) > 0)
+{
+  while ($row = mysqli_fetch_assoc($result))
+  {
+    ?>
 
 <main id="main" class="main">
 
@@ -43,8 +56,8 @@ require('../API/function.php');
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
              
-              <h2>Kevin Anderson</h2>
-              <h3>Web Designer</h3>
+            <h2><?php echo $row["fname"] . ' ' . $row["lname"]; ?></h2>
+              <h3><?php echo $row["designation"];?></h3>
              
             </div>
           </div>
@@ -74,31 +87,36 @@ require('../API/function.php');
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">Profile Details</h5>
-
+                  
+      
+ 
                   <div class="row">
+                  
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["fname"] . ' ' . $row["lname"]; ?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Designation</div>
-                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["designation"];?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">Web Designer</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["email"];?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">USA</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["phone"];?></div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Deparment</div>
-                    <div class="col-lg-9 col-md-8">IT</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["department"];?></div>
                   </div>
+
+                
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
@@ -108,7 +126,7 @@ require('../API/function.php');
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="">
+                        <input name="fname" type="text" class="form-control" id="fname" value="<?php echo $row["fname"];?>">
                       </div>
                     </div>
 
@@ -117,41 +135,42 @@ require('../API/function.php');
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="company" type="text" class="form-control" id="company" value="">
+                        <input name="lname" type="text" class="form-control" id="lname" value="<?php echo $row["lname"];?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Job" class="col-md-4 col-lg-3 col-form-label">Designation</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="designation" type="text" class="form-control" id="designation" value="">
+                        <input name="designation" type="text" class="form-control" id="designation" value="<?php echo $row["designation"];?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="text" class="form-control" id="email" value="">
+                        <input name="email" type="text" class="form-control" id="email" value="<?php echo $row["email"];?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                      <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="phone" value="">
+                        <input name="phone" type="text" class="form-control" id="phone" value="<?php echo $row["phone"];?>">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Department</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="department" type="text" class="form-control" id="department" value="">
+                        <input name="department" type="text" class="form-control" id="department" value="<?php echo $row["department"];?>">
                       </div>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit" class="btn btn-primary" name="update">Save Changes</button>
                     </div>
-                  </form><!-- End Profile Edit Form -->
+                  </form>
+                  <!-- End Profile Edit Form -->
                 </div>
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
@@ -160,7 +179,7 @@ require('../API/function.php');
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
+                        <input name="password" type="text" class="form-control" id="currentPassword" value="<?php echo $row["password"];?>">
                       </div>
                     </div>
 
@@ -177,6 +196,9 @@ require('../API/function.php');
                         <input name="renewpassword" type="password" class="form-control" id="renewPassword">
                       </div>
                     </div>
+                    <?php }
+}
+?>
 
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Change Password</button>
@@ -196,7 +218,27 @@ require('../API/function.php');
 
   </main><!-- End #main -->
 
- 
 <?php 
 require('../footer.php');
 ?>
+
+<!-- <script>
+$(document).ready(function() {
+    $('#profile-edit').submit(function(event) {
+        event.preventDefault();     
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '../../API/insert.php', 
+            data: formData,
+            success: function(response) {
+                console.log(response);              
+            },
+            error: function(xhr, status, error) {
+                console.error(error);              
+            }
+        });
+    });
+});
+</script> -->
