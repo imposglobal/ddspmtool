@@ -8,6 +8,8 @@ require('sidebar.php');
 <?php include '../API/function.php'; 
 $task_count = get_task_count($role, $eid, $db);
 $project_count = get_project_count($role, $eid, $db);
+// $date = date("Y-m-d");
+
 ?>
 
   <main id="main" class="main">
@@ -28,7 +30,6 @@ $project_count = get_project_count($role, $eid, $db);
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
-
             <!-- Sales Card -->
             <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">
@@ -163,50 +164,17 @@ $project_count = get_project_count($role, $eid, $db);
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">tid</th>
+                        <th scope="col">task_type</th>
+                        <th scope="col">title</th>
+                        <th scope="col">timeframe</th>
+                        <th scope="col">m_status</th>
+                        <th scope="col">created_at</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">#2457</a></th>
-                        <td>Brandon Jacob</td>
-                        <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                        <td>$64</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2147</a></th>
-                        <td>Bridie Kessler</td>
-                        <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
-                        <td>$47</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2049</a></th>
-                        <td>Ashleigh Langosh</td>
-                        <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
-                        <td>$147</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Angus Grady</td>
-                        <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
-                        <td>$67</td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Raheem Lehner</td>
-                        <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
-                        <td>$165</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                    </tbody>
+                    <tbody>    
+                    <?php get_projects_by_current_date($role, $eid, $db); ?>
+                  </tbody>
                   </table>
 
                 </div>
@@ -220,6 +188,7 @@ $project_count = get_project_count($role, $eid, $db);
        
       </div>
     </section>
+   
 
   </main><!-- End #main -->
 <?php 
