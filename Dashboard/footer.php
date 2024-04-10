@@ -31,12 +31,13 @@
         $.ajax({
             url: "<?php echo $base_url; ?>/API/attendance.php",
             method: "POST",
-            data: { ops: 'checkatt' },
+            data: { ops: 'checkatt', eid:<?php echo $eid; ?> },
             success: function(response) {
                 // Assuming data is retrieved successfully
                 // You may need to modify the condition based on your data
-                if (response === 'hide') {
+                if (response === 'clockin') {
                     $('#clockin').hide(); // Hide elements with class 'jquy'
+                    $('#clockout').show();
                 }
             },
             error: function(xhr, status, error) {

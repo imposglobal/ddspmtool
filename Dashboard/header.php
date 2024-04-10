@@ -50,6 +50,11 @@ if(isset($_SESSION['username'])) {
 
   <!-- Template Main CSS File -->
   <link href="https://dds.doodlodesign.com/assets/css/style.css" rel="stylesheet">
+  <style>
+    #clockout{
+      display:none;
+    }
+  </style>
 
  
 </head>
