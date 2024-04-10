@@ -72,11 +72,10 @@ if(isset($_SESSION['username'])) {
 </div><!-- End Logo -->
 
 <div id="clockin"  class="search-bar">
- 
-    <a href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
+<a href="#" class="btn btn-success mx-3 px-5" onclick="clockin();">Clock In</a>
 </div><!-- End Search Bar -->
 <div id="clockout" class="search-bar">
-    <a href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
+<a href="#" class="btn btn-danger mx-3 px-5" onclick="clockout();">Clock Out</a>
 </div><!-- End Search Bar -->
 
 <nav class="header-nav ms-auto">
@@ -283,3 +282,57 @@ if(isset($_SESSION['username'])) {
 </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Ajax Request for Clockin -->
+<script>
+  function clockin() 
+  {
+      var eid = '<?php echo $eid ?>';    
+      $.ajax({
+      type: 'POST', 
+      url: '../API/attendance.php', 
+      data: 
+      { 
+        ops: 'clockin', 
+        eid: eid
+      },
+      success: function(response) { 
+        console.log('Data sent successfully!');
+        window.location.reload();
+      },
+      error: function(xhr, status, error) { 
+        console.error('Error occurred while sending data:', error);
+      }
+    });
+  }
+</script>
+
+<!-- Ajax Request for Clockout -->
+
+<script>
+  function clockout() {
+    var eid = '<?php echo $eid ?>';    
+    // AJAX request
+      $.ajax({
+      type: 'POST', 
+      url: '../API/attendance.php', 
+      data: { 
+        ops: 'clockout', 
+        eid: eid
+      },
+      success: function(response) { 
+        console.log('Data sent successfully!');
+        window.location.reload();
+      },
+      error: function(xhr, status, error) { 
+        console.error('Error occurred while sending data:', error);
+      }
+    });
+  }
+</script>
+
+
+
+

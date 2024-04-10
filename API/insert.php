@@ -102,7 +102,6 @@ switch ($operation) {
   
         break;
 
-
     default:
       echo "Bad Gateway";
   }

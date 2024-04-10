@@ -26,6 +26,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Close dbection
                 $db->close();
           break;
+
+
+       //  add clockin in dashboard
+       
+        case "clockin": 
+            // Set IST Timezone      
+            date_default_timezone_set('Asia/Kolkata');
+            $eid = $_POST['eid'];
+            $time = date('H:i:s');
+            $date = date('Y-m-d');       
+            $sql = "INSERT INTO attendance (login_time, eid, date) VALUES ('$time', '$eid', '$date')";       
+            if ($db->query($sql) === TRUE) 
+            {
+              echo "success";
+            } 
+            else 
+            {
+                echo "Error: " . $sql . "<br>" . $db->error;
+            }       
+            // Close dbection
+            $db->close();
+            break;
+    
+    
+        //  add clockout in dashboard
+        case "clockout":
+            // Set IST Timezone
+            date_default_timezone_set('Asia/Kolkata');
+            $eid = $_POST['eid'];
+            $time = date('H:i:s');          
+            $sql = "UPDATE `attendance` SET `logout_time`='$time' WHERE `eid` = '$eid'";       
+            if ($db->query($sql) === TRUE) 
+            {
+            echo "success";
+            } 
+            else 
+            {
+            echo "Error: " . $sql . "<br>" . $db->error;
+            }         
+            // Close dbection
+            $db->close();
+            break;
+    
     
         default:
           echo "Bad Gateway";

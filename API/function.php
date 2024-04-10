@@ -163,8 +163,7 @@ function get_projects_by_current_date($role, $eid, $db)
     } else {
         $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
     }
-$i =1;
-
+     $i =1;
     $result = mysqli_query($db, $sql);
     if ($result && mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
