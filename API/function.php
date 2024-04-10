@@ -172,7 +172,9 @@ $i =1;
             echo '<th scope="row">'.$i++.'</th>';
             echo '<td>' . $row["task_type"] . '</td>';
             echo '<td>' . $row["title"] . '</td>';
+            echo '<td>' . $row["timeframe"] . '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
+            echo '<td>' . $row["created_at"] . '</td>';
             echo '</tr>';
         }
     } 
