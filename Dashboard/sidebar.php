@@ -30,14 +30,14 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="">
           <i class="bi bi-bar-chart-fill"></i>
           <span>Analytics</span>
         </a>
       </li><!-- End Analytics Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="">
           <i class="bi bi-calendar2-week-fill"></i>
           <span>Attendance</span>
         </a>
