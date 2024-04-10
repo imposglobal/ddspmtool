@@ -175,9 +175,7 @@ $i =1;
             echo '<td>' . $row["m_status"] . '</td>';
             echo '</tr>';
         }
-    } else {
-        echo "<tr><td colspan='5'>No results found.</td></tr>";
-    }
+    } 
 }
 
 ?>

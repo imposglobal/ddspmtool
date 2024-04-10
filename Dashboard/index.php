@@ -124,12 +124,12 @@ $project_count = get_project_count($role, $eid, $db);
                 <table class="table table-borderless datatable">
                   <thead>
                     <tr>
-                      <th scope="col">tid</th>
-                      <th scope="col">task_type</th>
-                      <th scope="col">title</th>
-                      <th scope="col">timeframe</th>
-                      <th scope="col">m_status</th>
-                      <th scope="col">created_at</th>
+                      <th scope="col">Id</th>
+                      <th scope="col">Task Type</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Time Frame</th>
+                      <th scope="col">M Status</th>
+                      <th scope="col">Date</th>
                     </tr>
                   </thead>
                   <tbody>
