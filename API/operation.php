@@ -31,5 +31,50 @@ function get_employees($base_url,$db, $page = 1, $recordsPerPage = 10){
 
 
 
+//  Get Weekly and monthly Working days in working days card
+function getWeeklyWorkingDays() {
+    $currentDate = strtotime('today');
+    $workingDays = 0;
+    // Check if the current day is not a Saturday or Sunday
+    if (date('N', $currentDate) < 6) {
+        $workingDays++;
+    }
+    // Move to the next day and check again until Saturday is reached
+    while (date('N', $currentDate) < 6) {
+        $currentDate = strtotime('+1 day', $currentDate);
+        if (date('N', $currentDate) < 6) {
+            $workingDays++;
+        }
+    }
+    return $workingDays;
+}
+
+// Get monthly Working days in working days card
+function getMonthlyWorkingDays() {
+    $currentDate = strtotime('first day of this month');
+    $lastDayOfMonth = strtotime('last day of this month');
+    $workingDays = 0;
+    // Loop through each day of the month
+    while ($currentDate <= $lastDayOfMonth) {
+        // Check if the current day is not a Saturday or Sunday
+        if (date('N', $currentDate) < 6) {
+            $workingDays++;
+        }
+        // Move to the next day
+        $currentDate = strtotime('+1 day', $currentDate);
+    }
+
+    return $workingDays;
+}
+
+// echo these variables in index file to display live days count
+$totalWeeklyWorkingDays = getWeeklyWorkingDays();
+$totalMonthlyWorkingDays = getMonthlyWorkingDays();
+
+
+
+
+
+
 
 ?>

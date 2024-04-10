@@ -118,8 +118,6 @@ if ($result && mysqli_num_rows($result) > 0)
                     <div class="col-lg-3 col-md-4 label">Deparment</div>
                     <div class="col-lg-9 col-md-8"><?php echo $row["department"];?></div>
                   </div>
-                  
-                
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">

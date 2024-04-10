@@ -20,6 +20,11 @@ require('../../API/function.php');
         font-weight: 600;
         font-family: "Poppins", sans-serif;
     }
+.icon{
+      font-size:20px;
+      margin:0 5px;
+      cursor: pointer;
+    }
 </style>
 
 <main id="main" class="main">
@@ -52,7 +57,7 @@ require('../../API/function.php');
                     <th scope="col">Project Name</th>
                     <th scope="col">Created </th>
                     <th scope="col">Status</th>
-                    <th scope="col">View Details</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
