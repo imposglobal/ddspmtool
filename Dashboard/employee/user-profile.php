@@ -115,22 +115,20 @@ if ($result && mysqli_num_rows($result) > 0)
                     <div class="col-lg-3 col-md-4 label">Deparment</div>
                     <div class="col-lg-9 col-md-8"><?php echo $row["department"];?></div>
                   </div>
-
+                  
                 
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <!-- Profile Edit Form -->
-                  <form>
+                  <form method="POST">
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="fname" type="text" class="form-control" id="fname" value="<?php echo $row["fname"];?>">
                       </div>
                     </div>
-
-                  
 
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
@@ -166,44 +164,45 @@ if ($result && mysqli_num_rows($result) > 0)
                         <input name="department" type="text" class="form-control" id="department" value="<?php echo $row["department"];?>">
                       </div>
                     </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary" name="update">Save Changes</button>
+
+                    <?php }
+}
+?>
+                   
+                    <div class="text-center">  
+                    <!-- <input type="hidden" class="form-control" name="eid" id="eid" value="<?php echo $row["eid"];?>"> -->
+
+                    <input type="hidden" id="eid" value="<?php echo $eid; ?>" class="form-control">
+                   
+                    <input type="button" class="btn btn-primary" name="update" id="update" value="Save Changes">
                     </div>
                   </form>
                   <!-- End Profile Edit Form -->
                 </div>
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
 
-                    <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="text" class="form-control" id="currentPassword" value="<?php echo $row["password"];?>">
-                      </div>
-                    </div>
-
+                    <form method="POST" id="changePasswordForm">
                     <div class="row mb-3">
                       <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="newpassword" type="password" class="form-control" id="newPassword">
                       </div>
                     </div>
-
                     <div class="row mb-3">
                       <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="renewpassword" type="password" class="form-control" id="renewPassword">
                       </div>
                     </div>
-                    <?php }
-}
-?>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
+                   
+                    <div class="text-center"> 
+                       <input type="hidden" id="eid" value="<?php echo $eid; ?>" class="form-control">
+                      <input type="button" class="btn btn-primary"  id="update_password" value="Change Password">
                     </div>
-                  </form><!-- End Change Password Form -->
+                  </form>
+                  <div id="message"></div>
+                  <!-- End Change Password Form -->
 
                 </div>
 
@@ -221,24 +220,115 @@ if ($result && mysqli_num_rows($result) > 0)
 <?php 
 require('../footer.php');
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
-<!-- <script>
-$(document).ready(function() {
-    $('#profile-edit').submit(function(event) {
-        event.preventDefault();     
-        var formData = $(this).serialize();
+<!-- code for edit employee profile -->
+<script>
+    $(document).ready(function (e) {
+        $('#update').click(function (e) {
+          // e.preventDefault();
+        var eid = $('#eid').val(); 
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var email = $('#email').val();
+        var phone = $('#phone').val();
+        var department = $('#department').val();
+        var designation = $('#designation').val();
+            $.ajax({
+               url: "../../API/update.php",
+                type: 'POST',
+                data:{ ops: 'update_profile', eid: eid, fname: fname, lname:lname, email:email, phone:phone, department:department, designation:designation},
+                success: function (response) {
+                    // Parse JSON response
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        // Show SweetAlert success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.message
+                        });
+                    } else {
+                        // Show SweetAlert error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Show error message if AJAX request fails
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error updating profile: ' + error
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+<!-- code for change password -->
+<script>
+  $(document).ready(function() {
+    $('#update_password').click(function() {
+        var newPassword = $('#newPassword').val();
+        var renewPassword = $('#renewPassword').val();
+        var eid = $('#eid').val();
+
+        if (newPassword != renewPassword) {
+          Swal.fire({
+        icon: 'error',
+        title: 'Passwords do not match!',
+        text: 'Please make sure the passwords match.'
+        });
+       return;
+        }
 
         $.ajax({
             type: 'POST',
-            url: '../../API/insert.php', 
-            data: formData,
-            success: function(response) {
-                console.log(response);              
-            },
-            error: function(xhr, status, error) {
-                console.error(error);              
-            }
+            url: '../../API/update.php',
+            data: { ops: 'update_password', eid: eid, newpassword: newPassword, renewpassword: renewPassword },
+
+
+            success: function (response) {
+                    // Parse JSON response
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        // Show SweetAlert success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.message
+                        });
+                    } else {
+                        // Show SweetAlert error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Show error message if AJAX request fails
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error updating profile: ' + error
+                    });
+                }
         });
     });
 });
-</script> -->
+
+</script>
+
+
