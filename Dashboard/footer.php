@@ -23,7 +23,32 @@
 
   <!-- Template Main JS File -->
   <script src="https://dds.doodlodesign.com/assets/js/main.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#clockout').hide();
+    // Function to check data and hide elements
+    function checkAndHide() {
+        $.ajax({
+            url: "<?php echo $base_url; ?>/API/attendance.php",
+            method: "POST",
+            data: { ops: 'checkatt' },
+            success: function(response) {
+                // Assuming data is retrieved successfully
+                // You may need to modify the condition based on your data
+                if (response === 'hide') {
+                    $('#clockin').hide(); // Hide elements with class 'jquy'
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
 
+    // Call the function on document load
+    checkAndHide();
+});
+</script>
   
 
 </body>

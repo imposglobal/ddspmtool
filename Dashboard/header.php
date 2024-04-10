@@ -71,7 +71,7 @@ if(isset($_SESSION['username'])) {
     <a href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-success mx-3 px-5">Clock In</a>
 </div><!-- End Search Bar -->
 <div id="clockout" class="search-bar">
-    <a id="clockin" href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
+    <a href="https://dds.doodlodesign.com/API/insert.php?ops=clockin" class="btn btn-danger mx-3 px-5">Clock Out</a>
 </div><!-- End Search Bar -->
 
 <nav class="header-nav ms-auto">
