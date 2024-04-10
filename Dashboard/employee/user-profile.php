@@ -24,6 +24,9 @@ require("../../API/db.php");
 </style>
 
 <?php
+if(isset($_GET['eid'])){
+  $eid = $_GET['eid'];
+}
 
   $sql = "SELECT * FROM employees WHERE eid = '$eid'";
   $result = mysqli_query($db, $sql);
@@ -57,7 +60,7 @@ if ($result && mysqli_num_rows($result) > 0)
 
              
             <h2><?php echo $row["fname"] . ' ' . $row["lname"]; ?></h2>
-              <h3><?php echo $row["designation"];?></h3>
+              <h5 class="mt-2"><?php echo $row["designation"];?></h5>
              
             </div>
           </div>

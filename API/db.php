@@ -1,5 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
 // Database credentials
 $host = 'localhost'; // or your database host
 $dbname = 'ballapo7_pmtool';

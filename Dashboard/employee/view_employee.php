@@ -70,7 +70,7 @@ require('../../API/function.php');
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
 
-                    get_employees($db, $page, $recordsPerPage);
+                    get_employees($base_url,$db, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>

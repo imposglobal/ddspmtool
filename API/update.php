@@ -1,5 +1,4 @@
 <?php 
-session_start();
 require("db.php"); // Assuming db.php contains the database connection
 require("mail.php"); // Assuming mail.php contains mailing functions
 
