@@ -116,7 +116,6 @@ if ($result && mysqli_num_rows($result) > 0)
                     <div class="col-lg-9 col-md-8"><?php echo $row["department"];?></div>
                   </div>
 
-                
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
@@ -129,8 +128,6 @@ if ($result && mysqli_num_rows($result) > 0)
                         <input name="fname" type="text" class="form-control" id="fname" value="<?php echo $row["fname"];?>">
                       </div>
                     </div>
-
-                  
 
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
