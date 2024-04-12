@@ -57,9 +57,9 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
             }else{
                 $mstatus = $row["m_status"];
             }
-            if($row["status"] = "Completed"){
+            if($row["status"] == "Completed"){
                 $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            }elseif($row["status"] = "In Progress"){
+            }elseif($row["status"] == "In Progress"){
                 $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
             }
             echo '<tr>';
