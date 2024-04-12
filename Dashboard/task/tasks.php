@@ -185,7 +185,7 @@ $(document).ready(function() {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
                         icon: 'success',
-                        title: pname,
+                        title: title,
                         text: response
                     });
                     // Reset the form
