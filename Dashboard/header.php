@@ -68,7 +68,7 @@ if(isset($_SESSION['username'])) {
    <header id="header" class="header fixed-top d-flex align-items-center">
 
 <div class="d-flex align-items-center justify-content-between">
-  <a href="index.html" class="logo d-flex align-items-center">
+  <a href="<?php echo $base_url;?>/Dashboard/index.php" class="logo d-flex align-items-center">
     <img src="https://dds.doodlodesign.com/assets/img/logo.png" alt="">
     <span class="d-none d-lg-block">DDS</span>
   </a>
@@ -253,7 +253,7 @@ if(isset($_SESSION['username'])) {
         </li>
 
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+          <a class="dropdown-item d-flex align-items-center" href="<?php echo $base_url;?>/Dashboard/employee/user-profile.php">
             <i class="bi bi-gear"></i>
             <span>Account Settings</span>
           </a>
@@ -263,7 +263,7 @@ if(isset($_SESSION['username'])) {
         </li>
 
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+          <a class="dropdown-item d-flex align-items-center" href="">
             <i class="bi bi-question-circle"></i>
             <span>Need Help?</span>
           </a>
@@ -273,7 +273,7 @@ if(isset($_SESSION['username'])) {
         </li>
 
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="logout.php">
+          <a class="dropdown-item d-flex align-items-center" href="<?php echo $base_url;?>/Dashboard/logout.php"">
             <i class="bi bi-box-arrow-right"></i>
             <span>Sign Out</span>
           </a>

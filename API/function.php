@@ -59,8 +59,18 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
             }
             if($row["status"] == "Completed"){
                 $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            }elseif($row["status"] == "In Progress"){
+            }
+            elseif($row["status"] == "In Progress"){
                 $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+            }
+            elseif($row["status"] == "Pending"){
+                $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+            }
+            elseif($row["status"] == "On Hold"){
+                $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+            }
+            elseif($row["status"] == "Abonded"){
+                $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
             }
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
@@ -69,7 +79,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. round($row["timeframe"],2).' Hrs</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
-            echo '<td><a href="project.php?tid='. $row["tid"].'"><i class="bi bi-info-circle-fill"></i> View</td>';
+            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $row["tid"].'"><i class="bi bi-info-circle-fill"></i> View</td>';
             echo '</tr>';
         }
     } else {
@@ -103,7 +113,7 @@ function pagination($currentPage, $totalPages){
     echo '</td></tr>';
 }
 
-//get task count
+//get task count in dashboard
 function get_task_count($role, $eid, $db)
 {
   if($role==0)
@@ -122,7 +132,7 @@ function get_task_count($role, $eid, $db)
   
 }
 
-// get projects count
+// get projects count in dashboard
 
 function get_project_count($role, $eid, $db)
 {
@@ -154,15 +164,22 @@ function getprensentStatus($db,$eid){
     }
 }
 
-// get projects by current date
+// get projects by current date in dashboard
 function get_projects_by_current_date($role, $eid, $db)
 {
     $date = date("y-m-d");
     //echo $date;
     if ($role == 0) {
-        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+        // $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+        $sql = "SELECT task.eid, task.task_type, task.title, task.timeframe, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        FROM task 
+        INNER JOIN employees ON task.eid = employees.eid 
+        WHERE DATE(task.created_at) = '$date'";
     } else {
-        $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
+        $sql = "SELECT task.eid, task.task_type, task.title, task.timeframe, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        FROM task 
+        INNER JOIN employees ON task.eid = employees.eid 
+        WHERE DATE(task.created_at) = '$date' AND task.eid = '$eid'";
     }
      $i =1;
     $result = mysqli_query($db, $sql);
@@ -170,14 +187,35 @@ function get_projects_by_current_date($role, $eid, $db)
         while ($row = mysqli_fetch_assoc($result)) {
             echo '<tr>';
             echo '<th scope="row">'.$i++.'</th>';
+            echo '<td>' . $row["fname"] . '</td>';
             echo '<td>' . $row["task_type"] . '</td>';
             echo '<td>' . $row["title"] . '</td>';
-            echo '<td>' . $row["timeframe"] . '</td>';
+            echo '<td>' . $row["timeframe"] . ' Hrs' . '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
             echo '<td>' . $row["created_at"] . '</td>';
             echo '</tr>';
         }
     } 
+}
+
+
+// get Attendance count in dashboard
+
+function get_attendance_count($role, $eid, $db)
+{
+    if($role==0)
+    {
+      $sql = "SELECT COUNT(DISTINCT date) FROM attendance";  
+      $result = mysqli_query($db, $sql);
+    }
+    else{      
+      $sql = "SELECT COUNT(DISTINCT date) FROM attendance WHERE eid = '$eid'";
+      $result = mysqli_query($db, $sql);
+    }
+  
+    // Assuming you want to return the count value
+    $count = mysqli_fetch_array($result)[0];
+    return $count;
 }
 
 ?>
