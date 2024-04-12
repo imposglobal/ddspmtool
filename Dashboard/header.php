@@ -54,6 +54,10 @@ if(isset($_SESSION['username'])) {
     #clockout{
       display:none;
     }
+
+    .datatable-wrapper.no-footer .datatable-container {
+    border-bottom: none;
+    }
   </style>
 
  

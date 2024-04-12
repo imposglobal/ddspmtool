@@ -13,6 +13,7 @@ $project_count = get_project_count($role, $eid, $db);
 
 ?>
 
+
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -33,7 +34,7 @@ $project_count = get_project_count($role, $eid, $db);
         <div class="row">
 
           <!-- Tasks Card -->
-          <div class="col-xxl-3 col-md-6">
+          <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
                 <h5 class="card-title">Tasks <span>| Today</span></h5>
@@ -54,7 +55,7 @@ $project_count = get_project_count($role, $eid, $db);
           </div><!-- End Tasks Card -->
 
           <!-- Projects Card started -->
-          <div class="col-xxl-3 col-xl-12">
+          <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card customers-card">
               <div class="card-body">
                 <h5 class="card-title">Projects <span>| Till Now</span></h5>
@@ -75,7 +76,7 @@ $project_count = get_project_count($role, $eid, $db);
           </div><!-- End Project Card -->
 
           <!-- Working days Card  start -->
-          <div class="col-xxl-3 col-md-6">
+          <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card revenue-card">
               <div class="card-body">
                 <h5 class="card-title">Working Days <span>| This Month</span></h5>
@@ -94,7 +95,7 @@ $project_count = get_project_count($role, $eid, $db);
           </div><!-- End working days Card -->
 
           <!-- Present days Card -->
-          <div class="col-xxl-3 col-md-6">
+          <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card revenue-card">
               <div class="card-body">
                 <h5 class="card-title">Present Days <span>| This Month</span></h5>
@@ -121,7 +122,7 @@ $project_count = get_project_count($role, $eid, $db);
             <div class="card recent-sales overflow-auto">
               <div class="card-body">
                 <h5 class="card-title">Tasks <span>| Today</span></h5>
-                <table class="table table-borderless datatable">
+                <table class="table  datatable">
                   <thead>
                     <tr>
                       <th scope="col">Id</th>
