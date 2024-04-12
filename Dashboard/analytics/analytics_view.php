@@ -36,7 +36,7 @@ require('../sidebar.php');
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Projects Graph</h5>
-                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Total projects</h6>
                             <canvas id="taskStatusChart" width="2200" height="1600"></canvas>
                          </div>
                     </div>
