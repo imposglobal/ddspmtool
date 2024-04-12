@@ -8,9 +8,9 @@ require('../sidebar.php');
 <?php require('../../API/analytics_api.php');
 
       require("../../API/db.php"); 
-// $task_count = get_task_count($role, $eid, $db);
-// $project_count = get_project_count($role, $eid, $db);
-// $date = date("Y-m-d");
+      $totalCount = total_project_count($db);
+
+
 
 ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -36,7 +36,7 @@ require('../sidebar.php');
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Projects Graph</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Total projects</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Total projects: <?php echo $totalCount; ?></h6>
                             <canvas id="taskStatusChart" width="400" height="200"></canvas>
                          </div>
                     </div>
@@ -52,9 +52,10 @@ require('../sidebar.php');
 </main><!-- End #main -->
 <?php 
 require('../footer.php');
-?>
+// ?>
 
-<script>
+ <script>
+
                         // Fetch data using AJAX
                         $.ajax({
                             url: "../../API/analytics_api.php",
