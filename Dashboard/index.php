@@ -9,6 +9,7 @@ require('sidebar.php');
       include '../API/operation.php'; 
 $task_count = get_task_count($role, $eid, $db);
 $project_count = get_project_count($role, $eid, $db);
+$attendance_count = get_attendance_count($role, $eid, $db);
 // $date = date("Y-m-d");
 
 ?>
@@ -20,7 +21,7 @@ $project_count = get_project_count($role, $eid, $db);
     <h1>Dashboard</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
         <li class="breadcrumb-item active">Dashboard</li>
       </ol>
     </nav>
@@ -46,8 +47,8 @@ $project_count = get_project_count($role, $eid, $db);
                     <h6>
                       <?php echo $task_count; ?>
                     </h6>
-                    <span class="text-success small pt-1 fw-bold">12%</span> 
-                    <span class="text-muted small pt-2 ps-1">increase</span>
+                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> 
+                    <span class="text-muted small pt-2 ps-1">increase</span> -->
                   </div>
                 </div>
               </div>
@@ -67,8 +68,8 @@ $project_count = get_project_count($role, $eid, $db);
                     <h6>
                       <?php echo $project_count; ?>
                     </h6>
-                    <span class="text-danger small pt-1 fw-bold">12%</span> <span
-                      class="text-muted small pt-2 ps-1">decrease</span>
+                    <!-- <span class="text-danger small pt-1 fw-bold">12%</span> <span
+                      class="text-muted small pt-2 ps-1">decrease</span> -->
                   </div>
                 </div>
               </div>
@@ -86,7 +87,7 @@ $project_count = get_project_count($role, $eid, $db);
                   </div>
                   <div class="ps-3">
                     <h6> <?php echo "$totalWeeklyWorkingDays";?> </h6>
-                    <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> <span
+                     <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> <span
                       class="text-muted small pt-2 ps-1">Days</span>
                   </div>
                 </div>
@@ -104,9 +105,9 @@ $project_count = get_project_count($role, $eid, $db);
                     <i class="bi bi-currency-dollar"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>$3,264</h6>
-                    <span class="text-success small pt-1 fw-bold">8%</span> <span
-                      class="text-muted small pt-2 ps-1">increase</span>
+                    <h6><?php echo $attendance_count; ?></h6>
+                    <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span
+                      class="text-muted small pt-2 ps-1">increase</span> -->
                   </div>
                 </div>
               </div>
@@ -126,6 +127,7 @@ $project_count = get_project_count($role, $eid, $db);
                   <thead>
                     <tr>
                       <th scope="col">Id</th>
+                      <th scope="col">Employee</th>
                       <th scope="col">Task Type</th>
                       <th scope="col">Title</th>
                       <th scope="col">Time Frame</th>

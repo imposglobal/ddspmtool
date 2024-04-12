@@ -30,7 +30,7 @@ require('../API/function.php');
       <h1>Employees</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
           <li class="breadcrumb-item active">View</li>
         </ol>
       </nav>
@@ -80,7 +80,11 @@ require('../API/function.php');
       </div>
       <?php 
       //for project pagination 
-      $sql = "SELECT COUNT(*) AS total FROM employees";
+      if($role == 0){
+        $sql = "SELECT COUNT(*) AS total FROM employees";
+      }else{
+        $sql = "SELECT COUNT(*) AS total FROM employees WHERE eid ='$eid'";
+      }
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];
