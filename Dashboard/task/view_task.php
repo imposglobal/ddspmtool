@@ -74,7 +74,11 @@ require('../../API/function.php');
         
       </div>
       <?php 
-      $sql = "SELECT COUNT(*) AS total FROM task";
+      if($role == 0){
+        $sql = "SELECT COUNT(*) AS total FROM task";
+      }else{
+        $sql = "SELECT COUNT(*) AS total FROM task WHERE eid ='$eid'";
+      }
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];
