@@ -38,7 +38,6 @@ require('../../API/function.php');
       <div class="row">
        
         <div class="col-lg-12">
-
           <div class="card">
             <div class="row">   
                 <div class="col-lg-12">
@@ -62,12 +61,10 @@ require('../../API/function.php');
                     // Usage:
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
-
                     get_tasks($role,$eid,$db, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>
-
                     </div>
                 </div>
             </div>
