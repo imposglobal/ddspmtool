@@ -15,7 +15,7 @@
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-file-earmark-text-fill"></i><span>Tasks</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
           <li>
             <a href="<?php echo $base_url;?>/Dashboard/task/tasks.php">
               <i class="bi bi-circle"></i><span>Add Task</span>
@@ -37,7 +37,7 @@
       </li><!-- End Analytics Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/attendance/view_attendance.php">
           <i class="bi bi-calendar2-week-fill"></i>
           <span>Attendance</span>
         </a>
