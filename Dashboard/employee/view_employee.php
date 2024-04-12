@@ -102,40 +102,6 @@ require('../../API/function.php');
 <!-- code to delete users -->
 <script>
 
-// function deleteUser(eid) {
-//     $.ajax({
-//         url: "../../API/delete.php",
-//         type: 'POST',
-//         data: { ops: 'deleteUser', eid: eid }, 
-//         success: function (response) {
-//             if (response === "true") {
-//                 Swal.fire({
-//                     icon: 'success',
-//                     title: 'Success',
-//                     text: response
-//                 }).then(function() {
-//                     // Reload the page after the user clicks "OK" on the success message
-//                     window.location.reload();
-//                 });
-//             } else {
-//                 Swal.fire({
-//                     icon: 'error',
-//                     title: 'Error',
-//                     text: response
-//                 });
-//             }
-//         },
-//         error: function (xhr, status, error) {
-//             Swal.fire({
-//                 icon: 'error',
-//                 title: 'Error',
-//                 text: 'Error deleting user: ' + error
-//             });
-//         }
-//     });
-// }
-
-
 // Code to delete the employee
 function deleteUser(eid) {
     Swal.fire({
