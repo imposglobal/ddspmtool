@@ -37,7 +37,7 @@ require('../sidebar.php');
                         <div class="card-body">
                             <h5 class="card-title">Projects Graph</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Total projects</h6>
-                            <canvas id="taskStatusChart" width="2200" height="1600"></canvas>
+                            <canvas id="taskStatusChart" width="400" height="200"></canvas>
                          </div>
                     </div>
                    <!-- Graphs Card end -->
@@ -47,7 +47,14 @@ require('../sidebar.php');
         </div>
     </section>
 
-    <script>
+   
+
+</main><!-- End #main -->
+<?php 
+require('../footer.php');
+?>
+
+<script>
                         // Fetch data using AJAX
                         $.ajax({
                             url: "../../API/analytics_api.php",
@@ -93,9 +100,3 @@ require('../sidebar.php');
                             }
                         });
                     </script>
-
-
-</main><!-- End #main -->
-<?php 
-require('../footer.php');
-?>
