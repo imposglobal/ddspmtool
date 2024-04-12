@@ -93,6 +93,55 @@ require('../../API/function.php');
 
   </main><!-- End #main -->
 
+<script>  // Code to delete the Project
+function deleteProject(pid, project_name) {
+    Swal.fire({
+        title: 'Are you sure to delete this project ?',
+        text: 'You are about to delete this project. This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // User confirmed, proceed with deletion
+            $.ajax({
+                url: "../../API/delete.php",
+                type: 'POST',
+                data: { ops: 'deleteProject', pid: pid, project_name: project_name }, 
+                success: function (response) {
+                    if (response === "true") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Project "' + project_name + '" deleted successfully!',
+                            text: ''
+                        }).then(function() {
+                            // Reload the page after successful deletion
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error deleting user: ' + error
+                    });
+                }
+            });
+        }
+    });
+}
+</script>
+
+
  
 <?php 
 require('../footer.php');

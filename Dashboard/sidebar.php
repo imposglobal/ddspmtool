@@ -28,9 +28,9 @@
           </li>
         </ul>
       </li>
-
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/analytics_view.php"">
           <i class="bi bi-bar-chart-fill"></i>
           <span>Analytics</span>
         </a>
