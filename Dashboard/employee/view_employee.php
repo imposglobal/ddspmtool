@@ -1,8 +1,10 @@
 <?php 
+
 require('../header.php');
 ?>
 <title>Employees - DDS</title>
 <?php 
+
 require('../sidebar.php');
 require('../../API/operation.php');
 require('../../API/function.php');
@@ -96,6 +98,95 @@ require('../../API/function.php');
     </section>
 
   </main><!-- End #main -->
+
+<!-- code to delete users -->
+<script>
+
+// function deleteUser(eid) {
+//     $.ajax({
+//         url: "../../API/delete.php",
+//         type: 'POST',
+//         data: { ops: 'deleteUser', eid: eid }, 
+//         success: function (response) {
+//             if (response === "true") {
+//                 Swal.fire({
+//                     icon: 'success',
+//                     title: 'Success',
+//                     text: response
+//                 }).then(function() {
+//                     // Reload the page after the user clicks "OK" on the success message
+//                     window.location.reload();
+//                 });
+//             } else {
+//                 Swal.fire({
+//                     icon: 'error',
+//                     title: 'Error',
+//                     text: response
+//                 });
+//             }
+//         },
+//         error: function (xhr, status, error) {
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Error',
+//                 text: 'Error deleting user: ' + error
+//             });
+//         }
+//     });
+// }
+
+
+// Code to delete the employee
+function deleteUser(eid) {
+    Swal.fire({
+        title: 'Are you sure to delete this record ?',
+        text: 'You are about to delete this user. This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // User confirmed, proceed with deletion
+            $.ajax({
+                url: "../../API/delete.php",
+                type: 'POST',
+                data: { ops: 'deleteUser', eid: eid }, 
+                success: function (response) {
+                    if (response === "true") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Record deleted successfully!'
+                        }).then(function() {
+                            // Reload the page after successful deletion
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error deleting user: ' + error
+                    });
+                }
+            });
+        }
+    });
+}
+
+
+
+</script>
+
 
  
 <?php 

@@ -19,7 +19,7 @@ function get_employees($base_url,$db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. $row["email"].'</td>';
             echo '<td>'. $row["designation"].'</td>';
             echo '<td>'. $row["department"].'</td>';
-            echo '<td><a href="'.$base_url.'/Dashboard/employee/user-profile.php?eid='. $row["eid"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i class="icon text-danger bi bi-trash3"></i></td>';
+            echo '<td><a href="'.$base_url.'/Dashboard/employee/user-profile.php?eid='. $row["eid"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i onclick="deleteUser('. $row["eid"].')" class="icon text-danger bi bi-trash3"></i></td>';
             echo '</tr>';
         }
     } else {
