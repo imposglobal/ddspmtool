@@ -38,7 +38,6 @@ require('../../API/function.php');
       <div class="row">
        
         <div class="col-lg-12">
-
           <div class="card">
             <div class="row">   
                 <div class="col-lg-12">
@@ -62,12 +61,10 @@ require('../../API/function.php');
                     // Usage:
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
-
                     get_tasks($role,$eid,$db, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>
-
                     </div>
                 </div>
             </div>
@@ -77,7 +74,11 @@ require('../../API/function.php');
         
       </div>
       <?php 
-      $sql = "SELECT COUNT(*) AS total FROM task";
+      if($role == 0){
+        $sql = "SELECT COUNT(*) AS total FROM task";
+      }else{
+        $sql = "SELECT COUNT(*) AS total FROM task WHERE eid ='$eid'";
+      }
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];
