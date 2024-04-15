@@ -32,22 +32,46 @@ function get_employees($base_url,$db, $page = 1, $recordsPerPage = 10){
 
 
 //  Get Weekly and monthly Working days in working days card
-function getWeeklyWorkingDays() {
-    $currentDate = strtotime('today');
+function MonthlyWorkingDays() {
+    $currentDate = strtotime('first day of this month');
+    $today = strtotime('today');
     $workingDays = 0;
-    // Check if the current day is not a Saturday or Sunday
-    if (date('N', $currentDate) < 6) {
-        $workingDays++;
-    }
-    // Move to the next day and check again until Saturday is reached
-    while (date('N', $currentDate) < 6) {
-        $currentDate = strtotime('+1 day', $currentDate);
+
+    while ($currentDate <= $today) {
+        // Check if the current day is not a Saturday (6) or Sunday (7)
         if (date('N', $currentDate) < 6) {
             $workingDays++;
         }
+        // Move to the next day
+        $currentDate = strtotime('+1 day', $currentDate);
     }
+
     return $workingDays;
 }
+
+// to calculate all days including sat and sun
+// function getWorkingDays() {
+//     $currentDate = strtotime('first day of this month');
+//     $today = strtotime('today');
+//     $totalDays = 0;
+
+//     while ($currentDate <= $today) {
+//         // Count every day including Saturdays and Sundays
+//         $totalDays++;
+//         // Move to the next day
+//         $currentDate = strtotime('+1 day', $currentDate);
+//     }
+
+//     return $totalDays;
+// }
+
+
+
+
+
+
+
+
 
 // Get monthly Working days in working days card
 function getMonthlyWorkingDays() {
@@ -68,7 +92,7 @@ function getMonthlyWorkingDays() {
 }
 
 // echo these variables in index file to display live days count
-$totalWeeklyWorkingDays = getWeeklyWorkingDays();
+$tilldateyWorkingDays = MonthlyWorkingDays();
 $totalMonthlyWorkingDays = getMonthlyWorkingDays();
 
 
