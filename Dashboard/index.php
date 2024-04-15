@@ -86,8 +86,10 @@ $attendance_count = get_attendance_count($role, $eid, $db);
                     <i class="bi bi-currency-dollar"></i>
                   </div>
                   <div class="ps-3">
+
                     <h6> <?php echo "$totalWeeklyWorkingDays";?> </h6>
-                     <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> <span
+                     <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> 
+
                       class="text-muted small pt-2 ps-1">Days</span>
                   </div>
                 </div>
