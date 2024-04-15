@@ -10,6 +10,7 @@ require('sidebar.php');
 $task_count = get_task_count($role, $eid, $db);
 $project_count = get_project_count($role, $eid, $db);
 $attendance_count = get_attendance_count($role, $eid, $db);
+$totalWeeklyWorkingDays = MonthlyWorkingDays();
 // $date = date("Y-m-d");
 
 ?>
@@ -86,11 +87,9 @@ $attendance_count = get_attendance_count($role, $eid, $db);
                     <i class="bi bi-currency-dollar"></i>
                   </div>
                   <div class="ps-3">
-
-                    <h6> <?php echo "$totalWeeklyWorkingDays";?> </h6>
+                    <h6> <?php echo $totalWeeklyWorkingDays;?> </h6>
                      <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> 
-
-                      class="text-muted small pt-2 ps-1">Days</span>
+                     <span   class="text-muted small pt-2 ps-1">Days</span>            
                   </div>
                 </div>
               </div>

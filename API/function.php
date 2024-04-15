@@ -40,9 +40,13 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
     
     // Fetch projects with pagination
     if($role == 0){
-    $sql = "SELECT * FROM task LIMIT $offset, $recordsPerPage";
+    // $sql = "SELECT * FROM task LIMIT $offset, $recordsPerPage";
+
+    $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid LIMIT $offset, $recordsPerPage";
+
+
     }else{
-        $sql = "SELECT * FROM task WHERE eid = '$eid' LIMIT $offset, $recordsPerPage";
+        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' LIMIT $offset, $recordsPerPage";
     }
     $result = mysqli_query($db, $sql);
     
@@ -72,6 +76,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
             }
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
+            echo '<td>'. $row["fname"].'</td>';
             echo '<td>'. $row["title"].'</td>';
             echo '<td>'. $row["created_at"].'</td>';
             echo '<td>'. round($row["timeframe"],2).' Hrs</td>';
@@ -168,7 +173,6 @@ function get_projects_by_current_date($role, $eid, $db)
     $date = date("y-m-d");
     //echo $date;
     if ($role == 0) {
-        // $sql = "SELECT * FROM task WHERE DATE(created_at) = '$date'";
         $sql = "SELECT task.eid, task.task_type, task.title, task.timeframe, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
@@ -214,6 +218,34 @@ function get_attendance_count($role, $eid, $db)
     // Assuming you want to return the count value
     $count = mysqli_fetch_array($result)[0];
     return $count;
+}
+
+
+// fetch assigned projects
+
+function get_assigned_project($db, $pid)
+{
+   // Query to retrieve project details including associated employee
+   $sql = "SELECT employees.fname 
+   FROM projects 
+   INNER JOIN project_assign AS pa ON projects.pid = pa.pid 
+   INNER JOIN employees ON pa.eid = employees.eid 
+   WHERE projects.pid = '$pid'";
+
+   $result = mysqli_query($db, $sql);
+
+    // Check if the query was successful and if there are results
+    if ($result && mysqli_num_rows($result) > 0) {
+        if ($result)
+    {
+        while ($row = mysqli_fetch_assoc($result)){
+            echo $row["fname"] . ", "; // Concatenate fname with a space
+        }
+      
+    }
+    } else {
+        return false; // Return false if no results or error
+    }
 }
 
 ?>

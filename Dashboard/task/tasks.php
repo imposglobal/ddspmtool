@@ -40,6 +40,8 @@ require('../../API/function.php');
         font-weight: 600;
         font-family: "Poppins", sans-serif;
     }
+
+
 </style>
 <main id="main" class="main">
 
@@ -132,6 +134,18 @@ require('../../API/function.php');
                     <input type="time" id="etime" class="form-control">
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Priority</h5>
+                      <select id="priority" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                   </div>
+                </div>
             </div>
           </div>
 
@@ -174,13 +188,14 @@ $(document).ready(function() {
         var title = $('#title').val().trim();
         var eid = $('#eid').val().trim();
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
+        var priority = $('#priority').val().trim();
 
-        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" && stime !== "" && etime !== "" && title !== "") {
+        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" && stime !== "" && etime !== "" && title !== "" && priority !== "") {
             // AJAX request
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'task', pname: pname, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, stime:stime, etime:etime, title:title, eid:eid },
+                data: { ops: 'task', pname: pname, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, stime:stime, etime:etime, title:title, priority:priority, eid:eid },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({

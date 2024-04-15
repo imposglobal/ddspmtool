@@ -7,6 +7,27 @@ require('../sidebar.php');
 require('../../API/function.php');
 ?>
 <style>
+
+#status > option:nth-child(2) {
+  background-color: green;
+  color: #fff;
+}
+#status > option:nth-child(3){
+  background-color: #dec016;
+  color: #fff;
+}
+#status > option:nth-child(4){
+  background-color: #eb7e09;
+  color: #fff;
+}
+#status > option:nth-child(5){
+  background-color: #eb6709;
+  color: #fff;
+}
+#status > option:nth-child(6){
+  background-color: red;
+  color: #fff;
+}
    .edit
    {
     font-size:14px;
@@ -75,6 +96,10 @@ if(isset($_GET['tid'])){
                             <h6 class="card-subtitle "><?php echo $row["timeframe"];?>  Hrs</h6>
                             <hr>
 
+                            <h4 class="card-title">Priority</h4>
+                            <h6 class="card-subtitle "><?php echo $row["priority"];?></h6>
+                            <hr>
+
                             <h4 class="card-title">Start Date</h4>
                             <h6 class="card-subtitle "><?php echo $row["start_date"];?></h6>
                             <hr>
@@ -92,6 +117,19 @@ if(isset($_GET['tid'])){
                         
                     </div>
 
+        </div>
+
+        <div class="col-lg-6">   
+        <div class="card"> 
+        <div class="card-body">
+        <form method="POST">
+        <h4 class="card-title">Manager Status</h4>
+        <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+        <input type="text" id="m_status" class="form-control mb-3" value="<?php echo $row["m_status"];?>">
+        <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
+        </form>
+        </div>
+        </div>
         </div>
 
         
@@ -113,10 +151,23 @@ if(isset($_GET['tid'])){
                     <input type="date" id="edate" class="form-control" value="<?php echo $row["end_date"];?>">
 
                     <h5 class="card-title edit">Status</h5>
-                    <input type="text" id="status" class="form-control" value="<?php echo $row["status"];?>">
+                    <select id="status" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true"><?php echo $row["status"];?></option>
+                        <option value="Completed">Completed</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Abonded">Abonded</option>
+                      </select>
 
                     <h5 class="card-title edit">Task Type</h5>
                     <input type="text" id="task_type" class="form-control" value="<?php echo $row["task_type"];?>">
+                    <!-- <select id="task_type" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true"><?php echo $row["task_type"];?></option>
+                        <option value="Research">Research</option>
+                        <option value="Original Project">Original Project</option>
+                        <option value="Changes">Changes</option>
+                      </select> -->
 
                     <h5 class="card-title edit">Title</h5>
                     <input type="text" id="title" class="form-control" value="<?php echo $row["title"];?>">
@@ -124,11 +175,19 @@ if(isset($_GET['tid'])){
                     <h5 class="card-title edit">Time Frame</h5>
                     <input type="text" id="time_frame" class="form-control" value="<?php echo $row["timeframe"];?>">
 
+
+                    <h5 class="card-title edit">Priority</h5>
+                    <input type="text" id="priority" class="form-control" value="<?php echo $row["priority"];?>">
+                    <!-- <select id="priority" class="form-select" value="">
+                        <option selected="" disabled="true"><?php echo $row["priority"];?></option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select> -->
+
                       <!-- TinyMCE Editor -->
                     <h5 class="card-title edit">Description</h5>
                     <textarea id="editor1" name="editor1" value=""><?php echo $row["description"];?></textarea>
-
-
                     <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
                     
                 </div>
@@ -176,12 +235,13 @@ tinymce.init({
         var task_type = $('#task_type').val();
         var title = $('#title').val();
         var time_frame = $('#time_frame').val();
+        var priority = $('#priority').val();
         var editor1 = tinymce.get('editor1').getContent();
 
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
-                data:{ ops: 'update_task', tid:tid, sdate:sdate, edate:edate, status:status, task_type:task_type, title:title, time_frame:time_frame, editor1:editor1},
+                data:{ ops: 'update_task', tid:tid, sdate:sdate, edate:edate, status:status, task_type:task_type, title:title, time_frame:time_frame, priority:priority, editor1:editor1},
                 success: function (response) {
                     // Parse JSON response
                     var data = JSON.parse(response);
@@ -190,8 +250,15 @@ tinymce.init({
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: data.message
+                            text: data.message,
+                            didClose: function() 
+                            {
+                            // Reload the page
+                            window.location.reload();
+                            }
                         });
+                        // Reload the page
+                        // window.location.reload();
                     } else {
                         // Show SweetAlert error message
                         Swal.fire({
@@ -214,5 +281,53 @@ tinymce.init({
     });
 </script>
 
+<!-- for updating manager status -->
+
+<script>
+    $(document).ready(function () {
+        $('#mstatus').click(function () {
+          // e.preventDefault();
+        var tid = $('#tid').val(); 
+        var m_status = $('#m_status').val();
+            $.ajax({
+               url: "../../API/update.php",
+                type: 'POST',
+                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status},
+                success: function (response) {
+                    // Parse JSON response
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        // Show SweetAlert success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.message,
+                            didClose: function() 
+                            {
+                            // Reload the page
+                            window.location.reload();
+                            }
+                        });
+                    } else {
+                        // Show SweetAlert error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Show error message if AJAX request fails
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error updating Task: ' + error
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 

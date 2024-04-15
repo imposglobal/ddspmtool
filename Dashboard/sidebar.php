@@ -57,6 +57,11 @@
             </a>
           </li>
           <li>
+            <a href="<?php echo $base_url;?>/Dashboard/project/assign_project.php">
+              <i class="bi bi-circle"></i><span>Assign Project</span>
+            </a>
+          </li>
+          <li>
             <a href="<?php echo $base_url;?>/Dashboard/project/view_projects.php">
               <i class="bi bi-circle"></i><span>View Projects</span>
             </a>

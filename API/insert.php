@@ -56,6 +56,7 @@ switch ($operation) {
         $stime = strtotime($_POST['stime']);
         $etime = strtotime($_POST['etime']);
         $title = $_POST['title'];
+        $priority = $_POST['priority'];
         $eid = $_POST['eid'];
         $created_at = date('y-m-d H:i:s');
 
@@ -65,8 +66,8 @@ switch ($operation) {
         // Convert difference to hours
         $timeframe = $difference_seconds / 3600; // 3600 seconds = 1 hour
   
-        $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, timeframe, created_at) VALUES
-        ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$timeframe', '$created_at')";
+        $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, timeframe, priority, created_at) VALUES
+        ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$timeframe', '$priority', '$created_at')";
         if ($db->query($sql) === TRUE) {
           echo "Task Added successfully";
           } else {
@@ -101,6 +102,28 @@ switch ($operation) {
           $db->close();
   
         break;
+
+
+
+        // Assign Projects
+
+        case "assign_project":
+          $project_id = $_POST['project_id'];
+          $employee_id = $_POST['employee_id'];
+  
+          $sql = "INSERT INTO project_assign (pid, eid) VALUES('$project_id', '$employee_id')";
+          if ($db->query($sql) === TRUE) 
+            {
+            echo "Project Assigned successfully";
+            } 
+            else 
+            {
+                echo "Error: " . $sql . "<br>" . $db->error;
+            }
+            // Close dbection
+            $db->close();
+    
+          break;
 
     default:
       echo "Bad Gateway";
