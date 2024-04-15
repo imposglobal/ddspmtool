@@ -58,6 +58,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "Incomplete data for updating password";
                 }
                 break;
+
+
+
+                 // Update Task
+                 case "update_task":
+                    if(isset($_POST['tid'], $_POST['sdate'], $_POST['edate'], $_POST['status'], $_POST['task_type'], $_POST['title'], $_POST['time_frame'], $_POST['editor1'])) {
+                        $tid = $_POST['tid'];
+                        $sdate = $_POST['sdate'];
+                        $edate = $_POST['edate'];
+                        $task_type = $_POST['task_type'];
+                        $title = $_POST['title'];
+                        $status = $_POST['status'];
+                        $time_frame = $_POST['time_frame'];
+                        $editor1 = $_POST['editor1'];
+    
+                        $sql = "UPDATE task SET start_date = '$sdate', end_date = '$edate', task_type = '$task_type', title = '$title', status = '$status', timeframe = '$time_frame', description = '$editor1' WHERE tid = '$tid'";
+                        if ($db->query($sql) === TRUE) 
+                        {
+                            // Return success message as JSON
+                            echo json_encode(array("success" => true, "message" => "task updated successfully"));
+                        } else {
+                            // If an error occurred, send error response
+                            echo json_encode(array("success" => false, "message" => "Error updating profile: " . $db->error));
+                        }
+                    } else {
+                        echo "Incomplete data for updating task";
+                    }
+                    break;
+
             default:
                 echo "Invalid operation";
         }
