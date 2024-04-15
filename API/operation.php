@@ -75,6 +75,7 @@ function MonthlyWorkingDays() {
 
 // Get monthly Working days in working days card
 function getMonthlyWorkingDays() {
+    
     $currentDate = strtotime('first day of this month');
     $lastDayOfMonth = strtotime('last day of this month');
     $workingDays = 0;
@@ -94,10 +95,6 @@ function getMonthlyWorkingDays() {
 // echo these variables in index file to display live days count
 $tilldateyWorkingDays = MonthlyWorkingDays();
 $totalMonthlyWorkingDays = getMonthlyWorkingDays();
-
-
-
-
 
 
 
