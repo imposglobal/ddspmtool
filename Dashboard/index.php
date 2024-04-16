@@ -11,7 +11,6 @@ $task_count = get_task_count($role, $eid, $db);
 $project_count = get_project_count($role, $eid, $db);
 $attendance_count = get_attendance_count($role, $eid, $db);
 $totalWeeklyWorkingDays = MonthlyWorkingDays();
-// $date = date("Y-m-d");
 
 ?>
 

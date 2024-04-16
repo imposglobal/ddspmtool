@@ -51,6 +51,19 @@ require('../../API/function.php');
     {
     --bs-offcanvas-width: 550px !important;
     }
+    .offcanvas-title
+    {
+      font-weight: 800;
+    }
+    .card-title
+    {
+      font-size: 15px;
+    }
+    .card-subtitle
+    {
+      font-family: "Poppins", sans-serif;
+      font-size: 15px;
+    }
 
 </style>
 
@@ -62,10 +75,55 @@ if(isset($_GET['tid'])){
   $sql = "SELECT * FROM task WHERE tid = '$tid'";
   $result = mysqli_query($db, $sql);
 
+  $priority = ''; 
+  $status = '';
+
   if ($result && mysqli_num_rows($result) > 0)
 {
   while ($row = mysqli_fetch_assoc($result))
   {
+
+    if($row["priority"] == "")
+    {
+      $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+    }
+    elseif($row["priority"] == "High")
+    {
+      $priority = '<td> <span style="background:#ff6961; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+    }
+    elseif($row["priority"] == "Medium")
+    {
+      $priority = '<td> <span style="background:#ffb861; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+    }
+    elseif($row["priority"] == "Low")
+    {
+      $priority = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+    }
+
+
+    if($row["status"] == "")
+    {
+      $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+    }
+   elseif($row["status"] == "Completed"){
+      $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "In Progress")
+   {
+    $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "Pending")
+   {
+    $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "On Hold")
+   {
+    $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "Abonded")
+   {
+    $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
     ?>
 
  
@@ -83,54 +141,86 @@ if(isset($_GET['tid'])){
         </div>
         <div class="col-xl-12">
         <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Task Title</h4>
-                            <h6 class="card-subtitle "><?php echo $row["title"];?></h6>
-                            <hr>
-
-                            <h4 class="card-title">Status</h4>
-                            <h6 class="card-subtitle "><?php echo $row["status"];?></h6>
-                            <hr>
-
-                            <h4 class="card-title">Time Frame</h4>
-                            <h6 class="card-subtitle "><?php echo $row["timeframe"];?>  Hrs</h6>
-                            <hr>
-
-                            <h4 class="card-title">Priority</h4>
-                            <h6 class="card-subtitle "><?php echo $row["priority"];?></h6>
-                            <hr>
-
-                            <h4 class="card-title">Start Date</h4>
-                            <h6 class="card-subtitle "><?php echo $row["start_date"];?></h6>
-                            <hr>
-
-                            <h4 class="card-title">End Date</h4>
-                            <h6 class="card-subtitle "><?php echo $row["end_date"];?></h6>
-                            <hr>
-
-                            <h4 class="card-title">Description</h4>
-                            <h6 class="card-subtitle "><?php echo $row["description"];?></h6>
-                            <hr>
-                         </div>
-
-
-                        
-                    </div>
-
+    <div class="card-body">
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Task Title :</h4>
+                <h6 class="card-subtitle d-inline ms-2 ps-2"><?php echo $row["title"];?></h6>
+            </div>
         </div>
+        <hr>
 
-        <div class="col-lg-6">   
-        <div class="card"> 
-        <div class="card-body">
-        <form method="POST">
-        <h4 class="card-title">Manager Status</h4>
-        <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
-        <input type="text" id="m_status" class="form-control mb-3" value="<?php echo $row["m_status"];?>">
-        <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
-        </form>
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Status :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $status;?></h6>
+            </div>
         </div>
+        <hr>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Time Frame :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["timeframe"];?>  Hrs</h6>
+            </div>
         </div>
+        <hr>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Priority :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $priority;?></h6>
+            </div>
         </div>
+        <hr>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Start Date :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["start_date"];?></h6>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">End Date :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["end_date"];?></h6>
+            </div>
+        </div>
+        <hr>
+
+        <h4 class="card-title">Description</h4>
+        <h6 class="card-subtitle "><?php echo $row["description"];?></h6>    
+    </div>
+    </div>
+    </div>
+
+
+    <?php 
+     if($role == 0)
+     {?>
+      <div class="col-lg-6">   
+      <div class="card"> 
+      <div class="card-body">
+      <form method="POST">
+      <h4 class="card-title">Manager Status</h4>
+      <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+      <select id="m_status" class="form-select">
+      <option selected value="<?php echo $row["m_status"];?>"><?php echo $row["m_status"];?></option>
+      <option value="Accepted">Accepted</option>
+      <option value="Rejected">Rejected</option>
+      </select>    
+      <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
+      </form>
+      </div>
+      </div>
+      </div>
+      <?php
+     }
+    ?>
+
+       
 
         
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -150,9 +240,9 @@ if(isset($_GET['tid'])){
                     <h5 class="card-title edit">End Date</h5>
                     <input type="date" id="edate" class="form-control" value="<?php echo $row["end_date"];?>">
 
-                    <h5 class="card-title edit">Status</h5>
-                    <select id="status" class="form-select" aria-label="Default select example">
-                        <option selected="" disabled="true"><?php echo $row["status"];?></option>
+                      <h5 class="card-title edit">Status</h5>
+                      <select id="status" class="form-select">
+                        <option selected value="<?php echo $row["status"];?>"><?php echo $row["status"];?></option>
                         <option value="Completed">Completed</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Pending">Pending</option>
@@ -160,14 +250,13 @@ if(isset($_GET['tid'])){
                         <option value="Abonded">Abonded</option>
                       </select>
 
-                    <h5 class="card-title edit">Task Type</h5>
-                    <input type="text" id="task_type" class="form-control" value="<?php echo $row["task_type"];?>">
-                    <!-- <select id="task_type" class="form-select" aria-label="Default select example">
-                        <option selected="" disabled="true"><?php echo $row["task_type"];?></option>
+                       <h5 class="card-title edit">Task Type</h5>
+                       <select id="task_type" class="form-select">
+                        <option selected value="<?php echo $row["task_type"];?>"><?php echo $row["task_type"];?></option>
                         <option value="Research">Research</option>
                         <option value="Original Project">Original Project</option>
                         <option value="Changes">Changes</option>
-                      </select> -->
+                      </select>
 
                     <h5 class="card-title edit">Title</h5>
                     <input type="text" id="title" class="form-control" value="<?php echo $row["title"];?>">
@@ -176,14 +265,13 @@ if(isset($_GET['tid'])){
                     <input type="text" id="time_frame" class="form-control" value="<?php echo $row["timeframe"];?>">
 
 
-                    <h5 class="card-title edit">Priority</h5>
-                    <input type="text" id="priority" class="form-control" value="<?php echo $row["priority"];?>">
-                    <!-- <select id="priority" class="form-select" value="">
-                        <option selected="" disabled="true"><?php echo $row["priority"];?></option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                      </select> -->
+                    <h5 class="card-title edit">Priority</h5>    
+                    <select id="priority" class="form-select">
+                        <option selected value="<?php echo $row["priority"];?>"><?php echo $row["priority"];?></option>
+                        <option value="High" style="background-color: #ff6961; color: white;">High</option>
+                        <option value="Medium"  style="background-color: #ffb861; color: white;">Medium</option>
+                        <option value="Low"  style="background-color:  #C1E1C1; color: white;">Low</option>
+                    </select>
 
                       <!-- TinyMCE Editor -->
                     <h5 class="card-title edit">Description</h5>
@@ -195,9 +283,10 @@ if(isset($_GET['tid'])){
                           }
                           }
                           ?>
-                                   
-                      <input type="button" class="btn btn-primary mt-3" id="update_task" name="update_task" value="Update">
-                        </form>
+                      <div class="col-lg-12">       
+                      <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
+                      </div>
+                      </form>
                        
           </div>
 
@@ -227,21 +316,30 @@ tinymce.init({
 <script>
     $(document).ready(function () {
         $('#update_task').click(function () {
-          // e.preventDefault();
-        var tid = $('#tid').val(); 
-        var sdate = $('#sdate').val();
-        var edate = $('#edate').val();
-        var status = $('#status').val();
-        var task_type = $('#task_type').val();
-        var title = $('#title').val();
-        var time_frame = $('#time_frame').val();
-        var priority = $('#priority').val();
-        var editor1 = tinymce.get('editor1').getContent();
-
+            var tid = $('#tid').val(); 
+            var sdate = $('#sdate').val();
+            var edate = $('#edate').val();
+            var status = $('#status').val();
+            var task_type = $('#task_type').val();
+            var title = $('#title').val();
+            var time_frame = $('#time_frame').val();
+            var priority = $('#priority').val();
+            var editor1 = tinymce.get('editor1').getContent();
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
-                data:{ ops: 'update_task', tid:tid, sdate:sdate, edate:edate, status:status, task_type:task_type, title:title, time_frame:time_frame, priority:priority, editor1:editor1},
+                data:{ 
+                    ops: 'update_task', 
+                    tid: tid, 
+                    sdate: sdate, 
+                    edate: edate, 
+                    status: status, 
+                    task_type: task_type, 
+                    title: title, 
+                    time_frame: time_frame, 
+                    priority: priority, 
+                    editor1: editor1
+                },
                 success: function (response) {
                     // Parse JSON response
                     var data = JSON.parse(response);

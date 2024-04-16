@@ -7,6 +7,26 @@ require('../sidebar.php');
 require('../../API/function.php');
 ?>
 <style>
+    #status > option:nth-child(2) {
+  background-color: green;
+  color: #fff;
+}
+#status > option:nth-child(3){
+  background-color: #dec016;
+  color: #fff;
+}
+#status > option:nth-child(4){
+  background-color: #eb7e09;
+  color: #fff;
+}
+#status > option:nth-child(5){
+  background-color: #eb6709;
+  color: #fff;
+}
+#status > option:nth-child(6){
+  background-color: red;
+  color: #fff;
+}
    .edit
    {
     font-size:14px;
@@ -50,8 +70,33 @@ if(isset($_GET['pid']))
     $pid = $_GET['pid'];
     $sql = "SELECT * FROM projects WHERE projects.pid = '$pid'";
     $result = mysqli_query($db, $sql);
+    $status = '';
     while ($row = mysqli_fetch_assoc($result))
     {
+
+        if($row["status"] == "")
+    {
+      $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+    }
+   elseif($row["status"] == "Completed"){
+      $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "In Progress")
+   {
+    $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "Pending")
+   {
+    $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "On Hold")
+   {
+    $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
+   elseif($row["status"] == "Abonded")
+   {
+    $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+   }
         ?>
 
     
@@ -72,7 +117,7 @@ if(isset($_GET['pid']))
 
                             
                            <h4 class="card-title">Status</h4>
-                           <h6 class="card-subtitle "><?php echo $row["status"];?></h6>
+                           <h6 class="card-subtitle "><?php echo $status; ?></h6>
 
                             <hr>
 
@@ -109,7 +154,15 @@ if(isset($_GET['pid']))
     
 
                     <h5 class="card-title edit">Status</h5>
-                    <input type="text" id="status" class="form-control" value="<?php echo $row["status"];?>">
+                    <!-- <input type="text" id="status" class="form-control" value="<?php echo $row["status"];?>"> -->
+                    <select id="status" class="form-select">
+                        <option selected value="<?php echo $row["status"];?>"><?php echo $row["status"];?></option>
+                        <option value="Completed">Completed</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Abonded">Abonded</option>
+                      </select>
 
 
                     <h5 class="card-title edit">Description</h5>
