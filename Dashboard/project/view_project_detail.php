@@ -100,9 +100,7 @@ if(isset($_GET['pid']))
         ?>
 
     
-                        <div class="card-body">
-
-                        
+                        <div class="card-body">                       
                             <h4 class="card-title">Employee Name</h4>
                             <h6 class="card-subtitle "><?php $fname = get_assigned_project($db, $pid);?></h6>
                             <hr> 

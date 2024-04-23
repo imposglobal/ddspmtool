@@ -21,7 +21,7 @@ require('../../API/function.php');
         font-family: "Poppins", sans-serif;
     }
 </style>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -95,3 +95,61 @@ require('../../API/function.php');
 <?php 
 require('../footer.php');
 ?>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Use event delegation to handle clicks on dynamically generated buttons
+    $(document).on('click', '[id^="start_time_"]', function() {
+        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
+        var tid = $(this).siblings('#tid').val(); 
+        var eid = $(this).siblings('#eid').val(); 
+        var pid = $(this).siblings('#pid').val(); 
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid},
+            success: function(response) {
+                console.log(response); // Log the response from PHP script
+            }
+        });
+    });
+});
+</script>
+
+
+<script>
+$(document).ready(function() {
+      $(document).on('click', '[id^="pause_time_"]', function() {
+        var tid = $(this).siblings('#tid').val(); 
+        var eid = $(this).siblings('#eid').val(); 
+        var pid = $(this).siblings('#pid').val();  
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
+            success: function(response) {
+                console.log(response); // Log the response from PHP script
+            }
+        });
+    });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+      $(document).on('click', '[id^="stop_time_"]', function() {
+        var tid = $(this).siblings('#tid').val(); 
+        var eid = $(this).siblings('#eid').val(); 
+        var pid = $(this).siblings('#pid').val();  
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'stop_task_time', tid: tid , eid: eid , pid: pid},
+            success: function(response) {
+                console.log(response); // Log the response from PHP script
+            }
+        });
+    });
+});
+</script>

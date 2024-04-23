@@ -72,7 +72,11 @@ if(isset($_GET['tid'])){
     $tid = $_GET['tid'];
   }
 
-  $sql = "SELECT * FROM task WHERE tid = '$tid'";
+
+  // $sql = "SELECT * FROM task WHERE tid = '$tid'";
+  $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.m_status, task.priority, task.timeframe, task.feedback, task_time.total_time, time_difference.time 
+  FROM ((task INNER JOIN task_time ON task.tid = task_time.tid) INNER JOIN time_difference ON task.tid = time_difference.tid)  
+  WHERE task.tid = '$tid'";
   $result = mysqli_query($db, $sql);
 
   $priority = ''; 
@@ -124,6 +128,36 @@ if(isset($_GET['tid'])){
    {
     $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
    }
+
+  //  $total_time = strtotime($row["total_time"]) - strtotime('00:00:00');
+  //  $pause_time = strtotime($row["time"]) - strtotime('00:00:00');
+  //  $timeframe = $total_time - $pause_time;
+
+
+// Split the time strings into hours, minutes, and seconds
+list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
+list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
+
+// Calculate the total time and time difference in seconds
+$totaltime_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+$difference_seconds = $difference_hours * 3600 + $difference_minutes * 60 + $difference_seconds;
+
+// Calculate the difference in seconds
+$difference_seconds = $totaltime_seconds - $difference_seconds;
+
+// Convert the difference to minutes
+$timeframe= round($difference_seconds / 60);
+
+// Output the difference in minutes
+echo "Difference in minutes: " . $timeframe;
+
+
+
+   
+
+ 
+
+
     ?>
 
  
@@ -161,7 +195,7 @@ if(isset($_GET['tid'])){
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Time Frame :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["timeframe"];?>  Hrs</h6>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $timeframe;?> minutes</h6>
             </div>
         </div>
         <hr>
