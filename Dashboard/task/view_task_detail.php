@@ -72,8 +72,6 @@ if(isset($_GET['tid'])){
     $tid = $_GET['tid'];
   }
 
-
-  // $sql = "SELECT * FROM task WHERE tid = '$tid'";
   $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.m_status, task.priority, task.timeframe, task.feedback, task_time.total_time, time_difference.time 
   FROM ((task INNER JOIN task_time ON task.tid = task_time.tid) INNER JOIN time_difference ON task.tid = time_difference.tid)  
   WHERE task.tid = '$tid'";
@@ -129,11 +127,6 @@ if(isset($_GET['tid'])){
     $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
    }
 
-  //  $total_time = strtotime($row["total_time"]) - strtotime('00:00:00');
-  //  $pause_time = strtotime($row["time"]) - strtotime('00:00:00');
-  //  $timeframe = $total_time - $pause_time;
-
-
 // Split the time strings into hours, minutes, and seconds
 list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
 list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
@@ -150,22 +143,11 @@ $timeframe= round($difference_seconds / 60);
 
 // Output the difference in minutes
 echo "Difference in minutes: " . $timeframe;
-
-
-
-   
-
- 
-
-
-    ?>
+?>
 
  
 
 <main id="main" class="main">
-
-    
-
     <section class="section profile">
       <div class="row">
         <div class="col-xl-12 text-end mb-3">
@@ -257,7 +239,7 @@ echo "Difference in minutes: " . $timeframe;
        
 
         
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Edit Task</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -320,12 +302,9 @@ echo "Difference in minutes: " . $timeframe;
                       <div class="col-lg-12">       
                       <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
                       </div>
-                      </form>
-                       
+                      </form>                      
           </div>
-
-        </div>
-      
+        </div>     
 </div>
 
        

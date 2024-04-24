@@ -20,6 +20,47 @@ require('../../API/function.php');
         font-weight: 600;
         font-family: "Poppins", sans-serif;
     }
+
+
+    /* alert box */
+
+    .alert-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 15px;
+    z-index: 9999;
+    width:300px;
+}
+
+.alert-box select {
+    display: block;
+    margin-bottom: 30px;
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.alert-box button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.alert-box button:hover {
+    background-color: #0056b3;
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
@@ -50,10 +91,10 @@ require('../../API/function.php');
                     <th scope="col">#</th>
                     <th scope="col"> Employeee</th>
                     <th scope="col">Task Name</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Timeframe</th>
+                    <th scope="col">Date</th>                 
                     <th scope="col">My Status</th>
                     <th scope="col">Manager Status</th>
+                    <th scope="col">Timeframe</th>
                     <th scope="col">View Details</th>
                   </tr>
                 </thead>
@@ -63,7 +104,7 @@ require('../../API/function.php');
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
                     get_tasks($role,$eid,$db, $page, $recordsPerPage);
-                  ?> 
+                  ?>                 
                 </tbody>
               </table>
                     </div>
@@ -97,11 +138,10 @@ require('../footer.php');
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<!-- <script>
 $(document).ready(function() {
-    // Use event delegation to handle clicks on dynamically generated buttons
     $(document).on('click', '[id^="start_time_"]', function() {
-        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
         var tid = $(this).siblings('#tid').val(); 
         var eid = $(this).siblings('#eid').val(); 
         var pid = $(this).siblings('#pid').val(); 
@@ -110,15 +150,121 @@ $(document).ready(function() {
             url: "../../API/update.php",
             data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid},
             success: function(response) {
-                console.log(response); // Log the response from PHP script
+                console.log(response); 
+            }
+        });
+    });
+});
+</script> -->
+
+<!-- code for add start time -->
+
+<script>
+$(document).ready(function() {
+    // Use event delegation to handle clicks on dynamically generated buttons
+    $(document).on('click', '[id^="start_time_"]', function() {
+        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
+        var tid = $(this).siblings('#tid').val(); 
+        var eid = $(this).siblings('#eid').val(); 
+        var pid = $(this).siblings('#pid').val(); 
+        var reason = $('#select_reason_' + tid).val();
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid , reason: reason},
+            success: function(response) {
+               // Parse JSON response
+               var data = JSON.parse(response);
+               if (data.success) {
+                   // Show SweetAlert success message
+                   Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                       text: 'task has started'
+                   });
+               } else {
+                   // Show SweetAlert error message
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: data.message
+                   });
+               }
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
             }
         });
     });
 });
 </script>
 
+<!-- ajax code for pause time -->
 
 <script>
+  // When any button with class "pause_time" is clicked
+$('button[name^="pause_time"]').click(function() {
+    // Get the ID of the button that was clicked
+    var tid = $(this).attr('id').split('_')[2];
+    // Show or hide the select box based on its current visibility
+    $('#time_select_' + tid).toggle();
+});
+
+// When any button with class "submit_time" is clicked
+$('button.submit_time').click(function() {
+    var tid = $(this).closest('div').attr('id').split('_')[2];
+    var eid = $('#eid').val(); 
+    var pid = $('#pid').val(); 
+    // var selectedTime = $('#select_reason_' + tid).val();
+    
+    $.ajax({
+        type: "POST",
+        url: "../../API/update.php",
+        data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
+        success: function(response) {
+            // Parse JSON response
+            var data = JSON.parse(response); 
+            if (data.success) {
+                // Show SweetAlert success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    //  text: data.message
+                    text: 'You are on pause'
+                });
+            } else {
+                // Show SweetAlert error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            // Show SweetAlert error message for AJAX error
+            Swal.fire({
+                icon: 'error',
+                title: 'AJAX Error',
+                text: 'An error occurred while processing your request. Please try again later.'
+            });
+        },
+        complete: function() {
+            // Hide the time_select block after the AJAX request is completed
+            $('#time_select_' + tid).hide();
+        }
+    });
+});
+
+</script>
+
+
+<!-- <script>
 $(document).ready(function() {
       $(document).on('click', '[id^="pause_time_"]', function() {
         var tid = $(this).siblings('#tid').val(); 
@@ -129,12 +275,42 @@ $(document).ready(function() {
             url: "../../API/update.php",
             data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
             success: function(response) {
-                console.log(response); // Log the response from PHP script
+               // Parse JSON response
+               var data = JSON.parse(response); 
+               if (data.success) {
+                   // Show SweetAlert success message
+                   Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                      //  text: data.message
+                       text: 'You are on pause'
+                   });
+               } else {
+                   // Show SweetAlert error message
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: data.message
+                   });
+               }
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
             }
+
         });
     });
 });
-</script>
+</script> -->
+
+
+
+<!-- ajax code for stop time -->
 
 <script>
 $(document).ready(function() {
@@ -147,8 +323,34 @@ $(document).ready(function() {
             url: "../../API/update.php",
             data: { ops: 'stop_task_time', tid: tid , eid: eid , pid: pid},
             success: function(response) {
-                console.log(response); // Log the response from PHP script
+                // Parse JSON response
+                var data = JSON.parse(response); 
+                if (data.success) {
+                   // Show SweetAlert success message
+                   Swal.fire({
+                       icon:  'success',
+                       title: 'Success',
+                       text:  'your task has stopped' 
+                   });
+               } else {
+                   // Show SweetAlert error message
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: data.message
+                   });
+               }
+
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
             }
+
         });
     });
 });

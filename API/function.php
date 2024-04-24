@@ -151,10 +151,27 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<input type="hidden" id="tid" value="' . $tid . '">';
             echo '<input type="hidden" id="eid" value="' . $eid . '">';
             echo '<input type="hidden" id="pid" value="' . $pid . '">';
-            echo '<button type="button" name="start_time" id="start_time_' . $tid . '"><i class="fas fa-play" style="color:green;"></i></button>';
-            echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '"><i class="fas fa-pause" style="color:orange;"></i></button>';
-            echo '<button type="button" name="stop_time" id="stop_time_' . $tid . '"><i class="fas fa-stop" style="color:red;"></i></button>';
-            
+            echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';
+            // echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-pause" style="color:orange;"></i></button>';
+            echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
+            <i class="fas fa-pause" style="color:orange;"></i> 
+        </button>';
+
+        echo '
+        <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
+    <select id="select_reason_' . $tid . '">
+        <option selected disabled="true">Add Reason</option>
+        <option value="Meeting">Meeting</option>
+        <option value="Call">Call</option>
+        <option value="Bio-Break">Bio Break</option>
+        <option value="Other">Other</option>
+    </select>
+    <input type="hidden" id="eid" value="<?php echo $eid; ?>">
+    <input type="hidden" id="pid" value="<?php echo $pid; ?>">
+    <button type="button" class="submit_time">Submit</button>
+</div>
+        ';
+            echo '<button type="button" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';            
             echo '</form>
                     </div>
                 </div>
