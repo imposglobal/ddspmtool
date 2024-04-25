@@ -130,7 +130,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                       <th scope="col">Employee</th>
                       <th scope="col">Task Type</th>
                       <th scope="col">Title</th>
-                      <th scope="col">Time Frame</th>
+                      <th scope="col">Estimated Time</th>
                       <th scope="col">M Status</th>
                       <th scope="col">Date</th>
                     </tr>

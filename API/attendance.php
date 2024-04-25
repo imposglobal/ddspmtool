@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Set IST Timezone      
             date_default_timezone_set('Asia/Kolkata');
             $eid = $_POST['eid'];
-            $time = date('H:i:s');
+            $time = date('h:i:s A');
             $date = date('Y-m-d');       
             $sql = "INSERT INTO attendance (login_time, eid, date) VALUES ('$time', '$eid', '$date')";       
             if ($db->query($sql) === TRUE) 
@@ -55,7 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Set IST Timezone
             date_default_timezone_set('Asia/Kolkata');
             $eid = $_POST['eid'];
-            $time = date('H:i:s');          
+            $time = date('h:i:s A'); 
+                     
             $sql = "UPDATE `attendance` SET `logout_time`='$time' WHERE `eid` = '$eid'";       
             if ($db->query($sql) === TRUE) 
             {

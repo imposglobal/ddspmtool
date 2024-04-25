@@ -112,9 +112,9 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     } else {
         $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' LIMIT $offset, $recordsPerPage";
     }
-    $result = mysqli_query($db, $sql);
-    
+    $result = mysqli_query($db, $sql);  
     if (mysqli_num_rows($result) > 0) {
+       
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
             $tid = $row["tid"];
@@ -136,6 +136,8 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             } elseif($row["status"] == "Abonded"){
                 $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
             }
+            $query = "SELECT `initial_time`, `end_time` FROM `task_time` WHERE `tid` = '$tid' AND `end_time` IS NOT NULL";
+            $etime = $db->query($query);
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"].'</td>';
@@ -143,39 +145,46 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<td>'. $row["created_at"].'</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
-            echo '<td>
+            
+            if ($etime && $etime->num_rows == 1)
+            {
+            // If the task is completed, echo the Completed message
+                echo '<td><h6>Completed</h6></td>';
+            } else {
+                // If the task is not completed, echo the time buttons
+                echo '<td>
                     <div class="jumbotron text-center">
                         <div class="time-buttons">
                             <form id="timeForm">';
-            // Add unique id for each button
-            echo '<input type="hidden" id="tid" value="' . $tid . '">';
-            echo '<input type="hidden" id="eid" value="' . $eid . '">';
-            echo '<input type="hidden" id="pid" value="' . $pid . '">';
-            echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';
-            // echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-pause" style="color:orange;"></i></button>';
-            echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
-            <i class="fas fa-pause" style="color:orange;"></i> 
-        </button>';
-
-        echo '
-        <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
-    <select id="select_reason_' . $tid . '">
-        <option selected disabled="true">Add Reason</option>
-        <option value="Meeting">Meeting</option>
-        <option value="Call">Call</option>
-        <option value="Bio-Break">Bio Break</option>
-        <option value="Other">Other</option>
-    </select>
-    <input type="hidden" id="eid" value="<?php echo $eid; ?>">
-    <input type="hidden" id="pid" value="<?php echo $pid; ?>">
-    <button type="button" class="submit_time">Submit</button>
-</div>
-        ';
-            echo '<button type="button" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';            
-            echo '</form>
-                    </div>
+                // Add unique id for each button
+                echo '<input type="hidden" id="tid" value="' . $tid . '">';
+                echo '<input type="hidden" id="eid" value="' . $eid . '">';
+                echo '<input type="hidden" id="pid" value="' . $pid . '">';
+                echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
+                echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
+                        <i class="fas fa-pause" style="color:orange;"></i> 
+                    </button>';
+            
+                echo '
+                <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
+                    <select id="select_reason_' . $tid . '">
+                        <option selected disabled="true">Add Reason</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Call">Call</option>
+                        <option value="Bio-Break">Bio Break</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input type="hidden" id="eid" value="' . $eid . '">
+                    <input type="hidden" id="pid" value="' . $pid . '">
+                    <button type="button" class="submit_time">Submit</button>
                 </div>
-            </td>';
+                ';
+                echo '<button type="button" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';            
+                echo '</form>
+                        </div>
+                    </div>
+                </td>';
+            }
             echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $row["tid"].'"><i class="bi bi-info-circle-fill"></i> View</td>';
             echo '</tr>';
         }
@@ -275,12 +284,12 @@ function get_projects_by_current_date($role, $eid, $db)
     $date = date("y-m-d");
     //echo $date;
     if ($role == 0) {
-        $sql = "SELECT task.eid, task.task_type, task.title, task.timeframe, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
         WHERE DATE(task.created_at) = '$date'";
     } else {
-        $sql = "SELECT task.eid, task.task_type, task.title, task.timeframe, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
         WHERE DATE(task.created_at) = '$date' AND task.eid = '$eid'";
@@ -294,7 +303,7 @@ function get_projects_by_current_date($role, $eid, $db)
             echo '<td>' . $row["fname"] . '</td>';
             echo '<td>' . $row["task_type"] . '</td>';
             echo '<td>' . $row["title"] . '</td>';
-            echo '<td>' . $row["timeframe"] . ' Hrs' . '</td>';
+            echo '<td>' . $row["estimated_time"]. '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
             echo '<td>' . $row["created_at"] . '</td>';
             echo '</tr>';

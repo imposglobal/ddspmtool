@@ -29,12 +29,14 @@ require('../../API/function.php');
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #fffefe;
+    /* border: 1px solid #ccc; */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 20px 15px;
+    padding: 30px 30px;
     z-index: 9999;
-    width:300px;
+    width:32em;   
+    border-radius:10px;
+    font-size: 1rem;
 }
 
 .alert-box select {

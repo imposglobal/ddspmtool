@@ -21,6 +21,13 @@
               <i class="bi bi-circle"></i><span>Add Task</span>
             </a>
           </li>
+          <?php if($role == 0){ ?>
+          <li>
+            <a href="<?php echo $base_url;?>/Dashboard/task/assign_task.php">
+              <i class="bi bi-circle"></i><span>Assign Tasks</span>
+            </a>
+          </li>
+          <?php } ?>
           <li>
             <a href="<?php echo $base_url;?>/Dashboard/task/view_task.php">
               <i class="bi bi-circle"></i><span>View Tasks</span>
@@ -52,7 +59,7 @@
         </a>
         <ul id="projects" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="<?php echo $base_url;?>/Dashboard/project/projects.php">
+             <a href="<?php echo $base_url;?>/Dashboard/project/projects.php">
               <i class="bi bi-circle"></i><span>Add Project</span>
             </a>
           </li>

@@ -67,41 +67,56 @@ require('../../API/function.php');
 
 </style>
 
-<?php
+
+
+ 
+
+<main id="main" class="main">
+<section class="section profile">
+<div class="row">
+<div class="col-xl-12 text-end mb-3">
+     <button class="btn  btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+      Edit Task
+     </button>
+</div>
+</div>
+ 
+      <div class="row">
+      <?php
 if(isset($_GET['tid'])){
     $tid = $_GET['tid'];
   }
 
-  $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.m_status, task.priority, task.timeframe, task.feedback, task_time.total_time, time_difference.time 
-  FROM ((task INNER JOIN task_time ON task.tid = task_time.tid) INNER JOIN time_difference ON task.tid = time_difference.tid)  
+//   $sql = "SELECT * FROM task WHERE tid = '$tid'";
+  $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.estimated_time, task.m_status, task.priority, task.feedback, task_time.total_time, time_difference.time 
+  FROM task 
+  INNER JOIN task_time ON task.tid = task_time.tid
+  INNER JOIN time_difference ON task.tid = time_difference.tid
   WHERE task.tid = '$tid'";
   $result = mysqli_query($db, $sql);
-
   $priority = ''; 
   $status = '';
 
   if ($result && mysqli_num_rows($result) > 0)
-{
+  {
   while ($row = mysqli_fetch_assoc($result))
   {
 
-    if($row["priority"] == "")
-    {
-      $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-    }
-    elseif($row["priority"] == "High")
-    {
-      $priority = '<td> <span style="background:#ff6961; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-    }
-    elseif($row["priority"] == "Medium")
-    {
-      $priority = '<td> <span style="background:#ffb861; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-    }
-    elseif($row["priority"] == "Low")
-    {
-      $priority = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-    }
+if($row["priority"] == "") {
+    $priority_html = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "High") {
+    $priority_html = '<td> <span style="background:#ff6961; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "Medium") {
+    $priority_html = '<td> <span style="background:#ffb861; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "Low") {
+    $priority_html = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
 
+
+   
 
     if($row["status"] == "")
     {
@@ -127,7 +142,7 @@ if(isset($_GET['tid'])){
     $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
    }
 
-// Split the time strings into hours, minutes, and seconds
+   // Split the time strings into hours, minutes, and seconds
 list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
 list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
 
@@ -141,20 +156,8 @@ $difference_seconds = $totaltime_seconds - $difference_seconds;
 // Convert the difference to minutes
 $timeframe= round($difference_seconds / 60);
 
-// Output the difference in minutes
-echo "Difference in minutes: " . $timeframe;
 ?>
-
- 
-
-<main id="main" class="main">
-    <section class="section profile">
-      <div class="row">
-        <div class="col-xl-12 text-end mb-3">
-            <button class="btn  btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            Edit Task
-            </button>
-        </div>
+       
         <div class="col-xl-12">
         <div class="card">
     <div class="card-body">
@@ -185,7 +188,7 @@ echo "Difference in minutes: " . $timeframe;
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Priority :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $priority;?></h6>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $priority_html;?></h6> 
             </div>
         </div>
         <hr>
@@ -211,11 +214,13 @@ echo "Difference in minutes: " . $timeframe;
     </div>
     </div>
     </div>
+    
 
 
     <?php 
      if($role == 0)
-     {?>
+     {
+      ?>
       <div class="col-lg-6">   
       <div class="card"> 
       <div class="card-body">
@@ -236,10 +241,10 @@ echo "Difference in minutes: " . $timeframe;
      }
     ?>
 
-       
+      </div>
 
-        
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+       <!-- start of drawer -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Edit Task</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -276,11 +281,10 @@ echo "Difference in minutes: " . $timeframe;
 
                     <h5 class="card-title edit">Title</h5>
                     <input type="text" id="title" class="form-control" value="<?php echo $row["title"];?>">
-
+                    
                     <h5 class="card-title edit">Time Frame</h5>
-                    <input type="text" id="time_frame" class="form-control" value="<?php echo $row["timeframe"];?>">
-
-
+                    <input type="time" id="etime" class="form-control" value="<?php echo $row["estimated_time"]; ?>">
+                    
                     <h5 class="card-title edit">Priority</h5>    
                     <select id="priority" class="form-select">
                         <option selected value="<?php echo $row["priority"];?>"><?php echo $row["priority"];?></option>
@@ -295,10 +299,7 @@ echo "Difference in minutes: " . $timeframe;
                     <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
                     
                 </div>
-                <?php 
-                          }
-                          }
-                          ?>
+                          
                       <div class="col-lg-12">       
                       <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
                       </div>
@@ -306,13 +307,15 @@ echo "Difference in minutes: " . $timeframe;
           </div>
         </div>     
 </div>
-
-       
-      </div>
+      <?php 
+     }
+     }
+    ?>
+     
     </section>
-
+                        
   </main><!-- End #main -->
-
+ 
  
 <?php 
 require('../footer.php');
@@ -335,7 +338,7 @@ tinymce.init({
             var status = $('#status').val();
             var task_type = $('#task_type').val();
             var title = $('#title').val();
-            var time_frame = $('#time_frame').val();
+            var etime = $('#etime').val();
             var priority = $('#priority').val();
             var editor1 = tinymce.get('editor1').getContent();
             $.ajax({
@@ -348,8 +351,8 @@ tinymce.init({
                     edate: edate, 
                     status: status, 
                     task_type: task_type, 
-                    title: title, 
-                    time_frame: time_frame, 
+                    title: title,
+                    etime: etime, 
                     priority: priority, 
                     editor1: editor1
                 },

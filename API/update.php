@@ -63,18 +63,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                  // Update Task
                  case "update_task":
-                    if(isset($_POST['tid'], $_POST['sdate'], $_POST['edate'], $_POST['status'], $_POST['task_type'], $_POST['title'], $_POST['time_frame'], $_POST['priority'], $_POST['editor1'])) {
+                    if(isset($_POST['tid'], $_POST['sdate'], $_POST['edate'], $_POST['status'], $_POST['task_type'], $_POST['title'], $_POST['etime'], $_POST['priority'], $_POST['editor1'])) {
                         $tid = $_POST['tid'];
                         $sdate = $_POST['sdate'];
                         $edate = $_POST['edate'];
                         $task_type = $_POST['task_type'];
                         $title = $_POST['title'];
                         $status = $_POST['status'];
-                        $time_frame = $_POST['time_frame'];
+                        $estimated_time = date("h:i A", strtotime($_POST['etime']));
                         $priority = $_POST['priority'];
                         $editor1 = $_POST['editor1'];
     
-                        $sql = "UPDATE task SET start_date = '$sdate', end_date = '$edate', task_type = '$task_type', title = '$title', status = '$status', timeframe = '$time_frame', priority = '$priority', description = '$editor1' WHERE tid = '$tid'";
+                        $sql = "UPDATE task SET start_date = '$sdate', end_date = '$edate', task_type = '$task_type', title = '$title', status = '$status', estimated_time = '$estimated_time', priority = '$priority', description = '$editor1' WHERE tid = '$tid'";
                         if ($db->query($sql) === TRUE) 
                         {
                             // Return success message as JSON
