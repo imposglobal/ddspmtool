@@ -65,6 +65,11 @@ require('../../API/function.php');
       font-size: 15px;
     }
 
+     /* CSS rule to style the Font Awesome icon within disabled buttons */
+     .start_time[disabled] .fa-play {
+    color: grey;
+}
+
 </style>
 
 
@@ -80,28 +85,81 @@ require('../../API/function.php');
      </button>
 </div>
 </div>
- 
-      <div class="row">
-      <?php
-if(isset($_GET['tid'])){
+<?php
+  if(isset($_GET['tid']))
+  {
     $tid = $_GET['tid'];
   }
+    $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.estimated_time, task.m_status, task.priority, task.feedback, task_time.total_time, task_time.initial_time, task_time.end_time, time_difference.time,  time_difference.reason 
+    FROM task INNER JOIN task_time ON task.tid = task_time.tid INNER JOIN time_difference ON task.tid = time_difference.tid
+    WHERE task.tid = '$tid'";
+    $query = mysqli_query($db, $sql);
+    if ($query && mysqli_num_rows($query) > 0)
+    {
+    while ($row = mysqli_fetch_assoc($query))
+    {
+    $ttime = $row["total_time"];
+    $dtime = $row["time"];
+    $itime = $row["initial_time"];
+    $etime = $row["end_time"];
+    $rtime = $row["reason"];
+    if ($ttime === '' && $dtime === '' && $itime === '' && $etime === '' && $rtime === '') 
+    {
+        $sql = "SELECT * FROM task WHERE tid = '$tid'";
+    } 
+    else
+    {
 
-//   $sql = "SELECT * FROM task WHERE tid = '$tid'";
-  $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.estimated_time, task.m_status, task.priority, task.feedback, task_time.total_time, time_difference.time 
-  FROM task 
-  INNER JOIN task_time ON task.tid = task_time.tid
-  INNER JOIN time_difference ON task.tid = time_difference.tid
-  WHERE task.tid = '$tid'";
-  $result = mysqli_query($db, $sql);
-  $priority = ''; 
-  $status = '';
+    $sql = "SELECT DISTINCT  
+    task.tid, 
+    task.start_date, 
+    task.end_date, 
+    task.task_type, 
+    task.title, 
+    task.description, 
+    task.status, 
+    task.estimated_time, 
+    task.m_status, 
+    task.priority, 
+    task.feedback, 
+    task_time.total_time, 
+    time_difference.time, 
+    time_difference.reason, 
+    total_time_subquery.total_break_time 
+FROM 
+    task 
+INNER JOIN 
+    task_time ON task.tid = task_time.tid
+INNER JOIN 
+    time_difference ON task.tid = time_difference.tid
+INNER JOIN (
+    SELECT 
+        tid, 
+        SEC_TO_TIME(SUM(TIME_TO_SEC(time))) AS total_break_time 
+    FROM 
+        time_difference 
+    WHERE 
+        tid = '$tid' 
+    GROUP BY 
+        tid
+    LIMIT 1
+) AS total_time_subquery ON task.tid = total_time_subquery.tid 
+WHERE 
+    task.tid = '$tid'
+LIMIT 1; "; 
+}
+    $result = mysqli_query($db, $sql);
+    $priority = ''; 
+    $status = '';
 
-  if ($result && mysqli_num_rows($result) > 0)
-  {
-  while ($row = mysqli_fetch_assoc($result))
-  {
+    if ($result && mysqli_num_rows($result) > 0)
+    {
+    while ($row = mysqli_fetch_assoc($result))
+    {
 
+    $total_break_time = $row["total_break_time"];
+
+      // Priority 
 if($row["priority"] == "") {
     $priority_html = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
 }
@@ -116,7 +174,7 @@ elseif($row["priority"] == "Low") {
 }
 
 
-   
+      // Status 
 
     if($row["status"] == "")
     {
@@ -142,7 +200,9 @@ elseif($row["priority"] == "Low") {
     $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
    }
 
-   // Split the time strings into hours, minutes, and seconds
+
+      // Calculate Time Frame
+//    Split the time strings into hours, minutes, and seconds
 list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
 list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
 
@@ -157,10 +217,13 @@ $difference_seconds = $totaltime_seconds - $difference_seconds;
 $timeframe= round($difference_seconds / 60);
 
 ?>
-       
+ 
+   <div class="row">      
         <div class="col-xl-12">
         <div class="card">
-    <div class="card-body">
+        <div class="card-body">
+
+        
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Task Title :</h4>
@@ -180,10 +243,45 @@ $timeframe= round($difference_seconds / 60);
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Time Frame :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $timeframe;?> minutes</h6>
+
+               <!-- To show minute and Hours According to the output -->
+
+             <?php 
+             if ($timeframe >= 60)
+             {
+                $hours = floor($timeframe / 60);
+                $remaining_minutes = $timeframe % 60;
+                // Display the result in hours and minutes format
+                echo "<h6 class='card-subtitle d-inline ml-2 ps-2'>$hours Hr";
+                echo ($hours > 1) ? "s" : "";
+                echo " $remaining_minutes Minute";
+                echo ($remaining_minutes != 1) ? "s" : "";
+                echo "</h6>";
+             }
+             else
+             {
+                // Display the result in minutes format with proper grammar
+                echo "<h6 class='card-subtitle d-inline ml-2 ps-2'>$timeframe Minute";              
+                echo "</h6>";
+             }
+              ?>
+
             </div>
         </div>
         <hr>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Break :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row['total_break_time'];?> Minute</h6><br>
+                <h4 class="card-title d-inline">Reason :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["reason"];?></h6>
+             
+            </div>
+        </div>
+        <hr>
+
+        
 
         <div class="row">
             <div class="col pt-3">
@@ -305,14 +403,22 @@ $timeframe= round($difference_seconds / 60);
                       </div>
                       </form>                      
           </div>
-        </div>     
+        </div>
+        
 </div>
-      <?php 
-     }
-     }
-    ?>
+
+
+
+
      
+      
     </section>
+    <?php 
+     }
+     }
+    }
+    }
+    ?>
                         
   </main><!-- End #main -->
  

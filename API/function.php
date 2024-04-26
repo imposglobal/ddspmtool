@@ -9,7 +9,8 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
     $sql = "SELECT * FROM projects LIMIT $offset, $recordsPerPage";
     $result = mysqli_query($db, $sql);
     
-    if (mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) 
+    {
         // Output data of each row
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
@@ -27,7 +28,9 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
 
             echo '</tr>';
         }
-    } else {
+    } 
+    else 
+    {
         echo "<tr><td colspan='5'>No results found.</td></tr>";
     }
     
@@ -117,7 +120,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
        
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
-            $tid = $row["tid"];
+            $tid = $row["tid"]; // Define $tid here
             $eid = $row["eid"];
             $pid = $row["pid"];
             if($row["m_status"] == ""){
@@ -133,11 +136,10 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
             } elseif($row["status"] == "On Hold"){
                 $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            } elseif($row["status"] == "Abonded"){
+            } elseif($row["status"] == "Abandoned"){
                 $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
             }
-            $query = "SELECT `initial_time`, `end_time` FROM `task_time` WHERE `tid` = '$tid' AND `end_time` IS NOT NULL";
-            $etime = $db->query($query);
+           
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"].'</td>';
@@ -145,14 +147,22 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<td>'. $row["created_at"].'</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
-            
-            if ($etime && $etime->num_rows == 1)
+            $query = "SELECT `end_time` FROM `task_time` WHERE `tid` = '$tid'";
+            $etime = $db->query($query);
+            $row = $etime->fetch_assoc();
+            $end_time = null; // Initialize $end_time
+            if ($row && isset($row['end_time']))
             {
-            // If the task is completed, echo the Completed message
-                echo '<td><h6>Completed</h6></td>';
-            } else {
-                // If the task is not completed, echo the time buttons
-                echo '<td>
+               $end_time = $row['end_time'];
+            }
+                if(!empty($end_time)) 
+                {
+                    // Task is completed
+                    echo '<td><div><h6>Completed</h6></div></td>';
+                } 
+                else
+                {
+                    echo '<td>
                     <div class="jumbotron text-center">
                         <div class="time-buttons">
                             <form id="timeForm">';
@@ -163,8 +173,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
                 echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
                         <i class="fas fa-pause" style="color:orange;"></i> 
-                    </button>';
-            
+                      </button>';            
                 echo '
                 <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
                     <select id="select_reason_' . $tid . '">
@@ -183,15 +192,20 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '</form>
                         </div>
                     </div>
-                </td>';
-            }
-            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $row["tid"].'"><i class="bi bi-info-circle-fill"></i> View</td>';
+                </td>';  
+                }
+          
+           
+         
+           
+            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i> View</td>'; // Use $tid here
             echo '</tr>';
         }
     } else {
         echo "<tr><td colspan='5'>No results found.</td></tr>";
     }
 }
+
 
 
 
