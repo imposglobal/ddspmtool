@@ -70,6 +70,16 @@ require('../../API/function.php');
     color: grey;
 }
 
+.break-btn
+{
+    background-color: #012970;
+    color: #fff;
+}
+.hr_margin
+{
+    margin-top:30px;
+}
+
 </style>
 
 
@@ -78,104 +88,20 @@ require('../../API/function.php');
 
 <main id="main" class="main">
 <section class="section profile">
-<div class="row">
-<div class="col-xl-12 text-end mb-3">
-     <button class="btn  btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-      Edit Task
-     </button>
-</div>
-</div>
 <?php
-  if(isset($_GET['tid']))
-  {
-    $tid = $_GET['tid'];
-  }
-    $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.estimated_time, task.m_status, task.priority, task.feedback, task_time.total_time, task_time.initial_time, task_time.end_time, time_difference.time,  time_difference.reason 
-    FROM task INNER JOIN task_time ON task.tid = task_time.tid INNER JOIN time_difference ON task.tid = time_difference.tid
-    WHERE task.tid = '$tid'";
-    $query = mysqli_query($db, $sql);
-    if ($query && mysqli_num_rows($query) > 0)
-    {
+if(isset($_GET['tid']))
+{
+  $tid = $_GET['tid'];
+}
+
+$sql = "SELECT * FROM `task` WHERE tid = '$tid'";
+$query = mysqli_query($db, $sql);
+if ($query && mysqli_num_rows($query) > 0)
+{
     while ($row = mysqli_fetch_assoc($query))
     {
-    $ttime = $row["total_time"];
-    $dtime = $row["time"];
-    $itime = $row["initial_time"];
-    $etime = $row["end_time"];
-    $rtime = $row["reason"];
-    if ($ttime === '' && $dtime === '' && $itime === '' && $etime === '' && $rtime === '') 
-    {
-        $sql = "SELECT * FROM task WHERE tid = '$tid'";
-    } 
-    else
-    {
 
-    $sql = "SELECT DISTINCT  
-    task.tid, 
-    task.start_date, 
-    task.end_date, 
-    task.task_type, 
-    task.title, 
-    task.description, 
-    task.status, 
-    task.estimated_time, 
-    task.m_status, 
-    task.priority, 
-    task.feedback, 
-    task_time.total_time, 
-    time_difference.time, 
-    time_difference.reason, 
-    total_time_subquery.total_break_time 
-FROM 
-    task 
-INNER JOIN 
-    task_time ON task.tid = task_time.tid
-INNER JOIN 
-    time_difference ON task.tid = time_difference.tid
-INNER JOIN (
-    SELECT 
-        tid, 
-        SEC_TO_TIME(SUM(TIME_TO_SEC(time))) AS total_break_time 
-    FROM 
-        time_difference 
-    WHERE 
-        tid = '$tid' 
-    GROUP BY 
-        tid
-    LIMIT 1
-) AS total_time_subquery ON task.tid = total_time_subquery.tid 
-WHERE 
-    task.tid = '$tid'
-LIMIT 1; "; 
-}
-    $result = mysqli_query($db, $sql);
-    $priority = ''; 
-    $status = '';
-
-    if ($result && mysqli_num_rows($result) > 0)
-    {
-    while ($row = mysqli_fetch_assoc($result))
-    {
-
-    $total_break_time = $row["total_break_time"];
-
-      // Priority 
-if($row["priority"] == "") {
-    $priority_html = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-}
-elseif($row["priority"] == "High") {
-    $priority_html = '<td> <span style="background:#ff6961; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-}
-elseif($row["priority"] == "Medium") {
-    $priority_html = '<td> <span style="background:#ffb861; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-}
-elseif($row["priority"] == "Low") {
-    $priority_html = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
-}
-
-
-      // Status 
-
+         // Status 
     if($row["status"] == "")
     {
       $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
@@ -201,24 +127,32 @@ elseif($row["priority"] == "Low") {
    }
 
 
-      // Calculate Time Frame
-//    Split the time strings into hours, minutes, and seconds
-list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
-list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
+   // Priority 
+if($row["priority"] == "") {
+    $priority_html = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "High") {
+    $priority_html = '<td> <span style="background:#ff6961; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "Medium") {
+    $priority_html = '<td> <span style="background:#ffb861; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
+elseif($row["priority"] == "Low") {
+    $priority_html = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
+}
 
-// Calculate the total time and time difference in seconds
-$totaltime_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
-$difference_seconds = $difference_hours * 3600 + $difference_minutes * 60 + $difference_seconds;
+        ?>
+   
 
-// Calculate the difference in seconds
-$difference_seconds = $totaltime_seconds - $difference_seconds;
-
-// Convert the difference to minutes
-$timeframe= round($difference_seconds / 60);
-
-?>
+  
  
-   <div class="row">      
+   <sdiv class="row">   
+     <div class="col-xl-12 text-end mb-3">
+     <button class="btn  btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+      Edit Task
+     </button>
+     </div>
+   
         <div class="col-xl-12">
         <div class="card">
         <div class="card-body">
@@ -230,7 +164,7 @@ $timeframe= round($difference_seconds / 60);
                 <h6 class="card-subtitle d-inline ms-2 ps-2"><?php echo $row["title"];?></h6>
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <div class="row">
             <div class="col pt-3">
@@ -238,48 +172,42 @@ $timeframe= round($difference_seconds / 60);
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $status;?></h6>
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Time Frame :</h4>
-
-               <!-- To show minute and Hours According to the output -->
-
-             <?php 
-             if ($timeframe >= 60)
-             {
-                $hours = floor($timeframe / 60);
-                $remaining_minutes = $timeframe % 60;
-                // Display the result in hours and minutes format
-                echo "<h6 class='card-subtitle d-inline ml-2 ps-2'>$hours Hr";
-                echo ($hours > 1) ? "s" : "";
-                echo " $remaining_minutes Minute";
-                echo ($remaining_minutes != 1) ? "s" : "";
-                echo "</h6>";
-             }
-             else
-             {
-                // Display the result in minutes format with proper grammar
-                echo "<h6 class='card-subtitle d-inline ml-2 ps-2'>$timeframe Minute";              
-                echo "</h6>";
-             }
-              ?>
-
+                <h6 class="card-subtitle d-inline ml-2 ps-2" id="timeframe_placeholder"></h6>
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <div class="row">
-            <div class="col pt-3">
-                <h4 class="card-title d-inline">Break :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row['total_break_time'];?> Minute</h6><br>
-                <h4 class="card-title d-inline">Reason :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["reason"];?></h6>
-             
-            </div>
+            <div class="col-lg-6 pt-3">
+                <h4 class="card-title d-inline">Total Break Time :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2" id="total_break_time"></h6><br>      
+             </div>
+             <div class="col-lg-6">
+             <a class="btn btn-info break-btn" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                View breaks
+                </a> 
+             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
+
+        <!-- drawer -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Breaks</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+        <div id="breaksContainer">
+        <!-- Breaks will be appended here -->
+        </div>
+        </div>
+        </div>
+        <!-- drawer -->
 
         
 
@@ -289,7 +217,7 @@ $timeframe= round($difference_seconds / 60);
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $priority_html;?></h6> 
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <div class="row">
             <div class="col pt-3">
@@ -297,7 +225,7 @@ $timeframe= round($difference_seconds / 60);
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["start_date"];?></h6>
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <div class="row">
             <div class="col pt-3">
@@ -305,7 +233,7 @@ $timeframe= round($difference_seconds / 60);
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["end_date"];?></h6>
             </div>
         </div>
-        <hr>
+        <hr class="hr_margin">
 
         <h4 class="card-title">Description</h4>
         <h6 class="card-subtitle "><?php echo $row["description"];?></h6>    
@@ -315,6 +243,7 @@ $timeframe= round($difference_seconds / 60);
     
 
 
+   
     <?php 
      if($role == 0)
      {
@@ -339,7 +268,14 @@ $timeframe= round($difference_seconds / 60);
      }
     ?>
 
-      </div>
+
+
+
+
+
+
+
+      
 
        <!-- start of drawer -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -402,23 +338,25 @@ $timeframe= round($difference_seconds / 60);
                       <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
                       </div>
                       </form>                      
-          </div>
-        </div>
+                </div>
+               </div>
         
 </div>
 
+   <!-- end of drawer -->
 
 
-
+     <!-- end of row -->
      
-      
-    </section>
-    <?php 
-     }
-     }
+
+     </div>
+     <?php 
     }
     }
     ?>
+      
+    </section>
+    
                         
   </main><!-- End #main -->
  
@@ -549,5 +487,116 @@ tinymce.init({
         });
     });
 </script>
+
+<!-- Get total time frame -->
+
+<script>
+function view_timeframe(tid) {
+    $.ajax({
+        url: "../../API/get.php?tid=" + tid, 
+        type: "GET",
+        dataType: "JSON",
+        data:
+        {
+            ops: 'view_time' 
+        },
+        success: function (data) {
+            // $('#timeframe').html(data.timeframe);
+            var timeframe = data.timeframe;
+
+            if (timeframe >= 60) {
+var hours = Math.floor(timeframe / 60);
+var remaining_minutes = timeframe % 60;
+// var hour_text = (hours !== 1) ? "s" : ""; 
+// var minute_text = (remaining_minutes !== 1) ? "s" : ""; 
+
+// Construct the display string
+// var displayString = hours + ' hr' + hour_text + ' ' + remaining_minutes + ' m' + minute_text;
+var displayString = (hours > 0 ? hours + ' hr ' : '') + remaining_minutes + ' m';
+
+
+// Display the result in hours and minutes format
+$('#timeframe_placeholder').html(displayString);
+} else {
+// Display the result in minutes format with proper grammar
+$('#timeframe_placeholder').html(timeframe + 'm');
+}
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Unable To Load Data');
+        }
+    });
+}
+view_timeframe(<?php echo $tid; ?>);
+</script>
+
+<!-- Get sum of total break time -->
+
+<script>
+function view_total_break_time(tid) {
+    $.ajax({
+        url: "../../API/get.php?tid=" + tid, 
+        type: "GET",
+        dataType: "JSON",
+        data:
+        {
+            ops: 'view_total_break_time' 
+        },
+        success: function (data) 
+        {
+            
+            $('#total_break_time').html(data.total_break_time);  
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Unable To Load Data');
+        }
+    });
+}
+view_total_break_time(<?php echo $tid; ?>);
+</script>
+
+
+<script>
+function view_breaks(tid) {
+    $.ajax({
+        url: "../../API/get.php?tid=" + tid, 
+        type: "GET",
+        dataType: "JSON",
+        data:
+        {
+            ops: 'view_breaks' 
+        },
+        success: function (data) 
+        {
+            if (data.error) {
+                // Handle case when there's an error
+                console.error(data.error);
+                return;
+            }
+             // Clear previous content
+             $('#breaksContainer').empty();
+            // Loop through each record and append to the container
+            data.forEach(function(record){
+                $('#breaksContainer').append(
+                    `<div class="col pt-3">
+                        <h4 class="card-title d-inline">Time:</h4>
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time}</h6><br>   
+                        <h4 class="card-title d-inline">Reason:</h4>
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.reason}</h6>         
+                    </div>`
+                );
+            });
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Unable To Load Data');
+        }
+    });
+}
+view_breaks(<?php echo $tid; ?>);
+</script>
+
+
+
 
 

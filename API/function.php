@@ -6,7 +6,7 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
     $offset = ($page - 1) * $recordsPerPage;
     
     // Fetch projects with pagination
-    $sql = "SELECT * FROM projects LIMIT $offset, $recordsPerPage";
+    $sql = "SELECT * FROM projects ORDER BY created_at DESC LIMIT $offset, $recordsPerPage";
     $result = mysqli_query($db, $sql);
     
     if (mysqli_num_rows($result) > 0) 
@@ -110,10 +110,13 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
 function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 {
     $offset = ($page - 1) * $recordsPerPage;
-    if($role == 0){
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid LIMIT $offset, $recordsPerPage";
-    } else {
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' LIMIT $offset, $recordsPerPage";
+    if($role == 0)
+    {
+        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+    } else 
+    {
+        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
+        ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
     }
     $result = mysqli_query($db, $sql);  
     if (mysqli_num_rows($result) > 0) {
@@ -301,12 +304,12 @@ function get_projects_by_current_date($role, $eid, $db)
         $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
-        WHERE DATE(task.created_at) = '$date'";
+        WHERE DATE(task.created_at) = '$date' ORDER BY task.created_at DESC";
     } else {
         $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
-        WHERE DATE(task.created_at) = '$date' AND task.eid = '$eid'";
+        WHERE DATE(task.created_at) = '$date' AND task.eid = '$eid' ORDER BY task.created_at DESC";
     }
      $i =1;
     $result = mysqli_query($db, $sql);
