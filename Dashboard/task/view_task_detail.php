@@ -580,7 +580,7 @@ function view_breaks(tid) {
                 $('#breaksContainer').append(
                     `<div class="col pt-3">
                         <h4 class="card-title d-inline">Time:</h4>
-                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time}</h6><br>   
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} Hrs</h6><br>   
                         <h4 class="card-title d-inline">Reason:</h4>
                         <h6 class="card-subtitle d-inline ml-2 ps-2">${record.reason}</h6>         
                     </div>`

@@ -94,12 +94,12 @@ function get_attendance($role, $eid, $db, $page = 1, $recordsPerPage = 10, $star
        if ($role == 0) {
         $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
     } else {
-        $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' ORDER BY attendance.date DESC AND attendance.eid = '$eid' LIMIT $offset, $recordsPerPage";
+        $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
     }
     } else {
 // If "get_date" is not set, filter by today's date
   if ($role == 0) {
-    $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) = '$date' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
+    $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) = '$date' ORDER BY attendance.date DESC  LIMIT $offset, $recordsPerPage";
    } else {
     $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
    }
