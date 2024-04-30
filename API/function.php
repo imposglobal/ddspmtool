@@ -58,6 +58,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             $tid = $row["tid"]; // Define $tid here
             $eid = $row["eid"];
             $pid = $row["pid"];
+            $title = $row["title"];
             if($row["m_status"] == ""){
                 $mstatus = "Reviewing";
             } else {
@@ -78,7 +79,14 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"].'</td>';
-            echo '<td>'. $row["title"].'</td>';
+            if (strlen($title) > 20)
+            {
+               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+            }
+            else
+            {
+                echo '<td>'. $row["title"].'</td>';
+            }         
             echo '<td>'. $row["created_at"].'</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
