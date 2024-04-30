@@ -94,7 +94,9 @@ if(isset($_GET['tid']))
   $tid = $_GET['tid'];
 }
 
-$sql = "SELECT * FROM `task` WHERE tid = '$tid'";
+// $sql = "SELECT * FROM `task` WHERE tid = '$tid'";
+
+$sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
 $query = mysqli_query($db, $sql);
 if ($query && mysqli_num_rows($query) > 0)
 {
@@ -157,6 +159,14 @@ elseif($row["priority"] == "Low") {
         <div class="card">
         <div class="card-body">
 
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Project Name :</h4>
+                <h6 class="card-subtitle d-inline ms-2 ps-2"><?php echo $row["project_name"];?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
         
         <div class="row">
             <div class="col pt-3">
@@ -332,10 +342,10 @@ elseif($row["priority"] == "Low") {
                       <!-- TinyMCE Editor -->
                     <h5 class="card-title edit">Description</h5>
                     <textarea id="editor1" name="editor1" value=""><?php echo $row["description"];?></textarea>
-                    <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+                    
                     
                 </div>
-                          
+                      <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">  
                       <div class="col-lg-12">       
                       <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
                       </div>
