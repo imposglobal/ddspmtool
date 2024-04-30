@@ -318,7 +318,7 @@ elseif($row["priority"] == "Low") {
                     
                     <h5 class="card-title edit">Time Frame</h5>
                     <input type="time" id="etime" class="form-control" value="<?php echo $row["estimated_time"]; ?>">
-                    
+                   
                     <h5 class="card-title edit">Priority</h5>    
                     <select id="priority" class="form-select">
                         <option selected value="<?php echo $row["priority"];?>"><?php echo $row["priority"];?></option>
@@ -326,6 +326,8 @@ elseif($row["priority"] == "Low") {
                         <option value="Medium"  style="background-color: #ffb861; color: white;">Medium</option>
                         <option value="Low"  style="background-color:  #C1E1C1; color: white;">Low</option>
                     </select>
+
+                   
 
                       <!-- TinyMCE Editor -->
                     <h5 class="card-title edit">Description</h5>

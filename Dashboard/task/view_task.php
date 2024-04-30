@@ -97,7 +97,7 @@ require('../../API/function.php');
                     <th scope="col">My Status</th>
                     <th scope="col">Manager Status</th>
                     <th scope="col">Timeframe</th>
-                    <th scope="col">View Details</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -145,6 +145,82 @@ require('../footer.php');
 
 <!-- ajax code for start time -->
 <script>
+$(document).ready(function() {
+    // Use event delegation to handle clicks on dynamically generated buttons
+    $(document).on('click', '[id^="start_time_"]', function() {
+        // Store the button element in a variable for easy access
+        var $startButton = $(this);
+        // Store the icon element within the button
+        var $icon = $startButton.find('.fa-play');
+        // Disable start button
+        $startButton.prop('disabled', true);
+        // Change the color of the icon to grey
+        $icon.css('color', 'grey');
+        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
+        var tid = $startButton.siblings('#tid').val(); 
+        var eid = $startButton.siblings('#eid').val(); 
+        var pid = $startButton.siblings('#pid').val(); 
+        var reason = $('#select_reason_' + tid).val();
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid , reason: reason},
+            success: function(response) {
+                // Parse JSON response
+                var data = JSON.parse(response);
+                if (data.success) {
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Task has started',
+                        didClose: function() {
+                            $startButton.prop('disabled', true);
+                            // Change the color of the icon to grey
+                            $icon.css('color', 'grey');
+                        }
+                    });
+                    // Store button state in local storage
+                    localStorage.setItem('startButtonState_' + tid, 'disabled');
+                } else {
+                    // Show SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
+            },
+            complete: function() {
+                // Re-enable the start button regardless of success or error
+                $startButton.prop('disabled', false);
+            }
+        });
+    });
+
+    // Disable buttons based on their previous state stored in local storage
+    $('[id^="start_time_"]').each(function() {
+        var tid = $(this).siblings('#tid').val();
+        var buttonState = localStorage.getItem('startButtonState_' + tid);
+        if (buttonState === 'disabled') {
+            $(this).prop('disabled', true);
+            $(this).find('.fa-play').css('color', 'grey');
+        }
+    });
+});
+</script>
+
+
+
+<!-- <script>
 $(document).ready(function() 
 {
     // Use event delegation to handle clicks on dynamically generated buttons
@@ -205,7 +281,7 @@ $(document).ready(function()
         });
     });
 });
-</script>
+</script> -->
 
 <!-- ajax code for start time -->
 
