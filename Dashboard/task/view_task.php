@@ -326,7 +326,55 @@ $(document).ready(function() {
 
 
 
+<!-- delete task -->
 
+<script> 
+function deleteTask(tid) {
+    Swal.fire({
+        title: 'Are you sure to delete this task?',
+        text: 'You are about to delete this task. This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // User confirmed, proceed with deletion
+            $.ajax({
+                url: "../../API/delete.php",
+                type: 'POST',
+                data: { ops: 'deleteTask', tid: tid}, 
+                success: function (response) {
+                    if (response === "true") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'deleted successfully!',
+                            text: ''
+                        }).then(function() {
+                            // Reload the page after successful deletion
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error deleting user: ' + error
+                    });
+                }
+            });
+        }
+    });
+}
+</script>
 
 
 

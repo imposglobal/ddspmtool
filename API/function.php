@@ -129,7 +129,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                     </div>
                 </td>';  
                 }
-            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i> View</td>';
+            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
             echo '</tr>';
         }
     } else {
