@@ -517,7 +517,7 @@ function view_timeframe(tid) {
                 }
             } else {
                 // Handle case when timeframe is null or undefined
-                $('#timeframe_placeholder').html('task not started yet');
+                $('#timeframe_placeholder').html('Upcoming task');
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
