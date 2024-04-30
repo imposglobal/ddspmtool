@@ -142,57 +142,11 @@ require('../footer.php');
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
-<!-- ajax old code for start time -->
 
-<!-- <script>
-$(document).ready(function() {
-    // Use event delegation to handle clicks on dynamically generated buttons
-    $(document).on('click', '[id^="start_time_"]', function() {
-        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
-        var tid = $(this).siblings('#tid').val(); 
-        var eid = $(this).siblings('#eid').val(); 
-        var pid = $(this).siblings('#pid').val(); 
-        var reason = $('#select_reason_' + tid).val();
-        $.ajax({
-            type: "POST",
-            url: "../../API/update.php",
-            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid , reason: reason},
-            success: function(response) {
-               // Parse JSON response
-               var data = JSON.parse(response);
-               if (data.success) {
-                   // Show SweetAlert success message
-                   Swal.fire({
-                       icon: 'success',
-                       title: 'Success',
-                       text: 'task has started'
-                   });
-               } else {
-                   // Show SweetAlert error message
-                   Swal.fire({
-                       icon: 'error',
-                       title: 'Error',
-                       text: data.message
-                   });
-               }
-            },
-            error: function(xhr, status, error) {
-                // Show SweetAlert error message for AJAX error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'AJAX Error',
-                    text: 'An error occurred while processing your request. Please try again later.'
-                });
-            }
-        });
-    });
-});
-</script> -->
-
-<!-- ajax old code for start time -->
-<!-- ajax new code for start time -->
+<!-- ajax code for start time -->
 <script>
-$(document).ready(function() {
+$(document).ready(function() 
+{
     // Use event delegation to handle clicks on dynamically generated buttons
     $(document).on('click', '[id^="start_time_"]', function() {
         // Store the button element in a variable for easy access
@@ -253,73 +207,9 @@ $(document).ready(function() {
 });
 </script>
 
-<!-- ajax new code for start time -->
+<!-- ajax code for start time -->
 
-
-
-
-
-
-<!-- ajax old code for pause time -->
-
-<!-- <script>
-  // When any button with class "pause_time" is clicked
-$('button[name^="pause_time"]').click(function() {
-    // Get the ID of the button that was clicked
-    var tid = $(this).attr('id').split('_')[2];
-    // Show or hide the select box based on its current visibility
-    $('#time_select_' + tid).toggle();
-});
-
-// When any button with class "submit_time" is clicked
-$('button.submit_time').click(function() {
-    var tid = $(this).closest('div').attr('id').split('_')[2];
-    var eid = $('#eid').val(); 
-    var pid = $('#pid').val();     
-    $.ajax({
-        type: "POST",
-        url: "../../API/update.php",
-        data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
-        success: function(response) {
-            // Parse JSON response
-            var data = JSON.parse(response); 
-            if (data.success) {
-                // Show SweetAlert success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    //  text: data.message
-                    text: 'You are on pause'
-                });
-            } else {
-                // Show SweetAlert error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            // Show SweetAlert error message for AJAX error
-            Swal.fire({
-                icon: 'error',
-                title: 'AJAX Error',
-                text: 'An error occurred while processing your request. Please try again later.'
-            });
-        },
-        complete: function() {
-            // Hide the time_select block after the AJAX request is completed
-            $('#time_select_' + tid).hide();
-        }
-    });
-});
-</script> -->
-
-<!-- ajax old code for pause time -->
-
-
-<!-- ajax new code for pause time -->
+<!-- ajax  code for pause time -->
 <script>
   // When any button with class "pause_time" is clicked
 $('button[name^="pause_time"]').click(function() {
@@ -382,58 +272,10 @@ $('button.submit_time').click(function() {
     });
 });
 </script>
-
-
-<!-- ajax new code for pause time -->
+<!-- ajax code for pause time -->
 
 
 <!-- ajax code for stop time -->
-
-<!-- <script>
-$(document).ready(function() {
-      $(document).on('click', '[id^="stop_time_"]', function() {
-        var tid = $(this).siblings('#tid').val(); 
-        var eid = $(this).siblings('#eid').val(); 
-        var pid = $(this).siblings('#pid').val();  
-        $.ajax({
-            type: "POST",
-            url: "../../API/update.php",
-            data: { ops: 'stop_task_time', tid: tid , eid: eid , pid: pid},
-            success: function(response) {
-                // Parse JSON response
-                var data = JSON.parse(response); 
-                if (data.success) {
-                   // Show SweetAlert success message
-                   Swal.fire({
-                       icon:  'success',
-                       title: 'Success',
-                       text:  'your task has stopped' 
-                   });
-               } else {
-                   // Show SweetAlert error message
-                   Swal.fire({
-                       icon: 'error',
-                       title: 'Error',
-                       text: data.message
-                   });
-               }
-
-            },
-            error: function(xhr, status, error) {
-                // Show SweetAlert error message for AJAX error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'AJAX Error',
-                    text: 'An error occurred while processing your request. Please try again later.'
-                });
-            }
-
-        });
-    });
-});
-</script> -->
-
-
 <script>
 $(document).ready(function() {
       $(document).on('click', '[id^="stop_time_"]', function() {
@@ -452,8 +294,12 @@ $(document).ready(function() {
                    Swal.fire({
                        icon:  'success',
                        title: 'Success',
-                       text:  'your task has stopped' 
-                   });
+                       text:  'your task has stopped',
+                      
+                   }).then(function() {
+                        // Reload the page after the alert is closed
+                        location.reload();
+                    });
                } else {
                    // Show SweetAlert error message
                    Swal.fire({
@@ -477,6 +323,10 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+
+
 
 
 

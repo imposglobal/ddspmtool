@@ -493,42 +493,39 @@ tinymce.init({
 <script>
 function view_timeframe(tid) {
     $.ajax({
-        url: "../../API/get.php?tid=" + tid, 
+        url: "../../API/get.php",
         type: "GET",
         dataType: "JSON",
-        data:
-        {
-            ops: 'view_time' 
+        data: {
+            ops: 'view_time',
+            tid: tid
         },
-        success: function (data) {
-            // $('#timeframe').html(data.timeframe);
+        success: function(data) {
             var timeframe = data.timeframe;
-
-            if (timeframe >= 60) {
-var hours = Math.floor(timeframe / 60);
-var remaining_minutes = timeframe % 60;
-// var hour_text = (hours !== 1) ? "s" : ""; 
-// var minute_text = (remaining_minutes !== 1) ? "s" : ""; 
-
-// Construct the display string
-// var displayString = hours + ' hr' + hour_text + ' ' + remaining_minutes + ' m' + minute_text;
-var displayString = (hours > 0 ? hours + ' hr ' : '') + remaining_minutes + ' m';
-
-
-// Display the result in hours and minutes format
-$('#timeframe_placeholder').html(displayString);
-} else {
-// Display the result in minutes format with proper grammar
-$('#timeframe_placeholder').html(timeframe + 'm');
-}
+            if (timeframe !== null && timeframe !== undefined) {
+                if (timeframe >= 60) {
+                    var hours = Math.floor(timeframe / 60);
+                    var remaining_minutes = timeframe % 60;
+                    var displayString = (hours > 0 ? hours + ' hr ' : '') + remaining_minutes + ' m';
+                    // Display the result in hours and minutes format
+                    $('#timeframe_placeholder').html(displayString);
+                } else {
+                    // Display the result in minutes format with proper grammar
+                    $('#timeframe_placeholder').html(timeframe + 'm');
+                }
+            } else {
+                // Handle case when timeframe is null or undefined
+                $('#timeframe_placeholder').html('task not started yet');
+            }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function(jqXHR, textStatus, errorThrown) {
             alert('Unable To Load Data');
         }
     });
 }
 view_timeframe(<?php echo $tid; ?>);
 </script>
+
 
 <!-- Get sum of total break time -->
 
@@ -543,8 +540,7 @@ function view_total_break_time(tid) {
             ops: 'view_total_break_time' 
         },
         success: function (data) 
-        {
-            
+        {           
             $('#total_break_time').html(data.total_break_time);  
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -580,7 +576,7 @@ function view_breaks(tid) {
                 $('#breaksContainer').append(
                     `<div class="col pt-3">
                         <h4 class="card-title d-inline">Time:</h4>
-                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} Hrs</h6><br>   
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} M</h6><br>   
                         <h4 class="card-title d-inline">Reason:</h4>
                         <h6 class="card-subtitle d-inline ml-2 ps-2">${record.reason}</h6>         
                     </div>`

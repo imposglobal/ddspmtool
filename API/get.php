@@ -21,11 +21,10 @@ if(isset($_GET['ops']))
                         FROM task_time 
                         INNER JOIN time_difference ON task_time.tid = time_difference.tid 
                         WHERE task_time.tid = '$tid'";
-                $query = mysqli_query($db, $sql);
-            
-                if ($query && mysqli_num_rows($query) > 0) {
-                    $row = mysqli_fetch_assoc($query);
-            
+                $query = mysqli_query($db, $sql);          
+                if ($query && mysqli_num_rows($query) > 0) 
+                {
+                    $row = mysqli_fetch_assoc($query);   
                     // Calculate Time Frame
                     list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
                     list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
@@ -40,8 +39,12 @@ if(isset($_GET['ops']))
                     $row['timeframe'] = $timeframe;
             
                     // Return the data as JSON
-                    echo json_encode($row);
-                } else {
+                    echo json_encode($row);  
+                    
+                   
+                } 
+                else
+                {
                     // Handle case when no data found
                     echo json_encode(array('error' => 'No data found'));
                 }

@@ -24,7 +24,8 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. $row["project_name"].'</td>';
             echo '<td>'. $row["created_at"].'</td>';
             echo '<td>'. $status.'</td>';
-            echo '<td><a href="../../Dashboard/project/view_project_detail.php?pid='. $row["pid"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i  onclick="deleteProject('. $row["pid"].',\''. $row["project_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
+            echo '<td>
+            <a href="../../Dashboard/project/view_project_detail.php?pid='. $row["pid"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i  onclick="deleteProject('. $row["pid"].',\''. $row["project_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
 
             echo '</tr>';
         }
@@ -35,75 +36,6 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
     }
     
 }
-
-//for tasks
-// function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10){
-//     $offset = ($page - 1) * $recordsPerPage;
-//     if($role == 0){
-//     $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid LIMIT $offset, $recordsPerPage";
-
-
-//     }else{
-//         $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' LIMIT $offset, $recordsPerPage";
-//     }
-//     $result = mysqli_query($db, $sql);
-    
-//     if (mysqli_num_rows($result) > 0) {
-//         $i = ($page - 1) * $recordsPerPage + 1;
-//         while($row = mysqli_fetch_assoc($result)) {
-//             if($row["m_status"] == ""){
-//                 $mstatus = "Reviewing";
-//             }else{
-//                 $mstatus = $row["m_status"];
-//             }
-//             if($row["status"] == "Completed"){
-//                 $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-//             }
-//             elseif($row["status"] == "In Progress"){
-//                 $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-//             }
-//             elseif($row["status"] == "Pending"){
-//                 $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-//             }
-//             elseif($row["status"] == "On Hold"){
-//                 $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-//             }
-//             elseif($row["status"] == "Abonded"){
-//                 $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-//             }
-//             echo '<tr>';
-//             echo '<th scope="row">'. $i++.'</th>';
-//             echo '<td>'. $row["fname"].'</td>';
-//             echo '<td>'. $row["title"].'</td>';
-//             echo '<td>'. $row["created_at"].'</td>';
-//             echo $status;
-//             echo '<td>'. $mstatus.'</td>';
-//             echo '<td>
-//             <div class="jumbotron text-center">
-//   <div class="timer">
-//     <span class="minutes">
-//       00
-//     </span>
-//     :
-//     <span class="seconds">
-//       00
-//     </span>
-//   </div>
-//   <div class="time-buttons">
-//   <i class="fa fa-play" aria-hidden="true" data-action="start" style="color:green;"></i>
-//   <i class="fa fa-pause" aria-hidden="true" data-action="pause" style="color:orange;"></i>
-//   <i class="fa fa-stop" aria-hidden="true" data-action="stop" style="color:red;"></i> 
-//   </div>
-// </div>
-//             </td>';
-//             echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $row["tid"].'"><i class="bi bi-info-circle-fill"></i> View</td>';
-//             echo '</tr>';
-//         }
-//     } else {
-//         echo "<tr><td colspan='5'>No results found.</td></tr>";
-//     }
-    
-// }
 
 
 // for timer tasks
@@ -197,11 +129,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                     </div>
                 </td>';  
                 }
-          
-           
-         
-           
-            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i> View</td>'; // Use $tid here
+            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i> View</td>';
             echo '</tr>';
         }
     } else {
