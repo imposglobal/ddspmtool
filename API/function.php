@@ -251,11 +251,19 @@ function get_projects_by_current_date($role, $eid, $db)
     $result = mysqli_query($db, $sql);
     if ($result && mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
+            $title = $row["title"];
             echo '<tr>';
             echo '<th scope="row">'.$i++.'</th>';
             echo '<td>' . $row["fname"] . '</td>';
             echo '<td>' . $row["task_type"] . '</td>';
-            echo '<td>' . $row["title"] . '</td>';
+            if (strlen($title) > 20)
+            {
+               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+            }
+            else
+            {
+                echo '<td>'. $row["title"].'</td>';
+            }   
             echo '<td>' . $row["estimated_time"]. '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
             echo '<td>' . $row["created_at"] . '</td>';
