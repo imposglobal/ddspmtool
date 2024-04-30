@@ -98,7 +98,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 else
                 {
                     echo '<td>
-                    <div class="jumbotron text-center">
+                    <div class="jumbotron">
                         <div class="time-buttons">
                             <form id="timeForm">';
                 // Add unique id for each button
