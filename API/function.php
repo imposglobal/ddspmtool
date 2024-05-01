@@ -264,7 +264,7 @@ function get_projects_by_current_date($role, $eid, $db)
             {
                 echo '<td>'. $row["title"].'</td>';
             }   
-            echo '<td>' . $row["estimated_time"]. '</td>';
+            echo '<td>' . $row["estimated_time"] .' '.'Hrs'. '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
             echo '<td>' . $row["created_at"] . '</td>';
             echo '</tr>';

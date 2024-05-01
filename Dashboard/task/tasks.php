@@ -80,6 +80,34 @@ require('../../API/function.php');
                     <input type="date" id="edate" class="form-control">
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Priority</h5>
+                      <select id="priority" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                   </div>
+                </div>
+
+
+               
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Task Type</h5>
+                      <select id="ttype" class="form-select" aria-label="Default select example">
+                        <option selected="">Select Task Type</option>
+                        <option value="Research">Research</option>
+                        <option value="Original Project">Original Project</option>
+                        <option value="Changes">Changes</option>
+                      </select>
+                   </div>
+                </div>
+
+
                 <div class="col-lg-12">
                     <div class="card-body">
                       <h5 class="card-title">Select Project</h5>
@@ -98,17 +126,8 @@ require('../../API/function.php');
                       </select>
                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="card-body">
-                      <h5 class="card-title">Select Task Type</h5>
-                      <select id="ttype" class="form-select" aria-label="Default select example">
-                        <option selected="">Select Task Type</option>
-                        <option value="Research">Research</option>
-                        <option value="Original Project">Original Project</option>
-                        <option value="Changes">Changes</option>
-                      </select>
-                   </div>
-                </div>
+
+
                 <div class="col-lg-6">
                     <div class="card-body">
                       <h5 class="card-title">Select Status</h5>
@@ -122,19 +141,16 @@ require('../../API/function.php');
                       </select>
                    </div>
                 </div>
+
+
+               
+                
+
+               
              
 
-                <div class="col-lg-6">
-                    <div class="card-body">
-                      <h5 class="card-title">Select Priority</h5>
-                      <select id="priority" class="form-select" aria-label="Default select example">
-                        <option selected="" disabled="true">Select Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                      </select>
-                   </div>
-                </div>
+               
+
             </div>
           </div>
 

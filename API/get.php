@@ -18,8 +18,7 @@ if(isset($_GET['ops']))
             
                 // Assuming $db is your database connection
                 $sql = "SELECT task_time.total_time, time_difference.time, time_difference.reason 
-                        FROM task_time 
-                        INNER JOIN time_difference ON task_time.tid = time_difference.tid 
+                        FROM task_time INNER JOIN time_difference ON task_time.tid = time_difference.tid 
                         WHERE task_time.tid = '$tid'";
                 $query = mysqli_query($db, $sql);          
                 if ($query && mysqli_num_rows($query) > 0) 
@@ -39,9 +38,7 @@ if(isset($_GET['ops']))
                     $row['timeframe'] = $timeframe;
             
                     // Return the data as JSON
-                    echo json_encode($row);  
-                    
-                   
+                    echo json_encode($row);                   
                 } 
                 else
                 {
@@ -90,10 +87,10 @@ if(isset($_GET['ops']))
         case "view_breaks":
             if(isset($_GET['tid'])) 
             {
-                $tid = $_GET['tid'];
-            
+                $tid = $_GET['tid'];  
                 // Assuming $db is your database connection
-                $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid';";
+                // $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid';";
+                $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid' AND time != '00:00:00';";
                 $query = mysqli_query($db, $sql);
             
                 if ($query && mysqli_num_rows($query) > 0) {
@@ -101,8 +98,7 @@ if(isset($_GET['ops']))
                     while ($row = mysqli_fetch_assoc($query)) {
                         // Append each row to the array
                         $rows[] = $row;
-                    }
-        
+                    }       
                     // Return the data as JSON
                     echo json_encode($rows);
                 } else {

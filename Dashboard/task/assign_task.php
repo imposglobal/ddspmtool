@@ -120,6 +120,18 @@ require('../../API/function.php');
                    </div>
                 </div>
 
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Priority</h5>
+                      <select id="priority" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                   </div>
+                </div>
+
 
 
                 <div class="col-lg-6">
@@ -149,21 +161,11 @@ require('../../API/function.php');
                 <div class="col-lg-6">
                     <div class="card-body">
                     <h5 class="card-title">Estimated Time</h5>
-                    <input type="time" id="etime" class="form-control">
+                    <input type="text" id="etime" class="form-control">
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="card-body">
-                      <h5 class="card-title">Select Priority</h5>
-                      <select id="priority" class="form-select" aria-label="Default select example">
-                        <option selected="" disabled="true">Select Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                      </select>
-                   </div>
-                </div>
+                
             </div>
           </div>
 

@@ -188,6 +188,7 @@ elseif($row["priority"] == "Low") {
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Time Frame :</h4>
                 <h6 class="card-subtitle d-inline ml-2 ps-2" id="timeframe_placeholder"></h6>
+                 <!-- <h6 class="card-subtitle d-inline ml-2 ps-2" id="total_time"></h6> -->
             </div>
         </div>
         <hr class="hr_margin">
@@ -225,6 +226,15 @@ elseif($row["priority"] == "Low") {
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Priority :</h4>
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $priority_html;?></h6> 
+            </div>
+        </div>
+        <hr class="hr_margin">
+
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Estimated Time :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["estimated_time"];?> Hrs</h6> 
             </div>
         </div>
         <hr class="hr_margin">
@@ -327,7 +337,7 @@ elseif($row["priority"] == "Low") {
                     <input type="text" id="title" class="form-control" value="<?php echo $row["title"];?>">
                     
                     <h5 class="card-title edit">Time Frame</h5>
-                    <input type="time" id="etime" class="form-control" value="<?php echo $row["estimated_time"]; ?>">
+                    <input type="text" id="etime" class="form-control" value="<?php echo $row["estimated_time"]; ?>">
                    
                     
                     <h5 class="card-title edit">Priority</h5>    
@@ -504,7 +514,8 @@ tinymce.init({
 <!-- Get total time frame -->
 
 <script>
-function view_timeframe(tid) {
+function view_timeframe(tid) 
+{
     $.ajax({
         url: "../../API/get.php",
         type: "GET",
@@ -513,9 +524,11 @@ function view_timeframe(tid) {
             ops: 'view_time',
             tid: tid
         },
-        success: function(data) {
+        success: function(data) 
+        {
             var timeframe = data.timeframe;
-            if (timeframe !== null && timeframe !== undefined) {
+            if (timeframe !== null && timeframe !== undefined) 
+            {
                 if (timeframe >= 60) {
                     var hours = Math.floor(timeframe / 60);
                     var remaining_minutes = timeframe % 60;
@@ -526,9 +539,11 @@ function view_timeframe(tid) {
                     // Display the result in minutes format with proper grammar
                     $('#timeframe_placeholder').html(timeframe + 'm');
                 }
-            } else {
+            } 
+            else 
+            {
                 // Handle case when timeframe is null or undefined
-                $('#timeframe_placeholder').html('Upcoming task');
+                $('#timeframe_placeholder').html('Not Started');
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -538,7 +553,6 @@ function view_timeframe(tid) {
 }
 view_timeframe(<?php echo $tid; ?>);
 </script>
-
 
 <!-- Get sum of total break time -->
 

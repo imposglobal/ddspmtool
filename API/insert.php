@@ -53,15 +53,16 @@ switch ($operation) {
     $edate = $_POST['edate'];
     $ttype = $_POST['ttype'];
     $status = $_POST['status'];
-    $etime = isset($_POST['etime']) ? $_POST['etime'] : null; // Check if 'etime' is set in $_POST
-    $estimated_time = ($etime != "") ? date("h:i A", strtotime($etime)) : null; // Convert time format if 'etime' is not empty
+    // $etime = $_POST['etime'];
+    $etime = isset($_POST['etime']) ? $_POST['etime'] : null; 
+    // $estimated_time = ($etime != "") ? date("h:i A", strtotime($etime)) : null; 
     $title = $_POST['title'];
     $priority = $_POST['priority'];
     $eid = $_POST['eid'];
     $created_at = date('y-m-d H:i:s');
 
     $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, estimated_time, priority, created_at) VALUES
-            ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$estimated_time', '$priority', '$created_at')";
+            ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$etime', '$priority', '$created_at')";
     if ($db->query($sql) === TRUE) {
         echo "Task Added successfully";
     } else {

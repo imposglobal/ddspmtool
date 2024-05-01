@@ -70,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $task_type = $_POST['task_type'];
                         $title = $_POST['title'];
                         $status = $_POST['status'];
-                        $estimated_time = date("h:i A", strtotime($_POST['etime']));
+                        $estimated_time = $_POST['etime'];
+                        // $estimated_time = date("h:i A", strtotime($_POST['etime']));
                         $priority = $_POST['priority'];
                         $editor1 = $_POST['editor1'];
     
@@ -276,11 +277,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $eid = $_POST['eid'];
                                     $pid = $_POST['pid'];   
                                     $timestamp = date('h:i:s A');
-                                    $sql = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE `tid` = '$tid'";
-                                    
-                                    if ($db->query($sql) === TRUE) {
+                                    $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks')";
+                                    $db->query($sql2);
+
+                                    $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE `tid` = '$tid'";                  
+                                    if ($db->query($sql1) === TRUE)
+                                     {
                                         // Fetch the initial and end times
                                         $query = "SELECT `initial_time`, `end_time` FROM `task_time` WHERE `tid` = '$tid'";
+                                        
                                         $result = $db->query($query);
                             
                                         if ($result && $result->num_rows == 1) {
@@ -319,6 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                  // Output the response as JSON
                                    echo json_encode($response);
                                 break;
+
 
             default:
                 echo "Invalid operation";

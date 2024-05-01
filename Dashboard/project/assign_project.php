@@ -122,7 +122,8 @@ require('../../API/function.php');
 <?php 
 require('../footer.php');
 ?>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 <script>
    // Function to handle form submission with jQuery AJAX
 $(document).ready(function() {
@@ -140,13 +141,14 @@ $(document).ready(function() {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
                         icon: 'success',
-                        title: title,
+                        title: 'Success',
                         text: response
                     });
                       // Reset the form
                     //   $('#project_id').val('');
                     //   $('#employee_id').val('');
-                      $('#assigned_form').trigger('reset');
+                      // $('#assigned_form').trigger('reset');
+                      $('#assigned_form')[0].reset();
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
