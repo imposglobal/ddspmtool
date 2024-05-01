@@ -25,9 +25,15 @@ if(isset($_GET['ops']))
                 {
                     $row = mysqli_fetch_assoc($query);   
                     // Calculate Time Frame
+
+                    // splitting the values stored in $row["total_time"] and $row["time"] into arrays
+
+                    // for total task time
                     list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
+                    // for total break time
                     list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
             
+                    
                     $totaltime_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
                     $difference_seconds = $difference_hours * 3600 + $difference_minutes * 60 + $difference_seconds;
             
@@ -59,8 +65,7 @@ if(isset($_GET['ops']))
             if(isset($_GET['tid'])) 
             {
                 $tid = $_GET['tid'];
-      // $sql = "SELECT tid, SEC_TO_TIME(SUM(TIME_TO_SEC(time))) AS total_break_time FROM time_difference WHERE tid = '$tid';";
-        $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h ')
+            $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h ')
             ELSE '' END, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS total_break_time 
             FROM time_difference WHERE tid = '$tid';";
                 $query = mysqli_query($db, $sql);

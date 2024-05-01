@@ -41,14 +41,12 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                 <h5 class="card-title">Tasks <span>| Today</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart"></i>
+                    <i class="bi bi-code-square"></i>
                   </div>
                   <div class="ps-3">
                     <h6>
                       <?php echo $task_count; ?>
                     </h6>
-                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> 
-                    <span class="text-muted small pt-2 ps-1">increase</span> -->
                   </div>
                 </div>
               </div>
@@ -62,7 +60,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                 <h5 class="card-title">Projects <span>| Till Now</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-people"></i>
+                    <i class="bi bi-laptop"></i>
                   </div>
                   <div class="ps-3">
                     <h6>
@@ -83,7 +81,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                 <h5 class="card-title">Working Days <span>| This Month</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-currency-dollar"></i>
+                    <i class="bi bi-calendar"></i>
                   </div>
                   <div class="ps-3">
                     <h6> <?php echo $totalWeeklyWorkingDays;?> </h6>
@@ -102,7 +100,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                 <h5 class="card-title">Present Days <span>| This Month</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-currency-dollar"></i>
+                    <i class="bi bi-calendar-check"></i>
                   </div>
                   <div class="ps-3">
                     <h6><?php echo $attendance_count; ?></h6>

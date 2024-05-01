@@ -20,8 +20,6 @@ function total_project_count($db)
     $sql = "SELECT COUNT(*) AS project_count FROM projects";
     // Execute the query using the provided database connection object
     $result = $db->query($sql);
-    // $result = mysqli_query($db, $sql);
-
     if ($result) {
         if ($result->num_rows > 0) {
             // Fetch the result

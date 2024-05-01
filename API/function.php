@@ -41,7 +41,9 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
 // for timer tasks
 function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 {
+    // Calculate offset
     $offset = ($page - 1) * $recordsPerPage;
+    // query to retrive data from task table
     if($role == 0)
     {
         $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
@@ -79,6 +81,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"].'</td>';
+            // code to retrieve title from task table where it will show only 20 character title
             if (strlen($title) > 20)
             {
                echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
@@ -90,6 +93,9 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<td>'. $row["created_at"].'</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
+
+            //Code to retrieve the complete status after the task has been completed.
+
             $query = "SELECT `end_time` FROM `task_time` WHERE `tid` = '$tid'";
             $etime = $db->query($query);
             $row = $etime->fetch_assoc();
@@ -105,10 +111,11 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 } 
                 else
                 {
-                    echo '<td>
-                    <div class="jumbotron">
-                        <div class="time-buttons">
-                            <form id="timeForm">';
+                    // Task is started
+                echo '<td>
+                <div class="jumbotron">
+                <div class="time-buttons">
+                <form id="timeForm">';
                 // Add unique id for each button
                 echo '<input type="hidden" id="tid" value="' . $tid . '">';
                 echo '<input type="hidden" id="eid" value="' . $eid . '">';
@@ -116,7 +123,10 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
                 echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
                         <i class="fas fa-pause" style="color:orange;"></i> 
-                      </button>';            
+                      </button>'; 
+                      
+                //   After clicking on the pause button, it will show the options to select the break reason.
+
                 echo '
                 <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
                     <select id="select_reason_' . $tid . '">
@@ -145,17 +155,10 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     }
 }
 
+// code for pagination
 
-
-
-
-
-
-
-
-
-
-function pagination($currentPage, $totalPages){
+function pagination($currentPage, $totalPages)
+{
     echo '<tr><td colspan="5">';
     echo '<ul class="pagination justify-content-center">';
     
@@ -256,13 +259,15 @@ function get_projects_by_current_date($role, $eid, $db)
             echo '<th scope="row">'.$i++.'</th>';
             echo '<td>' . $row["fname"] . '</td>';
             echo '<td>' . $row["task_type"] . '</td>';
+
+            // code to retrieve title from task table where it will show only 20 character title
             if (strlen($title) > 20)
             {
-               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+              echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
             }
             else
             {
-                echo '<td>'. $row["title"].'</td>';
+              echo '<td>'. $row["title"].'</td>';
             }   
             echo '<td>' . $row["estimated_time"] .' '.'Hrs'. '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
@@ -310,7 +315,8 @@ function get_assigned_project($db, $pid)
     if ($result && mysqli_num_rows($result) > 0) {
         if ($result)
     {
-        while ($row = mysqli_fetch_assoc($result)){
+        while ($row = mysqli_fetch_assoc($result))
+        {
             echo $row["fname"] . ", "; // Concatenate fname with a space
         }
       

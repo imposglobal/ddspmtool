@@ -22,7 +22,7 @@ require('../../API/function.php');
     }
 
 
-    /* alert box */
+    /* style for alert box */
 
     .alert-box {
     position: fixed;
@@ -117,6 +117,8 @@ require('../../API/function.php');
         </div>
         
       </div>
+
+      <!-- pagination -->
       <?php 
       if($role == 0){
         $sql = "SELECT COUNT(*) AS total FROM task";
@@ -141,7 +143,6 @@ require('../footer.php');
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-
 
 <!-- ajax code for start time -->
 <script>
@@ -217,8 +218,9 @@ $(document).ready(function() {
     });
 });
 </script>
-
 <!-- ajax code for start time -->
+
+
 
 <!-- ajax  code for pause time -->
 <script>
@@ -334,7 +336,7 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<!-- end -->
 
 
 <!-- delete task -->

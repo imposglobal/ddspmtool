@@ -88,14 +88,13 @@ require('../../API/function.php');
 
 <main id="main" class="main">
 <section class="section profile">
+
+<!-- code for fetching task -->
 <?php
 if(isset($_GET['tid']))
 {
   $tid = $_GET['tid'];
 }
-
-// $sql = "SELECT * FROM `task` WHERE tid = '$tid'";
-
 $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
 $query = mysqli_query($db, $sql);
 if ($query && mysqli_num_rows($query) > 0)
@@ -188,7 +187,6 @@ elseif($row["priority"] == "Low") {
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Time Frame :</h4>
                 <h6 class="card-subtitle d-inline ml-2 ps-2" id="timeframe_placeholder"></h6>
-                 <!-- <h6 class="card-subtitle d-inline ml-2 ps-2" id="total_time"></h6> -->
             </div>
         </div>
         <hr class="hr_margin">
@@ -206,7 +204,7 @@ elseif($row["priority"] == "Low") {
         </div>
         <hr class="hr_margin">
 
-        <!-- drawer -->
+        <!-- drawer for showing break-->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Breaks</h5>
@@ -261,7 +259,7 @@ elseif($row["priority"] == "Low") {
     </div>
     </div>
     
-
+   <!-- manager status  -->
 
    
     <?php 
@@ -288,12 +286,12 @@ elseif($row["priority"] == "Low") {
      }
     ?>
 
+ <!-- end manager status  -->
 
 
 
 
-
-
+<!-- code for update task -->
 
       
 
@@ -353,9 +351,9 @@ elseif($row["priority"] == "Low") {
                       <!-- TinyMCE Editor -->
                     <h5 class="card-title edit">Description</h5>
                     <textarea id="editor1" name="editor1" value=""><?php echo $row["description"];?></textarea>
-                    
-                    
-                </div>
+                    </div>
+
+
                       <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">  
                       <div class="col-lg-12">       
                       <input type="button" class="btn mt-3" id="update_task" name="update_task" value="Update" style="background-color: #012970;color:#fff;">
@@ -370,10 +368,8 @@ elseif($row["priority"] == "Low") {
 
 
      <!-- end of row -->
-     
-
-     </div>
-     <?php 
+    </div>
+    <?php 
     }
     }
     ?>
@@ -389,11 +385,15 @@ require('../footer.php');
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://dds.doodlodesign.com/assets/vendor/tinymce/tinymce.min.js"></script>
+
+<!-- add text editor -->
 <script>
 tinymce.init({
   selector: 'textarea'
 });
 </script>
+
+<!-- ajax code for updating task -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 <script>
@@ -462,7 +462,7 @@ tinymce.init({
     });
 </script>
 
-<!-- for updating manager status -->
+<!-- ajax code for updating manager status -->
 
 <script>
     $(document).ready(function () {
@@ -555,7 +555,6 @@ view_timeframe(<?php echo $tid; ?>);
 </script>
 
 <!-- Get sum of total break time -->
-
 <script>
 function view_total_break_time(tid) {
     $.ajax({
@@ -578,6 +577,8 @@ function view_total_break_time(tid) {
 view_total_break_time(<?php echo $tid; ?>);
 </script>
 
+
+<!-- ajax code for view all breaks  -->
 
 <script>
 function view_breaks(tid) {
