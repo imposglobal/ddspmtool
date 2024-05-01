@@ -7,6 +7,7 @@ if(isset($_SESSION['username'])) {
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
     $base_url="https://".$_SERVER['SERVER_NAME'];
+    echo $base_url;
     if($base_url == "https://dds.doodlo.in/"){
       echo $base_url;
       $base_url="https://".$_SERVER['SERVER_NAME'];
