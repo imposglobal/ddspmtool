@@ -25,7 +25,7 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. $row["created_at"].'</td>';
             echo '<td>'. $status.'</td>';
             echo '<td>
-            <a href="../../Dashboard/project/view_project_detail.php?pid='. $row["pid"].'"><i class="icon bi bi-info-circle-fill "></i></a> <i class="icon bi bi-pencil-square"></i> <i  onclick="deleteProject('. $row["pid"].',\''. $row["project_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
+            <a href="../../Dashboard/project/view_project_detail.php?pid='. $row["pid"].'"><i class="icon bi bi-info-circle-fill "></i></a>  <i  onclick="deleteProject('. $row["pid"].',\''. $row["project_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
 
             echo '</tr>';
         }
