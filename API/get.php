@@ -33,13 +33,19 @@ if(isset($_GET['ops']))
                     // for total break time
                     list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
             
-                    
+                    // convert hrs and minuts in seconds for total_time 
+                    // 1 minute = 1 * 60 
+                    // 1 hr = 60 * 60
                     $totaltime_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+
+                    // convert hrs and minuts in seconds for total_break_time
+                    // 1 minute = 1 * 60 
+                    // 1 hr = 60 * 60
                     $difference_seconds = $difference_hours * 3600 + $difference_minutes * 60 + $difference_seconds;
             
                     $difference_seconds = $totaltime_seconds - $difference_seconds;
                     $timeframe = round($difference_seconds / 60);
-            
+
                     // Adding the calculated timeframe to the $row array
                     $row['timeframe'] = $timeframe;
             
@@ -60,11 +66,12 @@ if(isset($_GET['ops']))
         break;
 
 
-
+        // code to retrieve total break time for a  particular task ID
         case "view_total_break_time":
             if(isset($_GET['tid'])) 
             {
-                $tid = $_GET['tid'];
+            $tid = $_GET['tid'];
+            // this query calculates the total break time in hours and checks if it's greater than 0. If it is, it converts the total break time to hours and concatenates it with the string 'h '. If not, it returns an empty string.
             $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h ')
             ELSE '' END, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS total_break_time 
             FROM time_difference WHERE tid = '$tid';";
@@ -88,12 +95,11 @@ if(isset($_GET['ops']))
             }           
         break;
 
-
+        // Code to retrieve all breaks for a particular task ID.
         case "view_breaks":
             if(isset($_GET['tid'])) 
             {
                 $tid = $_GET['tid'];  
-                // Assuming $db is your database connection
                 // $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid';";
                 $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid' AND time != '00:00:00';";
                 $query = mysqli_query($db, $sql);
@@ -116,11 +122,7 @@ if(isset($_GET['ops']))
                 // Handle case when 'tid' parameter is not set
                 echo json_encode(array('error' => 'tid parameter is missing'));
             }           
-        break;
-        
-
-
-        
+        break;       
     }
 }
 ?>

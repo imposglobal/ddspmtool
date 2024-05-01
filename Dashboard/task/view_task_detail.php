@@ -527,8 +527,10 @@ function view_timeframe(tid)
         success: function(data) 
         {
             var timeframe = data.timeframe;
+            // checks if a variable named timeframe is not null and not undefined
             if (timeframe !== null && timeframe !== undefined) 
             {
+                // If the timeframe is greater than or equal to 60, it calculates the number of hours and remaining minutes from the timeframe
                 if (timeframe >= 60) {
                     var hours = Math.floor(timeframe / 60);
                     var remaining_minutes = timeframe % 60;
@@ -536,7 +538,7 @@ function view_timeframe(tid)
                     // Display the result in hours and minutes format
                     $('#timeframe_placeholder').html(displayString);
                 } else {
-                    // Display the result in minutes format with proper grammar
+                    // Display the result in minutes format 
                     $('#timeframe_placeholder').html(timeframe + 'm');
                 }
             } 
@@ -599,9 +601,11 @@ function view_breaks(tid) {
             }
              // Clear previous content
              $('#breaksContainer').empty();
-            // Loop through each record and append to the container
+            
+            // code to retrieve all breaks within the loop for a particular ID.
             data.forEach(function(record){
                 $('#breaksContainer').append(
+                    // Loop through each record and append to the container
                     `<div class="col pt-3">
                         <h4 class="card-title d-inline">Time:</h4>
                         <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} M</h6><br>   

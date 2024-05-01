@@ -16,7 +16,6 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
 
 
 <main id="main" class="main">
-
   <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
@@ -112,9 +111,6 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
 
             </div>
           </div><!-- End Present days Card -->
-
-
-
 
           <!-- Recent Sales -->
           <div class="col-12">
