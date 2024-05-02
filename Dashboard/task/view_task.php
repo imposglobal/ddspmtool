@@ -151,21 +151,15 @@ $(document).ready(function() {
     $(document).on('click', '[id^="start_time_"]', function() {
         // Store the button element in a variable for easy access
         var $startButton = $(this);
-        // Store the icon element within the button
-        var $icon = $startButton.find('.fa-play');
-        // Disable start button
-        $startButton.prop('disabled', true);
-        // Change the color of the icon to grey
-        $icon.css('color', 'grey');
-        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
         var tid = $startButton.siblings('#tid').val(); 
         var eid = $startButton.siblings('#eid').val(); 
         var pid = $startButton.siblings('#pid').val(); 
-        var reason = $('#select_reason_' + tid).val();
+       
+        // var reason = $('#select_reason_' + tid).val();
         $.ajax({
             type: "POST",
             url: "../../API/update.php",
-            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid , reason: reason},
+            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid},
             success: function(response) {
                 // Parse JSON response
                 var data = JSON.parse(response);
@@ -175,11 +169,6 @@ $(document).ready(function() {
                         icon: 'success',
                         title: 'Success',
                         text: 'Task has started',
-                        didClose: function() {
-                            $startButton.prop('disabled', true);
-                            // Change the color of the icon to grey
-                            $icon.css('color', 'grey');
-                        }
                     });
                     // Store button state in local storage
                     localStorage.setItem('startButtonState_' + tid, 'disabled');
@@ -200,21 +189,7 @@ $(document).ready(function() {
                     text: 'An error occurred while processing your request. Please try again later.'
                 });
             },
-            complete: function() {
-                // Re-enable the start button regardless of success or error
-                $startButton.prop('disabled', false);
-            }
         });
-    });
-
-    // Disable buttons based on their previous state stored in local storage
-    $('[id^="start_time_"]').each(function() {
-        var tid = $(this).siblings('#tid').val();
-        var buttonState = localStorage.getItem('startButtonState_' + tid);
-        if (buttonState === 'disabled') {
-            $(this).prop('disabled', true);
-            $(this).find('.fa-play').css('color', 'grey');
-        }
     });
 });
 </script>
@@ -224,68 +199,69 @@ $(document).ready(function() {
 
 <!-- ajax  code for pause time -->
 <script>
-  // When any button with class "pause_time" is clicked
-$('button[name^="pause_time"]').click(function() {
-    // Get the ID of the button that was clicked
-    var tid = $(this).attr('id').split('_')[2];
-    // Show or hide the select box based on its current visibility
-    $('#time_select_' + tid).toggle();
-});
+    // When any button with class "pause_time" is clicked
+    $('button[name^="pause_time"]').click(function() {
+        // Get the ID of the button that was clicked
+        var tid = $(this).attr('id').split('_')[2];
+        // Show or hide the select box based on its current visibility
+        $('#time_select_' + tid).toggle();
+    });
 
-// When any button with class "submit_time" is clicked
-$('button.submit_time').click(function() {
-    var tid = $(this).closest('div').attr('id').split('_')[2];
-    var eid = $('#eid').val(); 
-    var pid = $('#pid').val();  
-    
-    var $startButton = $('#start_time_' + tid);
-    // Store the icon element within the button
-    var $icon = $startButton.find('.fa-play');
-
-    $.ajax({
-        type: "POST",
-        url: "../../API/update.php",
-        data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
-        success: function(response) {
-            // Parse JSON response
-            var data = JSON.parse(response); 
-            if (data.success) {
-                // Show SweetAlert success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    //  text: data.message
-                    text: 'You are on pause'
-                }).then(function() {
-                    $startButton.prop('disabled', false);
-                    // Change the color of the icon to grey
-                    $icon.css('color', 'green');
-                });
-            } else {
-                // Show SweetAlert error message
+    // When any button with class "submit_time" is clicked
+    $('button.submit_time').click(function() {
+        var tid = $(this).closest('div').attr('id').split('_')[2];
+        var eid = $('#eid').val(); 
+        var pid = $('#pid').val(); 
+        var reason = $('#select_reason_' + tid).val(); 
+        
+        var $startButton = $('#start_time_' + tid);
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid, reason: reason },
+            success: function(response) {
+                // Parse JSON response
+                var data = JSON.parse(response); 
+                if (data.success) {
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        //  text: data.message
+                        text: 'You are on pause'
+                    })
+                } else {
+                    // Show SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',
-                    text: data.message
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
                 });
+            },
+            complete: function() {
+                // Hide the time_select block after the AJAX request is completed
+                $('#time_select_' + tid).hide();
             }
-        },
-        error: function(xhr, status, error) {
-            // Show SweetAlert error message for AJAX error
-            Swal.fire({
-                icon: 'error',
-                title: 'AJAX Error',
-                text: 'An error occurred while processing your request. Please try again later.'
-            });
-        },
-        complete: function() {
-            // Hide the time_select block after the AJAX request is completed
-            $('#time_select_' + tid).hide();
-        }
+        });
     });
-});
 </script>
 <!-- ajax code for pause time -->
+
+
+
+
+
+
+
 
 
 <!-- ajax code for stop time -->

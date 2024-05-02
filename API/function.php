@@ -130,12 +130,16 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '
                 <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
                     <select id="select_reason_' . $tid . '">
-                        <option selected disabled="true">Add Reason</option>
+                        <option selected>Add Reason</option>
                         <option value="Meeting">Meeting</option>
                         <option value="Call">Call</option>
                         <option value="Bio-Break">Bio Break</option>
+                        <option value="Discussion">Discussion</option>
+                        <option value="Issues">Issues</option>
+                        <option value="Lunch/Tea Break">Lunch/tea Break</option>
                         <option value="Other">Other</option>
                     </select>
+                    <input type="hidden" id="tid" value="' . $tid . '">
                     <input type="hidden" id="eid" value="' . $eid . '">
                     <input type="hidden" id="pid" value="' . $pid . '">
                     <button type="button" class="submit_time">Submit</button>

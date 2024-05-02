@@ -132,32 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     break;
 
-
-                    // add task timings in the database
-
-                    // case "start_task_time":
-                    //     if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
-                    //         date_default_timezone_set('Asia/Kolkata');
-                    //         $tid = $_POST['tid'];
-                    //         $eid = $_POST['eid'];
-                    //         $pid = $_POST['pid'];
-                    //         $timestamp = date('h:i:s A');
-                    //         $check_sql = "SELECT * FROM `task_time` WHERE `tid`='$tid' AND `eid`='$eid' AND `pid`='$pid'";
-                    //         $result = $db->query($check_sql);
-                    
-                    //         if ($result && $result->num_rows == 0) {
-                    //             $insert_sql = "INSERT INTO `task_time`(`tid`, `eid`, `pid`, `initial_time`) VALUES ('$tid','$eid','$pid','$timestamp')";
-                    //             $db->query($insert_sql);
-                    //         } else {
-                                
-                    //             $insert_sql = "INSERT INTO `task_start_time`(`tid`, `eid`, `pid`, `start_time`) VALUES ('$tid','$eid','$pid','$timestamp')";                 
-                    //             $db->query($insert_sql);
-                    //         }
-                    //     } else {
-                    //         echo "Incomplete data for updating time";
-                    //     }
-                    //     break;
-
+                    // code for start task
 
                     case "start_task_time":
                         $response = array();
@@ -168,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $tid = $_POST['tid'];
                             $eid = $_POST['eid'];
                             $pid = $_POST['pid'];
-                            $reason = $_POST['reason'];
+                           
                             date_default_timezone_set('Asia/Kolkata');
                             $timestamp = date('h:i:s A');
                         
@@ -190,22 +165,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 // If entry exists, insert start time and calculate difference
                                 $insert_sql = "INSERT INTO `task_start_time`(`tid`, `eid`, `pid`, `start_time`) VALUES ('$tid','$eid','$pid','$timestamp')";
                                 if($db->query($insert_sql)) {
-                                    $query1 = "SELECT pause_time FROM `task_pause_time` ORDER BY `pause_time` DESC";
+                                    // $query1 = "SELECT * FROM `task_pause_time`  ORDER BY `pause_time` DESC";
+                                    $query1 = "SELECT * FROM `task_pause_time` WHERE eid = '$eid' AND tid = '$tid' ORDER BY `pause_time` DESC;";
+
                                     $result1 = $db->query($query1);
                         
-                                    $query2 = "SELECT start_time FROM `task_start_time` ORDER BY `start_time` DESC";
+                                    // $query2 = "SELECT * FROM `task_start_time` ORDER BY `start_time` DESC";
+                                    $query2 = "SELECT * FROM `task_start_time` WHERE eid = '$eid' AND tid = '$tid' ORDER BY `start_time` DESC;";
+
                                     $result2 = $db->query($query2);
                         
                                     if ($result1 && $result2) {
                                         $row1 = $result1->fetch_assoc();
                                         $row2 = $result2->fetch_assoc();
-                        
+                                        
+                                        $reason = $row1['reason'];
+                                        // creates a new DateTime object $time1 using the value of $row1['pause_time']
                                         $time1 = new DateTime($row1['pause_time']);
                                         $time2 = new DateTime($row2['start_time']);
+                                        // calculates the difference between the two DateTime objects $time1 and $time2
                                         $difference = $time1->diff($time2);
+                                        // %H:%I:%S' specifies that the output should be in the format of hours, minutes, and seconds. 
                                         $formattedDifference = $difference->format('%H:%I:%S');
                         
-                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`) VALUES ('$tid','$eid','$pid','$formattedDifference','$reason')";
+                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason' )";
                                         if($db->query($insertQuery)) {
                                             $response['success'] = true;
                                             $response['message'] = "Task start time inserted successfully.";
@@ -233,20 +216,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     
 
-                        // pause time
+                        // code for pause time button
                         case "pause_task_time":
                             $response = array();
                             // Check if all required POST parameters are set
-                            if (isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
+                            if (isset($_POST['tid'], $_POST['eid'], $_POST['pid'] , $_POST['reason'])) {
                                 // Retrieve POST data
                                 $tid = $_POST['tid'];
                                 $eid = $_POST['eid'];
                                 $pid = $_POST['pid'];
+                                $reason = $_POST['reason'];
                                 date_default_timezone_set('Asia/Kolkata');
                                 $timestamp = date('h:i:s A');
                         
                                 // Insert pause time into the database
-                                $sql = "INSERT INTO `task_pause_time`(`tid`, `eid`, `pid`, `pause_time`) VALUES ('$tid','$eid','$pid','$timestamp')";
+                                $sql = "INSERT INTO `task_pause_time`(`tid`, `eid`, `pid`, `pause_time`, `reason`) VALUES ('$tid','$eid','$pid','$timestamp', '$reason')";
                                 if ($db->query($sql)) {
                                     $response['success'] = true;
                                     $response['message'] = "Task paused successfully.";
