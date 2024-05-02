@@ -274,8 +274,11 @@ elseif($row["priority"] == "Low") {
       <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
       <select id="m_status" class="form-select">
       <option selected value="<?php echo $row["m_status"];?>"><?php echo $row["m_status"];?></option>
+      <option value="Revised">Revised</option>
       <option value="Accepted">Accepted</option>
       <option value="Rejected">Rejected</option>
+      <option value="Initiated">Initiated</option>
+      <option value="On hold">On hold</option>
       </select>    
       <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
       </form>
