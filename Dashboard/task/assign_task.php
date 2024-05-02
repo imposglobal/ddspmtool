@@ -50,7 +50,7 @@ require('../../API/function.php');
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
-          <li class="breadcrumb-item active">Tasks</li>
+          <li class="breadcrumb-item active">Asign Tasks</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -80,34 +80,6 @@ require('../../API/function.php');
                     <input type="date" id="edate" class="form-control">
                     </div>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class="card-body">
-                      <h5 class="card-title">Select Priority</h5>
-                      <select id="priority" class="form-select" aria-label="Default select example">
-                        <option selected="" disabled="true">Select Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                      </select>
-                   </div>
-                </div>
-
-
-               
-                <div class="col-lg-6">
-                    <div class="card-body">
-                      <h5 class="card-title">Select Task Type</h5>
-                      <select id="ttype" class="form-select" aria-label="Default select example">
-                        <option selected="">Select Task Type</option>
-                        <option value="Research">Research</option>
-                        <option value="Original Project">Original Project</option>
-                        <option value="Changes">Changes</option>
-                      </select>
-                   </div>
-                </div>
-
-
                 <div class="col-lg-12">
                     <div class="card-body">
                       <h5 class="card-title">Select Project</h5>
@@ -127,7 +99,52 @@ require('../../API/function.php');
                    </div>
                 </div>
 
+                <div class="col-lg-12">
+                    <div class="card-body">
+                      <h5 class="card-title">Select  Employees</h5>
+                      <select id="eid" class="form-select" aria-label="Default select example">
+                        <option selected="">Select Employees</option>
+                        <?php 
+                        $sql = "SELECT * FROM  employees";
+                        $result = mysqli_query($db, $sql);
+                        if (mysqli_num_rows($result) > 0)
+                        {
+                          while($row = mysqli_fetch_assoc($result)) 
+                          {
+                            echo'<option value="'.$row['eid'].'">'.$row['fname']." ".$row['lname'].'</option>';
+                          }
+                        }
+                        ?>
+                        
+                      </select>
+                   </div>
+                </div>
 
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Priority</h5>
+                      <select id="priority" class="form-select" aria-label="Default select example">
+                        <option selected="" disabled="true">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                   </div>
+                </div>
+
+
+
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Task Type</h5>
+                      <select id="ttype" class="form-select" aria-label="Default select example">
+                        <option selected="">Select Task Type</option>
+                        <option value="Research">Research</option>
+                        <option value="Original Project">Original Project</option>
+                        <option value="Changes">Changes</option>
+                      </select>
+                   </div>
+                </div>
                 <div class="col-lg-6">
                     <div class="card-body">
                       <h5 class="card-title">Select Status</h5>
@@ -141,16 +158,14 @@ require('../../API/function.php');
                       </select>
                    </div>
                 </div>
+                <div class="col-lg-6">
+                    <div class="card-body">
+                    <h5 class="card-title">Estimated Time</h5>
+                    <input type="text" id="etime" class="form-control">
+                    </div>
+                </div>
 
-
-               
                 
-
-               
-             
-
-               
-
             </div>
           </div>
 
@@ -166,7 +181,7 @@ require('../../API/function.php');
               <textarea id="description" class="tinymce-editor">
                
               </textarea><!-- End TinyMCE Editor -->
-              <input type="hidden" id="eid" value="<?php echo $eid; ?>" class="form-control">
+              <!-- <input type="hidden" id="eid" value="<?php echo $eid; ?>" class="form-control"> -->
             </div>
           </div>
           </form>
@@ -188,17 +203,18 @@ $(document).ready(function() {
         var edate = $('#edate').val().trim();
         var ttype = $('#ttype').val().trim();
         var status = $('#status').val().trim();
+        var etime = $('#etime').val().trim();
         var title = $('#title').val().trim();
         var eid = $('#eid').val().trim();
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
         var priority = $('#priority').val().trim();
 
-        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" &&  title !== "" && priority !== "") {
+        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== ""  && etime !== "" && title !== "" && priority !== "") {
             // AJAX request
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'task', pname: pname, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, title:title, priority:priority, eid:eid },
+                data: { ops: 'task', pname: pname, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, etime:etime, title:title, priority:priority, eid:eid },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({

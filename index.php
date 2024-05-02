@@ -43,7 +43,7 @@
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <a href="<?php echo $base_url;?>/Dashboard/index.php" class="logo d-flex align-items-center w-auto">
                   <img src="https://dds.doodlodesign.com/assets/img/logo.png" alt="">
                   <span class="d-none d-lg-block">DDS Tool</span>
                 </a>

@@ -30,8 +30,6 @@ if(isset($_GET['eid'])){
 
   $sql = "SELECT * FROM employees WHERE eid = '$eid'";
   $result = mysqli_query($db, $sql);
-
-$result = mysqli_query($db, $sql);
 if ($result && mysqli_num_rows($result) > 0)
 {
   while ($row = mysqli_fetch_assoc($result))
@@ -44,7 +42,7 @@ if ($result && mysqli_num_rows($result) > 0)
       <h1>Profile</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">Profile</li>
         </ol>
@@ -171,8 +169,6 @@ if ($result && mysqli_num_rows($result) > 0)
 ?>
                    
                     <div class="text-center">  
-                    <!-- <input type="hidden" class="form-control" name="eid" id="eid" value="<?php echo $row["eid"];?>"> -->
-
                     <input type="hidden" id="eid" value="<?php echo $eid; ?>" class="form-control">
                    
                     <input type="button" class="btn btn-primary" name="update" id="update" value="Save Changes">

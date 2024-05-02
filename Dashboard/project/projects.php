@@ -27,8 +27,8 @@ require('../sidebar.php');
       <h1>Projects</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">Tasks</li>
+          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
+          <li class="breadcrumb-item active">Projects</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

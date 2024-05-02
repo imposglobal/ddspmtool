@@ -37,7 +37,7 @@ if(isset($_GET["get_date"]))
     <h1>Attendance</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="">Home</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
         <li class="breadcrumb-item active">Attendance</li>
       </ol>
     </nav>
@@ -106,7 +106,11 @@ if(isset($_GET["get_date"]))
 
         </div>
         <?php 
-      $sql = "SELECT COUNT(*) AS total FROM attendance";
+        if($role == 0){
+          $sql = "SELECT COUNT(*) AS total FROM attendance";
+        }else{
+          $sql = "SELECT COUNT(*) AS total FROM attendance WHERE eid ='$eid'";
+        }
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];

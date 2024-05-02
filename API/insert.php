@@ -46,34 +46,30 @@ switch ($operation) {
       break;
 
       //task add
-      case "task":
-        $pname = $_POST['pname'];
-        $desc = $_POST['description'];
-        $sdate = $_POST['sdate'];
-        $edate = $_POST['edate'];
-        $ttype = $_POST['ttype'];
-        $status = $_POST['status'];
-        $stime = strtotime($_POST['stime']);
-        $etime = strtotime($_POST['etime']);
-        $title = $_POST['title'];
-        $eid = $_POST['eid'];
-        $created_at = date('y-m-d H:i:s');
+    case "task":
+    $pname = $_POST['pname'];
+    $desc = $_POST['description'];
+    $sdate = $_POST['sdate'];
+    $edate = $_POST['edate'];
+    $ttype = $_POST['ttype'];
+    $status = $_POST['status'];
+    // $etime = $_POST['etime'];
+    $etime = isset($_POST['etime']) ? $_POST['etime'] : null; 
+    // $estimated_time = ($etime != "") ? date("h:i A", strtotime($etime)) : null; 
+    $title = $_POST['title'];
+    $priority = $_POST['priority'];
+    $eid = $_POST['eid'];
+    $created_at = date('y-m-d H:i:s');
 
-        // Calculate the difference in seconds
-        $difference_seconds = $etime - $stime;
+    $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, estimated_time, priority, created_at) VALUES
+            ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$etime', '$priority', '$created_at')";
+    if ($db->query($sql) === TRUE) {
+        echo "Task Added successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $db->error;
+    }
+    break;
 
-        // Convert difference to hours
-        $timeframe = $difference_seconds / 3600; // 3600 seconds = 1 hour
-  
-        $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, timeframe, created_at) VALUES
-        ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$timeframe', '$created_at')";
-        if ($db->query($sql) === TRUE) {
-          echo "Task Added successfully";
-          } else {
-              echo "Error: " . $sql . "<br>" . $db->error;
-          }
-         
-        break;
 
         //Register Employee
       case "register":
@@ -101,6 +97,28 @@ switch ($operation) {
           $db->close();
   
         break;
+
+
+
+        // Assign Projects
+
+        case "assign_project":
+          $project_id = $_POST['project_id'];
+          $employee_id = $_POST['employee_id'];
+  
+          $sql = "INSERT INTO project_assign (pid, eid) VALUES('$project_id', '$employee_id')";
+          if ($db->query($sql) === TRUE) 
+            {
+            echo "Project Assigned successfully";
+            } 
+            else 
+            {
+                echo "Error: " . $sql . "<br>" . $db->error;
+            }
+            // Close dbection
+            $db->close();
+    
+          break;
 
     default:
       echo "Bad Gateway";

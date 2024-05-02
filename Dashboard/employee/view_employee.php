@@ -37,7 +37,7 @@ require('../../API/function.php');
       <h1>Employees</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
           <li class="breadcrumb-item active">View</li>
         </ol>
       </nav>
