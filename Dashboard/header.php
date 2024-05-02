@@ -71,7 +71,7 @@ if(isset($_SESSION['username'])) {
 <div class="d-flex align-items-center justify-content-between">
   <a href="<?php echo $base_url;?>/Dashboard/index.php" class="logo d-flex align-items-center">
     <img src="https://dds.doodlo.in/assets/img/logo.png" alt="">
-    <span class="d-none d-lg-block">DDS <?php echo $base_url;?></span>
+    <span class="d-none d-lg-block">DDS </span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
@@ -118,7 +118,7 @@ if(isset($_SESSION['username'])) {
         <li>
           <a class="dropdown-item d-flex align-items-center" href="<?php echo $base_url;?>/Dashboard/employee/user-profile.php">
             <i class="bi bi-gear"></i>
-            <span>Account Settings</span>
+            <span>Account Settings <?php echo $base_url;?></span>
           </a>
         </li>
         <li>
