@@ -114,11 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                       // Update Manager Status
                  case "update_mstatus":
-                    if(isset($_POST['tid'], $_POST['m_status']))
+                    if(isset($_POST['tid'], $_POST['m_status'], $_POST['feedback']))
                      {
                         $tid = $_POST['tid'];
-                        $m_status= $_POST['m_status'];   
-                        $sql = "UPDATE task SET m_status = '$m_status' WHERE tid = '$tid'";
+                        $m_status= $_POST['m_status'];
+                        $feedback= $_POST['feedback'];   
+                        $sql = "UPDATE task SET m_status = '$m_status', feedback = '$feedback'  WHERE tid = '$tid'";
                         if ($db->query($sql) === TRUE) 
                         {
                             // Return success message as JSON
@@ -131,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo "Incomplete data for updating status";
                     }
                     break;
-
                     // code for start task
 
                     case "start_task_time":

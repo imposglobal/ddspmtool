@@ -266,7 +266,7 @@ elseif($row["priority"] == "Low") {
      if($role == 0)
      {
       ?>
-      <div class="col-lg-6">   
+      <div class="col-lg-12">   
       <div class="card"> 
       <div class="card-body">
       <form method="POST">
@@ -279,7 +279,10 @@ elseif($row["priority"] == "Low") {
       <option value="Rejected">Rejected</option>
       <option value="Initiated">Initiated</option>
       <option value="On hold">On hold</option>
-      </select>    
+      </select>  
+      
+      <h5 class="card-title edit">Feedback</h5>
+      <textarea id="feedback" value=""><?php echo $row["feedback"];?></textarea>
       <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
       </form>
       </div>
@@ -473,10 +476,12 @@ tinymce.init({
           // e.preventDefault();
         var tid = $('#tid').val(); 
         var m_status = $('#m_status').val();
+        var feedback = tinymce.get('feedback').getContent();
+        // var feedback = $('#feedback').val();
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
-                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status},
+                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status, feedback: feedback},
                 success: function (response) {
                     // Parse JSON response
                     var data = JSON.parse(response);
@@ -485,12 +490,12 @@ tinymce.init({
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: data.message,
-                            didClose: function() 
-                            {
-                            // Reload the page
-                            window.location.reload();
-                            }
+                            text: data.message
+                            // didClose: function() 
+                            // {
+                            // // Reload the page
+                            // window.location.reload();
+                            // }
                         });
                     } else {
                         // Show SweetAlert error message
