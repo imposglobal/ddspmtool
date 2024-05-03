@@ -232,7 +232,7 @@ elseif($row["priority"] == "Low") {
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Estimated Time :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["estimated_time"];?> Hrs</h6> 
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["estimated_time"];?></h6> 
             </div>
         </div>
         <hr class="hr_margin">
@@ -253,8 +253,28 @@ elseif($row["priority"] == "Low") {
         </div>
         <hr class="hr_margin">
 
-        <h4 class="card-title">Description</h4>
-        <h6 class="card-subtitle "><?php echo $row["description"];?></h6>    
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">End Date :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["end_date"];?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
+
+        <?php if($role !== 0){ ?>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Manager Status :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["m_status"];?></h6>
+            </div>
+        </div>
+     
+        <hr class="hr_margin">
+        <h4 class="card-title">Feedback</h4>
+        <h6 class="card-subtitle "><?php echo $row["feedback"];?></h6>  
+        <hr class="hr_margin">
+        <?php } ?>
     </div>
     </div>
     </div>
