@@ -588,8 +588,13 @@ function view_total_break_time(tid) {
             ops: 'view_total_break_time' 
         },
         success: function (data) 
-        {           
-            $('#total_break_time').html(data.total_break_time);  
+        {  
+            if(data.total_break_time === 0) {
+                $('#total_break_time').html('No Breaks');
+            } else {
+                $('#total_break_time').html(data.total_break_time);
+            } 
+            // $('#total_break_time').html(data.total_break_time);  
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert('Unable To Load Data');

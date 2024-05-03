@@ -71,19 +71,38 @@ if(isset($_GET['ops']))
             if(isset($_GET['tid'])) 
             {
             $tid = $_GET['tid'];
+          
+            // $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h')
+            // ELSE '' END, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS total_break_time 
+            // FROM time_difference WHERE tid = '$tid';";
+
             // this query calculates the total break time in hours and checks if it's greater than 0. If it is, it converts the total break time to hours and concatenates it with the string 'h '. If not, it returns an empty string.
-            $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h ')
-            ELSE '' END, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS total_break_time 
-            FROM time_difference WHERE tid = '$tid';";
-                $query = mysqli_query($db, $sql);
+
+            $sql = "SELECT tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h') ELSE ''
+                    END AS hours, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS minutes FROM time_difference WHERE tid = '$tid'";
             
+                $query = mysqli_query($db, $sql);
                 if ($query && mysqli_num_rows($query) > 0) 
                 {
                     $row = mysqli_fetch_assoc($query);
+
+                    // Check if total break time is zero
+                    if(empty($row['hours']) && $row['minutes'] == '0m') 
+                    {
+                        // If total break time is zero, set 'no breaks' as the total break time
+                        $row['total_break_time'] = 'No Breaks';
+                    } 
+                    else 
+                    {
+                        // Otherwise, concatenate hours and minutes
+                        $row['total_break_time'] = $row['hours'] . $row['minutes'];
+                    }
             
-                    // Return the data as JSON
-                    echo json_encode($row);
-                } else {
+                     // Return the data as JSON
+                     echo json_encode($row);
+                } 
+                else 
+                {
                     // Handle case when no data found
                     echo json_encode(array('error' => 'No data found'));
                 }
@@ -94,6 +113,8 @@ if(isset($_GET['ops']))
                 echo json_encode(array('error' => 'tid parameter is missing'));
             }           
         break;
+
+
 
         // Code to retrieve all breaks for a particular task ID.
         case "view_breaks":
