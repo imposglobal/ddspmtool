@@ -102,7 +102,10 @@ if ($query && mysqli_num_rows($query) > 0)
     while ($row = mysqli_fetch_assoc($query))
     {
 
-         // Status 
+        // feedback
+        $removehtmltags = strip_tags($row["feedback"]);
+        $decode_feedback = html_entity_decode($removehtmltags);
+    // Status 
     if($row["status"] == "")
     {
       $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
@@ -264,7 +267,7 @@ elseif($row["priority"] == "Low") {
      
         <hr class="hr_margin">
         <h4 class="card-title">Feedback</h4>
-        <h6 class="card-subtitle "><?php echo $row["feedback"];?></h6>  
+        <h6 class="card-subtitle "><?php echo $decode_feedback;?></h6>  
         <hr class="hr_margin">
         <?php } ?>
     </div>

@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $sdate = $_POST['sdate'];
                         $edate = $_POST['edate'];
                         $task_type = $_POST['task_type'];
-                        $title = $_POST['title'];
+                        $title = htmlspecialchars($_POST['title']);
                         $status = $_POST['status'];
                         $estimated_time = $_POST['etime'];
                         // $estimated_time = date("h:i A", strtotime($_POST['etime']));
                         $priority = $_POST['priority'];
-                        $editor1 = $_POST['editor1'];
+                        $editor1 = htmlspecialchars($_POST['editor1']);
     
                         $sql = "UPDATE task SET start_date = '$sdate', end_date = '$edate', task_type = '$task_type', title = '$title', status = '$status', estimated_time = '$estimated_time', priority = '$priority', description = '$editor1' WHERE tid = '$tid'";
                         if ($db->query($sql) === TRUE) 
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      {
                         $tid = $_POST['tid'];
                         $m_status= $_POST['m_status'];
-                        $feedback= $_POST['feedback'];   
+                        $feedback= htmlspecialchars($_POST['feedback']); 
                         $sql = "UPDATE task SET m_status = '$m_status', feedback = '$feedback'  WHERE tid = '$tid'";
                         if ($db->query($sql) === TRUE) 
                         {
