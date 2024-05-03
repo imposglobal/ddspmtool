@@ -252,15 +252,7 @@ elseif($row["priority"] == "Low") {
             </div>
         </div>
         <hr class="hr_margin">
-
-        <div class="row">
-            <div class="col pt-3">
-                <h4 class="card-title d-inline">End Date :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["end_date"];?></h6>
-            </div>
-        </div>
-        <hr class="hr_margin">
-
+        
         <?php if($role !== 0){ ?>
 
         <div class="row">
