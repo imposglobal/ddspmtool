@@ -134,26 +134,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                     // code for start task
 
+
+
                     case "start_task_time":
                         $response = array();
 
                         // Check if all required POST parameters are set
-                        if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
+                        if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) 
+                        {
                             // Retrieve POST data
                             $tid = $_POST['tid'];
                             $eid = $_POST['eid'];
                             $pid = $_POST['pid'];
-                           
+                        // for curretnt time
                             date_default_timezone_set('Asia/Kolkata');
                             $timestamp = date('h:i:s A');
-                        
+                        // for current date
+                            $date = date('Y-m-d');   
                             // Check if task time entry already exists
-                            $check_sql = "SELECT * FROM `task_time` WHERE `tid`='$tid' AND `eid`='$eid' AND `pid`='$pid'";
+                            $check_sql = "SELECT * FROM `task_time` WHERE `tid`='$tid' AND `eid`='$eid' AND `pid`='$pid' AND `date`='$date'";
                             $result = $db->query($check_sql);
                         
-                            if ($result && $result->num_rows == 0) {
+                            if ($result && $result->num_rows == 0) 
+                            {
                                 // If no entry exists, insert task time
-                                $insert_sql = "INSERT INTO `task_time`(`tid`, `eid`, `pid`, `initial_time`) VALUES ('$tid','$eid','$pid','$timestamp')";
+                                $insert_sql = "INSERT INTO `task_time`(`tid`, `eid`, `pid`, `initial_time`, `date`) VALUES ('$tid','$eid','$pid','$timestamp', '$date')";
                                 if($db->query($insert_sql)) {
                                     $response['success'] = true;
                                     $response['message'] = "Task time inserted successfully.";
@@ -161,24 +166,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $response['success'] = false;
                                     $response['message'] = "Error inserting task time.";
                                 }
-                            } else {
+                            } 
+                            else 
+                            {
                                 // If entry exists, insert start time and calculate difference
-                                $insert_sql = "INSERT INTO `task_start_time`(`tid`, `eid`, `pid`, `start_time`) VALUES ('$tid','$eid','$pid','$timestamp')";
-                                if($db->query($insert_sql)) {
-                                    // $query1 = "SELECT * FROM `task_pause_time`  ORDER BY `pause_time` DESC";
-                                    $query1 = "SELECT * FROM `task_pause_time` WHERE eid = '$eid' AND tid = '$tid' ORDER BY `pause_time` DESC;";
-
-                                    $result1 = $db->query($query1);
-                        
-                                    // $query2 = "SELECT * FROM `task_start_time` ORDER BY `start_time` DESC";
-                                    $query2 = "SELECT * FROM `task_start_time` WHERE eid = '$eid' AND tid = '$tid' ORDER BY `start_time` DESC;";
-
+                                $insert_sql = "INSERT INTO `task_start_time`(`tid`, `eid`, `pid`, `start_time`, `date`) VALUES ('$tid','$eid','$pid','$timestamp','$date')";
+                                if($db->query($insert_sql)) 
+                                {
+    
+                                    $query1 = "SELECT * FROM `task_pause_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `pause_time` DESC LIMIT 1;";
+                                    $result1 = $db->query($query1);            
+                                    $query2 = "SELECT * FROM `task_start_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `start_time` DESC LIMIT 1;";
                                     $result2 = $db->query($query2);
-                        
                                     if ($result1 && $result2) {
                                         $row1 = $result1->fetch_assoc();
-                                        $row2 = $result2->fetch_assoc();
-                                        
+                                        $row2 = $result2->fetch_assoc();           
                                         $reason = $row1['reason'];
                                         // creates a new DateTime object $time1 using the value of $row1['pause_time']
                                         $time1 = new DateTime($row1['pause_time']);
@@ -188,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         // %H:%I:%S' specifies that the output should be in the format of hours, minutes, and seconds. 
                                         $formattedDifference = $difference->format('%H:%I:%S');
                         
-                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason' )";
+                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
                                         if($db->query($insertQuery)) {
                                             $response['success'] = true;
                                             $response['message'] = "Task start time inserted successfully.";
@@ -228,9 +230,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $reason = $_POST['reason'];
                                 date_default_timezone_set('Asia/Kolkata');
                                 $timestamp = date('h:i:s A');
+                                $date = date('Y-m-d');
                         
                                 // Insert pause time into the database
-                                $sql = "INSERT INTO `task_pause_time`(`tid`, `eid`, `pid`, `pause_time`, `reason`) VALUES ('$tid','$eid','$pid','$timestamp', '$reason')";
+                                $sql = "INSERT INTO `task_pause_time`(`tid`, `eid`, `pid`, `pause_time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$timestamp','$reason','$date')";
                                 if ($db->query($sql)) {
                                     $response['success'] = true;
                                     $response['message'] = "Task paused successfully.";
@@ -261,14 +264,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $eid = $_POST['eid'];
                                     $pid = $_POST['pid'];   
                                     $timestamp = date('h:i:s A');
-                                    $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks')";
+                                    $date = date('Y-m-d');
+                                    $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks','$date')";
                                     $db->query($sql2);
 
-                                    $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE `tid` = '$tid'";                  
+                                    $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE  eid = '$eid' AND `tid` = '$tid'";                  
                                     if ($db->query($sql1) === TRUE)
                                      {
                                         // Fetch the initial and end times
-                                        $query = "SELECT `initial_time`, `end_time` FROM `task_time` WHERE `tid` = '$tid'";
+                                        $query = "SELECT * FROM `task_time` WHERE eid = '$eid' AND `tid` = '$tid'";
                                         
                                         $result = $db->query($query);
                             
@@ -278,10 +282,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             $start_time = new DateTime($row['initial_time']);
                                             $end_time = new DateTime($row['end_time']);
                                             $difference = $end_time->diff($start_time);
-                                            $timeframe = $difference->format('%H:%I:%S'); // Format as needed
+                                            $timeframe = $difference->format('%H:%I:%S'); 
+
+                                        //  $start_time = strtotime($row['initial_time']);
+                                        //  $end_time = strtotime($row['end_time']);
+                                        //  $total_time = $end_time - $start_time;
+                                        //   // Convert seconds to hours, minutes, and seconds
+                                        //  $hours = floor($total_time/ 3600);
+                                        //  $minutes = floor(($total_time % 3600) / 60);
+                                        //  $seconds =  $total_time % 60;    
+                                        //  $timeframe = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
                             
                                             // Update total_time in the database
-                                            $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE `tid` = '$tid'";
+                                            $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE  eid = '$eid' AND `tid`= '$tid'";
                                             
                                             if ($db->query($update_query) === TRUE) 
                                             {

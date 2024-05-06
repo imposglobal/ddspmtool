@@ -63,6 +63,15 @@ require('../../API/function.php');
     background-color: #0056b3;
 }
 
+.taskmessage
+{
+    color: #012970;
+    font-size: 13px;
+    font-family: "Open Sans", sans-serif;
+    padding-top:3px;
+ 
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
@@ -154,13 +163,12 @@ $(document).ready(function() {
         var tid = $startButton.siblings('#tid').val(); 
         var eid = $startButton.siblings('#eid').val(); 
         var pid = $startButton.siblings('#pid').val(); 
-       
-        // var reason = $('#select_reason_' + tid).val();
         $.ajax({
             type: "POST",
             url: "../../API/update.php",
             data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid},
-            success: function(response) {
+            success: function(response) 
+                {
                 // Parse JSON response
                 var data = JSON.parse(response);
                 if (data.success) {
@@ -171,7 +179,7 @@ $(document).ready(function() {
                         text: 'Task has started',
                     });
                     // Store button state in local storage
-                    localStorage.setItem('startButtonState_' + tid, 'disabled');
+                    // localStorage.setItem('startButtonState_' + tid, 'disabled');
                 } else {
                     // Show SweetAlert error message
                     Swal.fire({
@@ -209,12 +217,11 @@ $(document).ready(function() {
 
     // When any button with class "submit_time" is clicked
     $('button.submit_time').click(function() {
-        var tid = $(this).closest('div').attr('id').split('_')[2];
+        // var tid = $(this).closest('div').attr('id').split('_')[2];
+        var tid = $(this).siblings('input[type="hidden"]').val();
         var eid = $('#eid').val(); 
         var pid = $('#pid').val(); 
-        var reason = $('#select_reason_' + tid).val(); 
-        
-        var $startButton = $('#start_time_' + tid);
+        var reason = $('#select_reason_' + tid).val();        
         $.ajax({
             type: "POST",
             url: "../../API/update.php",
@@ -364,6 +371,95 @@ function deleteTask(tid) {
     });
 }
 </script>
+
+<!-- code to display timer -->
+
+<!-- <script>
+    let timerInterval; // Variable to hold the interval reference
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+
+    // Function to start the timer
+    function startTimer() {
+      timerInterval = setInterval(function() {
+        seconds++;
+        if (seconds == 60) {
+          seconds = 0;
+          minutes++;
+        }
+        if (minutes == 60) {
+          minutes = 0;
+          hours++;
+        }
+        displayTimer();
+      }, 1000);
+    }
+
+    // Function to pause the timer
+    function pauseTimer() {
+      clearInterval(timerInterval);
+    }
+
+    // Function to stop the timer
+    function stopTimer() {
+      clearInterval(timerInterval);
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+      displayTimer();
+    }
+
+    // Function to display the timer
+    function displayTimer() {
+      let display = document.getElementById("timerDisplay");
+      display.textContent = "Timer: " + 
+        (hours < 10 ? "0" + hours : hours) + ":" + 
+        (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+        (seconds < 10 ? "0" + seconds : seconds);
+    }
+  </script> -->
+
+  <script>
+    var timerDisplay = document.getElementById("timerDisplay");
+    var timerInterval;
+    var isPaused = false;
+
+    // Check if there's a message stored in local storage
+    var storedMessage = localStorage.getItem("timerMessage");
+    if (storedMessage) {
+        timerDisplay.textContent = storedMessage;
+    }
+
+    function startTimer() {
+        timerDisplay.textContent = "Task started!";
+        // Store the message in local storage
+        localStorage.setItem("timerMessage", "Task started!");
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function pauseTimer() {    
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "You are on pause";
+            localStorage.setItem("timerMessage", "You are on pause");
+            isPaused = true;
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Timer stopped";
+        localStorage.removeItem("timerMessage");
+    }
+
+    // function updateTimer() {
+      
+    // }
+</script>
+
+
+  
+
+
 
 
 

@@ -102,9 +102,12 @@ if ($query && mysqli_num_rows($query) > 0)
     while ($row = mysqli_fetch_assoc($query))
     {
 
-        // feedback
+        // for feedback field
+        // removes any HTML tags from it using the strip_tags()
         $removehtmltags = strip_tags($row["feedback"]);
+        // decodes HTML entities back into their respective characters.
         $decode_feedback = html_entity_decode($removehtmltags);
+
     // Status 
     if($row["status"] == "")
     {
@@ -144,8 +147,7 @@ elseif($row["priority"] == "Medium") {
 elseif($row["priority"] == "Low") {
     $priority_html = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
 }
-
-        ?>
+?>
    
 
   
@@ -264,8 +266,8 @@ elseif($row["priority"] == "Low") {
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["m_status"];?></h6>
             </div>
         </div>
-     
         <hr class="hr_margin">
+
         <h4 class="card-title">Feedback</h4>
         <h6 class="card-subtitle "><?php echo $decode_feedback;?></h6>  
         <hr class="hr_margin">
@@ -492,7 +494,6 @@ tinymce.init({
         var tid = $('#tid').val(); 
         var m_status = $('#m_status').val();
         var feedback = tinymce.get('feedback').getContent();
-        // var feedback = $('#feedback').val();
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
@@ -549,31 +550,34 @@ function view_timeframe(tid)
         },
         success: function(data) 
         {
-            var timeframe = data.timeframe;
-            // checks if a variable named timeframe is not null and not undefined
-            if (timeframe !== null && timeframe !== undefined) 
-            {
-                // If the timeframe is greater than or equal to 60, it calculates the number of hours and remaining minutes from the timeframe
-                if (timeframe >= 60) {
+                var timeframe = data.time_frame;
+                if (timeframe !== undefined) 
+                {
+                  // If the timeframe is greater than or equal to 60, it calculates the number of hours and remaining minutes from the timeframe
+                if (timeframe >= 60) 
+                {
                     var hours = Math.floor(timeframe / 60);
                     var remaining_minutes = timeframe % 60;
                     var displayString = (hours > 0 ? hours + ' hr ' : '') + remaining_minutes + ' m';
                     // Display the result in hours and minutes format
                     $('#timeframe_placeholder').html(displayString);
-                } else {
+                } 
+                else 
+                {
                     // Display the result in minutes format 
                     $('#timeframe_placeholder').html(timeframe + 'm');
+                }  
                 }
-            } 
-            else 
-            {
-                // Handle case when timeframe is null or undefined
-                $('#timeframe_placeholder').html('Not Started');
+                // else 
+                // {
+                //     // Handle case when timeframe is not defined
+                //     $('#timeframe_placeholder').text('Not Started');
+                // }
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('Unable To Load Data');
-        }
+        // error: function(jqXHR, textStatus, errorThrown) 
+        // {
+        //     alert('Unable To Load Data');
+        // }
     });
 }
 view_timeframe(<?php echo $tid; ?>);
@@ -583,12 +587,13 @@ view_timeframe(<?php echo $tid; ?>);
 <script>
 function view_total_break_time(tid) {
     $.ajax({
-        url: "../../API/get.php?tid=" + tid, 
+        url: "../../API/get.php", 
         type: "GET",
         dataType: "JSON",
         data:
         {
-            ops: 'view_total_break_time' 
+            ops: 'view_total_break_time',
+            tid: tid
         },
         success: function (data) 
         {  
@@ -597,9 +602,9 @@ function view_total_break_time(tid) {
             } else {
                 $('#total_break_time').html(data.total_break_time);
             } 
-            // $('#total_break_time').html(data.total_break_time);  
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) 
+        {
             alert('Unable To Load Data');
         }
     });
@@ -613,12 +618,13 @@ view_total_break_time(<?php echo $tid; ?>);
 <script>
 function view_breaks(tid) {
     $.ajax({
-        url: "../../API/get.php?tid=" + tid, 
+        url: "../../API/get.php", 
         type: "GET",
         dataType: "JSON",
         data:
         {
-            ops: 'view_breaks' 
+            ops: 'view_breaks',
+            tid: tid           
         },
         success: function (data) 
         {
@@ -636,7 +642,7 @@ function view_breaks(tid) {
                     // Loop through each record and append to the container
                     `<div class="col pt-3">
                         <h4 class="card-title d-inline">Time:</h4>
-                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} M</h6><br>   
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time}</h6><br>   
                         <h4 class="card-title d-inline">Reason:</h4>
                         <h6 class="card-subtitle d-inline ml-2 ps-2">${record.reason}</h6>         
                     </div>`
@@ -649,7 +655,7 @@ function view_breaks(tid) {
         }
     });
 }
-view_breaks(<?php echo $tid; ?>);
+view_breaks(<?php echo $tid;?>);
 </script>
 
 

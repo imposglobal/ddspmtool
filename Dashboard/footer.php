@@ -23,6 +23,14 @@
 
   <!-- Template Main JS File -->
   <script src="https://dds.doodlo.in/assets/js/main.js"></script>
+
+  <script>
+    // Reload the window every 10 minutes (600,000 milliseconds)
+    setTimeout(function() {
+    window.location.reload();
+    }, 600000);
+  </script>
+
 <script>
   $(document).ready(function(){
     $('#clockout').hide();
@@ -97,13 +105,5 @@
     });
   }
 </script>
-
-
-
-
-
-
-
 </body>
-
 </html>

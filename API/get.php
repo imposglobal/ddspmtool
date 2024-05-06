@@ -12,26 +12,24 @@ if(isset($_GET['ops']))
 
         // view total time 
         case "view_time":
-            if(isset($_GET['tid'])) 
+            if(isset($_GET['tid']))
             {
                 $tid = $_GET['tid'];
-            
-                // Assuming $db is your database connection
-                $sql = "SELECT task_time.total_time, time_difference.time, time_difference.reason 
-                        FROM task_time INNER JOIN time_difference ON task_time.tid = time_difference.tid 
-                        WHERE task_time.tid = '$tid'";
-                $query = mysqli_query($db, $sql);          
-                if ($query && mysqli_num_rows($query) > 0) 
-                {
-                    $row = mysqli_fetch_assoc($query);   
-                    // Calculate Time Frame
+                $sql1 = "SELECT * FROM `task_time` WHERE tid = '$tid'";
+                $sql2 = "SELECT SUBSTRING(SEC_TO_TIME(SUM(TIME_TO_SEC(time))), 1, 8) AS total_break_time FROM time_difference WHERE tid = '$tid'";
+                $query1 = mysqli_query($db, $sql1);
+                $query2 = mysqli_query($db, $sql2);        
+                if ($query1 && $query2) 
+                {                
+                    $row1 = mysqli_fetch_assoc($query1);
+                    $row2 = mysqli_fetch_assoc($query2);
 
-                    // splitting the values stored in $row["total_time"] and $row["time"] into arrays
+                    // splitting the values stored in $row["total_time"] and $row["total_break_time"] into arrays
 
                     // for total task time
-                    list($total_hours, $total_minutes, $total_seconds) = explode(':', $row["total_time"]);
+                    list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1["total_time"]);
                     // for total break time
-                    list($difference_hours, $difference_minutes, $difference_seconds) = explode(':', $row["time"]);
+                    list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2["total_break_time"]);
             
                     // convert hrs and minuts in seconds for total_time 
                     // 1 minute = 1 * 60 
@@ -41,16 +39,14 @@ if(isset($_GET['ops']))
                     // convert hrs and minuts in seconds for total_break_time
                     // 1 minute = 1 * 60 
                     // 1 hr = 60 * 60
-                    $difference_seconds = $difference_hours * 3600 + $difference_minutes * 60 + $difference_seconds;
+                    $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
             
-                    $difference_seconds = $totaltime_seconds - $difference_seconds;
-                    $timeframe = round($difference_seconds / 60);
+                    $total_timeframe = $totaltime_seconds - $total_break_time_seconds;
+                    $timeframe = round($total_timeframe / 60);
 
-                    // Adding the calculated timeframe to the $row array
-                    $row['timeframe'] = $timeframe;
-            
+                    // echo $timeframe;                    
                     // Return the data as JSON
-                    echo json_encode($row);                   
+                    echo json_encode(array('total_time' => $row1['total_time'], 'total_break_time' => $row2['total_break_time'], 'time_frame' => $timeframe));                   
                 } 
                 else
                 {
@@ -71,11 +67,6 @@ if(isset($_GET['ops']))
             if(isset($_GET['tid'])) 
             {
             $tid = $_GET['tid'];
-          
-            // $sql = "SELECT  tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h')
-            // ELSE '' END, CONCAT(FLOOR(MOD(SUM(TIME_TO_SEC(time)), 3600) / 60), 'm') AS total_break_time 
-            // FROM time_difference WHERE tid = '$tid';";
-
             // this query calculates the total break time in hours and checks if it's greater than 0. If it is, it converts the total break time to hours and concatenates it with the string 'h '. If not, it returns an empty string.
 
             $sql = "SELECT tid, CASE WHEN FLOOR(SUM(TIME_TO_SEC(time)) / 3600) > 0 THEN CONCAT(FLOOR(SUM(TIME_TO_SEC(time)) / 3600), 'h') ELSE ''
@@ -120,7 +111,7 @@ if(isset($_GET['ops']))
         case "view_breaks":
             if(isset($_GET['tid'])) 
             {
-                $tid = $_GET['tid'];  
+                $tid = $_GET['tid'];
                 // $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid';";
                 $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid' AND time != '00:00:00';";
                 $query = mysqli_query($db, $sql);
