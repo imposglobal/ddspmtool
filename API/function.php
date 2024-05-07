@@ -120,8 +120,8 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '<input type="hidden" id="tid" value="' . $tid . '">';
                 echo '<input type="hidden" id="eid" value="' . $eid . '">';
                 echo '<input type="hidden" id="pid" value="' . $pid . '">';
-                echo '<button type="button" onclick="startTimer()" name="start_time" id="start_time_' . $tid . '"  style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
-                echo '<button type="button" onclick="pauseTimer()" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
+                echo '<button type="button" onclick="startTimer(' . $tid . ')" name="start_time" id="start_time_' . $tid . '"  style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
+                echo '<button type="button" onclick="pauseTimer(' . $tid . ')" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
                         <i class="fas fa-pause" style="color:orange;"></i> 
                       </button>'; 
                       
@@ -145,8 +145,8 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                     <button type="button" class="submit_time">Submit</button>
                 </div>
                 ';
-                echo '<button type="button" onclick="stopTimer()" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';   
-                echo '<p id="timerDisplay" class="taskmessage"></p>';         
+                echo '<button type="button" onclick="stopTimer(' . $tid . ')" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';   
+                echo '<p id="timerDisplay'.$tid .'" class="taskmessage"></p>';         
                 echo '</form>
                         </div>
                     </div>

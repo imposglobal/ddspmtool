@@ -108,6 +108,14 @@ if ($query && mysqli_num_rows($query) > 0)
         // decodes HTML entities back into their respective characters.
         $decode_feedback = html_entity_decode($removehtmltags);
 
+
+    //   for description field
+         // removes any HTML tags from it using the strip_tags()
+        $removedesc = strip_tags($row["description"]);
+        // decodes HTML entities back into their respective characters.
+        $decode_desc = html_entity_decode($removedesc);
+
+
     // Status 
     if($row["status"] == "")
     {
@@ -254,6 +262,14 @@ elseif($row["priority"] == "Low") {
             <div class="col pt-3">
                 <h4 class="card-title d-inline">End Date :</h4>
                 <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["end_date"];?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Description :</h4>
+                <h6 class="card-subtitle pt-4"><?php echo $decode_desc;?></h6>
             </div>
         </div>
         <hr class="hr_margin">

@@ -372,89 +372,81 @@ function deleteTask(tid) {
 }
 </script>
 
-<!-- code to display timer -->
+<!-- code for add timer messages -->
 
-<!-- <script>
-    let timerInterval; // Variable to hold the interval reference
-    let seconds = 0;
-    let minutes = 0;
-    let hours = 0;
-
-    // Function to start the timer
-    function startTimer() {
-      timerInterval = setInterval(function() {
-        seconds++;
-        if (seconds == 60) {
-          seconds = 0;
-          minutes++;
-        }
-        if (minutes == 60) {
-          minutes = 0;
-          hours++;
-        }
-        displayTimer();
-      }, 1000);
-    }
-
-    // Function to pause the timer
-    function pauseTimer() {
-      clearInterval(timerInterval);
-    }
-
-    // Function to stop the timer
-    function stopTimer() {
-      clearInterval(timerInterval);
-      seconds = 0;
-      minutes = 0;
-      hours = 0;
-      displayTimer();
-    }
-
-    // Function to display the timer
-    function displayTimer() {
-      let display = document.getElementById("timerDisplay");
-      display.textContent = "Timer: " + 
-        (hours < 10 ? "0" + hours : hours) + ":" + 
-        (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-        (seconds < 10 ? "0" + seconds : seconds);
-    }
-  </script> -->
-
-  <script>
-    var timerDisplay = document.getElementById("timerDisplay");
+<script>
     var timerInterval;
     var isPaused = false;
-
-    // Check if there's a message stored in local storage
-    var storedMessage = localStorage.getItem("timerMessage");
-    if (storedMessage) {
-        timerDisplay.textContent = storedMessage;
-    }
-
-    function startTimer() {
+    
+    function startTimer(tid) 
+    {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
         timerDisplay.textContent = "Task started!";
-        // Store the message in local storage
-        localStorage.setItem("timerMessage", "Task started!");
-        timerInterval = setInterval(updateTimer, 1000);
+        localStorage.setItem("timerMessage_" + tid, "Task started!");
     }
 
-    function pauseTimer() {    
-            clearInterval(timerInterval);
-            timerDisplay.textContent = "You are on pause";
-            localStorage.setItem("timerMessage", "You are on pause");
-            isPaused = true;
+    function pauseTimer(tid) {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "You are on pause";
+        localStorage.setItem("timerMessage_" + tid, "You are on pause");
+        isPaused = true;
     }
 
-    function stopTimer() {
+    function stopTimer(tid) {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
         clearInterval(timerInterval);
         timerDisplay.textContent = "Timer stopped";
-        localStorage.removeItem("timerMessage");
+        localStorage.removeItem("timerMessage_" + tid);
     }
 
-    // function updateTimer() {
-      
-    // }
+    function retrieveTimerMessages() {
+    // Check if localStorage is supported
+    if (typeof localStorage === "undefined") {
+        console.error("localStorage is not supported in this browser.");
+        return;
+    }
+
+    // Loop through localStorage items
+    for (var key in localStorage) {
+        // Check if the item is a timer message
+        if (key.startsWith("timerMessage_")) {
+            // Get the status and message from localStorage
+            var status = localStorage.getItem(key);
+            var tid = key.split("_")[1]; 
+
+            // Find timer display element
+            var timerDisplay = document.getElementById("timerDisplay" + tid);
+
+            // Check if timer display element exists
+            if (timerDisplay) {
+                // Update text content based on status
+                timerDisplay.textContent = status;
+            } else {
+                console.error("Timer display element not found for timer ID: " + tid);
+            }
+        }
+    }
+}
+
+// Call retrieveTimerMessages when the page loads
+window.onload = retrieveTimerMessages;  
+
+// Example of storing timer status in localStorage
+// This can be called when the timer starts or pauses
+function updateTimerStatus(timerId, status) {
+    localStorage.setItem("timerMessage_" + timerId, status);
+}
 </script>
+
+
+
+
+
+
+
+
+
 
 
   
