@@ -86,7 +86,7 @@ if(isset($_GET['ops']))
                     else 
                     {
                         // Otherwise, concatenate hours and minutes
-                        $row['total_break_time'] = $row['hours'] . $row['minutes'];
+                        $row['total_break_time'] = $row['hours'] ." ". $row['minutes'];
                     }
             
                      // Return the data as JSON
