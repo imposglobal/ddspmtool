@@ -138,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     case "start_task_time":
                         $response = array();
-
                         // Check if all required POST parameters are set
                         if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) 
                         {
@@ -155,14 +154,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $check_sql = "SELECT * FROM `task_time` WHERE `tid`='$tid' AND `eid`='$eid' AND `pid`='$pid' AND `date`='$date'";
                             $result = $db->query($check_sql);
                         
-                            if ($result && $result->num_rows == 0) 
+                            if($result && $result->num_rows == 0) 
                             {
                                 // If no entry exists, insert task time
                                 $insert_sql = "INSERT INTO `task_time`(`tid`, `eid`, `pid`, `initial_time`, `date`) VALUES ('$tid','$eid','$pid','$timestamp', '$date')";
-                                if($db->query($insert_sql)) {
+                                if($db->query($insert_sql)) 
+                                {
                                     $response['success'] = true;
                                     $response['message'] = "Task time inserted successfully.";
-                                } else {
+                                } 
+                                else 
+                                {
                                     $response['success'] = false;
                                     $response['message'] = "Error inserting task time.";
                                 }
@@ -174,11 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 if($db->query($insert_sql)) 
                                 {
     
-                                    $query1 = "SELECT * FROM `task_pause_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `pause_time` DESC LIMIT 1;";
+                                    $query1 = "SELECT * FROM `task_pause_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `id` DESC LIMIT 1";
                                     $result1 = $db->query($query1);            
-                                    $query2 = "SELECT * FROM `task_start_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `start_time` DESC LIMIT 1;";
+                                    $query2 = "SELECT * FROM `task_start_time` WHERE eid = '$eid' AND tid = '$tid' AND date = '$date' ORDER BY `id` DESC LIMIT 1";
                                     $result2 = $db->query($query2);
-                                    if ($result1 && $result2) {
+                                    if ($result1 && $result2 && $result1->num_rows > 0 && $result2->num_rows > 0) 
+                                    {
                                         $row1 = $result1->fetch_assoc();
                                         $row2 = $result2->fetch_assoc();           
                                         $reason = $row1['reason'];
@@ -191,23 +194,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $formattedDifference = $difference->format('%H:%I:%S');
                         
                                         $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
-                                        if($db->query($insertQuery)) {
+                                        if($db->query($insertQuery)) 
+                                        {
                                             $response['success'] = true;
                                             $response['message'] = "Task start time inserted successfully.";
-                                        } else {
+                                        } 
+                                        else 
+                                        {
                                             $response['success'] = false;
                                             $response['message'] = "Error inserting time difference.";
                                         }
-                                    } else {
+                                    }
+                                    else 
+                                    {
                                         $response['success'] = false;
                                         $response['message'] = "Error fetching data.";
                                     }
-                                } else {
+                                } 
+                                else 
+                                {
                                     $response['success'] = false;
                                     $response['message'] = "Error inserting task start time.";
                                 }
                             }
-                        } else {
+                        } 
+                        else 
+                        {
                             $response['success'] = false;
                             $response['message'] = "Incomplete data for updating time.";
                         }
@@ -222,7 +234,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         case "pause_task_time":
                             $response = array();
                             // Check if all required POST parameters are set
-                            if (isset($_POST['tid'], $_POST['eid'], $_POST['pid'] , $_POST['reason'])) {
+                            if (isset($_POST['tid'], $_POST['eid'], $_POST['pid'] , $_POST['reason'])) 
+                            {
                                 // Retrieve POST data
                                 $tid = $_POST['tid'];
                                 $eid = $_POST['eid'];
@@ -234,15 +247,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                                 // Insert pause time into the database
                                 $sql = "INSERT INTO `task_pause_time`(`tid`, `eid`, `pid`, `pause_time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$timestamp','$reason','$date')";
-                                if ($db->query($sql)) {
+                                if ($db->query($sql)) 
+                                {
                                     $response['success'] = true;
                                     $response['message'] = "Task paused successfully.";
-                                } else {
+                                } 
+                                else 
+                                {
                                     // If there's an error executing the SQL query
                                     $response['success'] = false;
                                     $response['message'] = "Error inserting pause time: " . $db->error;
                                 }
-                            } else {
+                            } 
+                            else 
+                            {
                                 $response['success'] = false;
                                 $response['message'] = "Incomplete data for pausing time.";
                             }
@@ -250,78 +268,143 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             // Output the response as JSON
                             echo json_encode($response);
                             break;
-                        
 
 
 
-                            // stop time
+                
+                      // stop time
 
-                            case "stop_task_time":
-                                $response = array();
-                                if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
-                                    date_default_timezone_set('Asia/Kolkata');
-                                    $tid = $_POST['tid'];
-                                    $eid = $_POST['eid'];
-                                    $pid = $_POST['pid'];   
-                                    $timestamp = date('h:i:s A');
-                                    $date = date('Y-m-d');
-                                    $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks','$date')";
-                                    $db->query($sql2);
 
-                                    $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE  eid = '$eid' AND `tid` = '$tid'";                  
-                                    if ($db->query($sql1) === TRUE)
-                                     {
-                                        // Fetch the initial and end times
-                                        $query = "SELECT * FROM `task_time` WHERE eid = '$eid' AND `tid` = '$tid'";
-                                        
-                                        $result = $db->query($query);
-                            
-                                        if ($result && $result->num_rows == 1) {
-                                            $row = $result->fetch_assoc();
-                                            // Calculate the time difference
-                                            $start_time = new DateTime($row['initial_time']);
-                                            $end_time = new DateTime($row['end_time']);
-                                            $difference = $end_time->diff($start_time);
-                                            $timeframe = $difference->format('%H:%I:%S'); 
+                      case "stop_task_time":
+                        $response = array();
+                        if(isset($_POST['tid'], $_POST['eid'], $_POST['pid']))
+                        {
+                            date_default_timezone_set('Asia/Kolkata');
+                            $tid = $_POST['tid'];
+                            $eid = $_POST['eid'];
+                            $pid = $_POST['pid']; 
+                            $timestamp = date('h:i:s A');
+                            $date = date('Y-m-d');
+                            // Insert default time difference
+                            $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks','$date')";
+                            if($db->query($sql2))
+                            {
+                                 // Update end time
+                                 $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE `eid` = '$eid' AND `tid` = '$tid'";
+                                 if ($db->query($sql1))
+                                 {
+                                  // Calculate time difference
+                                  $query = "SELECT * FROM `task_time` WHERE `eid` = '$eid' AND `tid` = '$tid'";
+                                  $result = $db->query($query);
+                                  if ($result && $result->num_rows == 1)
+                                  {
+                                    $row = $result->fetch_assoc();
+                                    $start_time = new DateTime($row['initial_time']);
+                                    $end_time = new DateTime($row['end_time']);
+                                    $difference = $end_time->diff($start_time);
+                                    $timeframe = $difference->format('%H:%I:%S');
 
-                                        //  $start_time = strtotime($row['initial_time']);
-                                        //  $end_time = strtotime($row['end_time']);
-                                        //  $total_time = $end_time - $start_time;
-                                        //   // Convert seconds to hours, minutes, and seconds
-                                        //  $hours = floor($total_time/ 3600);
-                                        //  $minutes = floor(($total_time % 3600) / 60);
-                                        //  $seconds =  $total_time % 60;    
-                                        //  $timeframe = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                                    // Update total_time
 
-                            
-                                            // Update total_time in the database
-                                            $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE  eid = '$eid' AND `tid`= '$tid'";
-                                            
-                                            if ($db->query($update_query) === TRUE) 
-                                            {
-                                                $response['success'] = true;
-                                                $response['message'] = "Task stopped successfully.";
-                                            } 
-                                            else 
-                                            {
-                                                $response['success'] = false;
-                                                $response['message'] = "Error on stopped time.";
-                                            }
-                                        } else {
-                                            $response['success'] = false;
-                                            $response['message'] = "Error on stopped time.";
-                                        }
-                                    } else {
-                                        $response['success'] = false;
-                                        $response['message'] = "Error on stopped time.";
+                                    $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE `eid` = '$eid' AND `tid` = '$tid'";
+                                    if ($db->query($update_query))
+                                    {
+                                        $response['success'] = true;
+                                        $response['message'] = "Task stopped successfully.";
                                     }
-                                } else {
+                                    else 
+                                    {
+                                        $response['success'] = false;
+                                        $response['message'] = "Error updating total time.";
+                                    }
+
+                                  }
+                                  else 
+                                  {
                                     $response['success'] = false;
-                                    $response['message'] = "Incomplete data for pausing time.";
-                                }
-                                 // Output the response as JSON
-                                   echo json_encode($response);
-                                break;
+                                    $response['message'] = "Error fetching task time.";
+                                  }
+
+                                 }
+                                 else 
+                                 {
+                                    $response['success'] = false;
+                                    $response['message'] = "Error updating end time.";
+                                 }
+                            }
+                            else 
+                            {
+                                $response['success'] = false;
+                                $response['message'] = "Error inserting default time difference.";
+                            }
+                        }
+                        else 
+                        {
+                            $response['success'] = false;
+                            $response['message'] = "Incomplete data for stopping time.";
+                        }
+                         // Output the response as JSON
+                        echo json_encode($response);
+                        break;
+
+
+                        // stop time 
+
+                        // case "stop_task_time":
+                        //     $response = array();
+                        //     if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
+                        //         date_default_timezone_set('Asia/Kolkata');
+                        //         $tid = $_POST['tid'];
+                        //         $eid = $_POST['eid'];
+                        //         $pid = $_POST['pid'];   
+                        //         $timestamp = date('h:i:s A');
+                        //         $date = date('Y-m-d');
+                        //         $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks','$date')";
+                        //         $db->query($sql2);
+                        //         $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE  eid = '$eid' AND `tid` = '$tid'";                  
+                        //         if ($db->query($sql1) === TRUE)
+                        //          {
+                        //             // Fetch the initial and end times
+                        //             $query = "SELECT * FROM `task_time` WHERE eid = '$eid' AND `tid` = '$tid'";                                       
+                        //             $result = $db->query($query);               
+                        //             if ($result && $result->num_rows == 1) {
+                        //                 $row = $result->fetch_assoc();
+                        //                 // Calculate the time difference
+                        //                 $start_time = new DateTime($row['initial_time']);
+                        //                 $end_time = new DateTime($row['end_time']);
+                        //                 $difference = $end_time->diff($start_time);
+                        //                 $timeframe = $difference->format('%H:%I:%S');                            
+                        //                 // Update total_time in the database
+                        //                 $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE  eid = '$eid' AND `tid`= '$tid'";
+                                        
+                        //                 if ($db->query($update_query) === TRUE) 
+                        //                 {
+                        //                     $response['success'] = true;
+                        //                     $response['message'] = "Task stopped successfully.";
+                        //                 } 
+                        //                 else 
+                        //                 {
+                        //                     $response['success'] = false;
+                        //                     $response['message'] = "Error on stopped time.";
+                        //                 }
+                        //             } else {
+                        //                 $response['success'] = false;
+                        //                 $response['message'] = "Error on stopped time.";
+                        //             }
+                        //         } else {
+                        //             $response['success'] = false;
+                        //             $response['message'] = "Error on stopped time.";
+                        //         }
+                        //     }                                
+                        //     else {
+                        //         $response['success'] = false;
+                        //         $response['message'] = "Incomplete data for pausing time.";
+                        //     }
+                        //      // Output the response as JSON
+                        //        echo json_encode($response);
+                        //     break;
+
+                        // stop time
 
 
             default:

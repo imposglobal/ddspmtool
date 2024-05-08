@@ -156,9 +156,9 @@ require('../footer.php');
 <!-- ajax code for start time -->
 <script>
 $(document).ready(function() {
-    // Use event delegation to handle clicks on dynamically generated buttons
+    // Use event delegation to handle clicks on buttons
     $(document).on('click', '[id^="start_time_"]', function() {
-        // Store the button element in a variable for easy access
+        // Store the button element in a variable 
         var $startButton = $(this);
         var tid = $startButton.siblings('#tid').val(); 
         var eid = $startButton.siblings('#eid').val(); 
@@ -178,8 +178,6 @@ $(document).ready(function() {
                         title: 'Success',
                         text: 'Task has started',
                     });
-                    // Store button state in local storage
-                    // localStorage.setItem('startButtonState_' + tid, 'disabled');
                 } else {
                     // Show SweetAlert error message
                     Swal.fire({
@@ -207,6 +205,7 @@ $(document).ready(function() {
 
 <!-- ajax  code for pause time -->
 <script>
+    $(document).ready(function() {
     // When any button with class "pause_time" is clicked
     $('button[name^="pause_time"]').click(function() {
         // Get the ID of the button that was clicked
@@ -260,16 +259,9 @@ $(document).ready(function() {
             }
         });
     });
+});
 </script>
 <!-- ajax code for pause time -->
-
-
-
-
-
-
-
-
 
 <!-- ajax code for stop time -->
 <script>

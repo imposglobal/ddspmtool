@@ -116,7 +116,8 @@ if(isset($_GET['ops']))
                 $sql = "SELECT tid, time, reason FROM `time_difference` WHERE tid = '$tid' AND time != '00:00:00';";
                 $query = mysqli_query($db, $sql);
             
-                if ($query && mysqli_num_rows($query) > 0) {
+                if ($query && mysqli_num_rows($query) > 0) 
+                {
                     $rows = array(); // Array to store all fetched rows
                     while ($row = mysqli_fetch_assoc($query)) {
                         // Append each row to the array

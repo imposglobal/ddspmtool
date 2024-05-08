@@ -57,7 +57,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
        
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
-            $tid = $row["tid"]; // Define $tid here
+            $tid = $row["tid"];
             $eid = $row["eid"];
             $pid = $row["pid"];
             $title = $row["title"];
@@ -128,7 +128,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 //   After clicking on the pause button, it will show the options to select the break reason.
 
                 echo '
-                <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
+                <div id="time_select_' . $tid . '" class="alert-box" style="display:none;">
                     <select id="select_reason_' . $tid . '">
                         <option selected>Add Reason</option>
                         <option value="Meeting">Meeting</option>
@@ -323,10 +323,10 @@ function get_assigned_project($db, $pid)
         while ($row = mysqli_fetch_assoc($result))
         {
             echo $row["fname"] . ", "; // Concatenate fname with a space
-        }
-      
+        }     
     }
-    } else {
+    } 
+    else {
         return false; // Return false if no results or error
     }
 }
