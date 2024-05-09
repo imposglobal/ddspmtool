@@ -56,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             date_default_timezone_set('Asia/Kolkata');
             $eid = $_POST['eid'];
             $time = date('h:i:s A'); 
-                     
-            $sql = "UPDATE `attendance` SET `logout_time`='$time' WHERE `eid` = '$eid'";       
+            // $date = date('Y-m-d');                    
+            $sql = "UPDATE `attendance` SET `logout_time`= '$time' WHERE `eid` = '$eid' AND `date` = CURDATE()";       
             if ($db->query($sql) === TRUE) 
             {
             echo "success";
