@@ -137,7 +137,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                         <option value="Discussion">Discussion</option>
                         <option value="Issues">Issues</option>
                         <option value="Lunch/Tea Break">Lunch/tea Break</option>
-                        <option value="Other">Other</option>
+                        <option value="Other-Task">Other Task</option>
                     </select>
                     <input type="hidden" id="tid" value="' . $tid . '">
                     <input type="hidden" id="eid" value="' . $eid . '">
