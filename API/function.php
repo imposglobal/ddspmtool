@@ -46,11 +46,36 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     // query to retrive data from task table
     if($role == 0)
     {
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, task.created_at, employees.fname, employees.lname, employees.eid  
+        FROM 
+            task 
+        INNER JOIN 
+            employees 
+        ON 
+            task.eid = employees.eid 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
     } else 
     {
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
-        ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
+        // ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, task.created_at, employees.fname, employees.lname, employees.eid  
+        FROM 
+            task 
+        INNER JOIN 
+            employees 
+        ON 
+            task.eid = employees.eid 
+        WHERE 
+            employees.eid = '$eid' 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
     }
     $result = mysqli_query($db, $sql);  
     if (mysqli_num_rows($result) > 0) {
