@@ -48,7 +48,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     {
         // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
 
-        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, task.created_at, employees.fname, employees.lname, employees.eid  
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
         FROM 
             task 
         INNER JOIN 
@@ -63,7 +63,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     {
         // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
         // ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
-        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, task.created_at, employees.fname, employees.lname, employees.eid  
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date , employees.fname, employees.lname, employees.eid  
         FROM 
             task 
         INNER JOIN 
@@ -115,7 +115,8 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             {
                 echo '<td>'. $row["title"].'</td>';
             }         
-            echo '<td>'. $row["created_at"].'</td>';
+            // echo '<td>'. $row["created_at"].'</td>';
+            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
 
