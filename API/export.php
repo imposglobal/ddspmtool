@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('No', 'Date', 'Project Name', 'Employee Name', 'Task Name', 'Status', 'Time Frame', 'Priority'));
+    fputcsv($output, array('No', 'Project Name', 'Employee Name', 'Date', 'Task Name', 'Status', 'Time Frame', 'Priority', 'Manager Status', 'Feedback', 'Description'));
 
     // Construct the SQL query with filters
     // $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
@@ -28,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //         INNER JOIN task_time ON task.tid = task_time.tid
     //         WHERE task.pid = '$project_id'";
 
-    $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
-        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+        task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
         FROM task 
         LEFT JOIN employees ON task.eid = employees.eid
         INNER JOIN projects ON task.pid = projects.pid
@@ -61,15 +61,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($result) > 0) {
         $i = 1;
         while ($row = mysqli_fetch_assoc($result)) {
+
+           // Remove HTML tags from the description
+        $removedesc = strip_tags($row["description"]);
+        // Decode HTML entities back into their respective characters
+        $decode_desc = html_entity_decode($removedesc);
             $data = array(
                 $i++,
-                $row['created_at'],
+                        
                 $row['project_name'],
                 $row['fname'] . " " . $row['lname'],
+                htmlspecialchars($row["created_date"]),
                 $row['title'],
                 $row['status'],
                 $row['total_time'],
-                $row['priority']
+                $row['priority'],
+                $row['m_status'],               
+                $row['feedback'],
+                $decode_desc
             );
             fputcsv($output, $data);
         }

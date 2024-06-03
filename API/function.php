@@ -357,4 +357,76 @@ function get_assigned_project($db, $pid)
     }
 }
 
+
+
+// to get reports in report page
+
+function get_report($role, $eid, $db, $page = 1, $recordsPerPage = 10)
+{
+    // Calculate offset
+    $offset = ($page - 1) * $recordsPerPage;
+    // query to retrive data from task table
+    if($role == 0)
+    {
+        $sql = "SELECT task.tid, task.eid, task.pid,  DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+        FROM task 
+        LEFT JOIN employees ON task.eid = employees.eid
+        INNER JOIN projects ON task.pid = projects.pid
+        INNER JOIN task_time ON task.tid = task_time.tid 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
+    } else 
+    {
+        $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
+        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+        FROM task 
+        LEFT JOIN employees ON task.eid = employees.eid
+        INNER JOIN projects ON task.pid = projects.pid
+        INNER JOIN task_time ON task.tid = task_time.tid 
+        WHERE 
+            employees.eid = '$eid' 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
+    }
+    $result = mysqli_query($db, $sql);  
+    if (mysqli_num_rows($result) > 0) {
+       
+        $i = ($page - 1) * $recordsPerPage + 1;
+        while($row = mysqli_fetch_assoc($result)) {
+            $tid = $row["tid"];
+            $eid = $row["eid"];
+            $pid = $row["pid"];
+            $title = $row["title"];
+                     
+            echo '<tr>';
+            echo '<th scope="row">'. $i++.'</th>';
+            echo '<td>'. $row["project_name"].'</td>';
+            echo '<td>'. $row["fname"].'</td>';
+            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+            // code to retrieve title from task table where it will show only 20 character title
+            if (strlen($title) > 20)
+            {
+               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+            }
+            else
+            {
+                echo '<td>'. $row["title"].'</td>';
+            }         
+                
+           
+            echo '<td>'. $row["total_time"].'</td>';
+            echo '</tr>';
+        }
+    } else {
+        echo "<tr><td colspan='5'>No results found.</td></tr>";
+    }
+}
+
+
+
 ?>

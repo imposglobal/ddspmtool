@@ -87,62 +87,6 @@ require('../../API/function.php');
     </div><!-- End Page Title -->
 
     <section class="section">
-        <?php
-        if($role == 0)
-        {
-        ?> 
-
-<form method="post" action="../../API/export.php">
-    <div class="row">
-     <!-- project Name -->  
-    <div class="col-lg-4 mb-4">
-    <label for="html">Projects</label><br>
-    <select class="form-select" name="project_id">
-    <option selected>Select Project</option>
-    <option value="All">All</option>
-    <?php
-    $sql = "SELECT * from projects ORDER BY created_at DESC";
-    $result = mysqli_query($db, $sql);
-    if ($result && mysqli_num_rows($result) > 0)
-    {
-     while ($row = mysqli_fetch_assoc($result))
-    {
-    ?>
-    
-    <option value="<?php echo $row["pid"]?>"><?php echo $row["project_name"]?></option>
-    <?php 
-    }
-    }
-    ?>
-    </select>
-    </div>
-   
-     <!-- project Name -->
-
-   
-
-    <div class="col-xxl-4 col-md-6 mb-5">
-    <label for="html">To</label><br>
-    <input type="date" id="start_date" name="start_date" id="start_date" class="form-control" placeholder="start date">
-    </div>
-
-    <div class="col-xxl-4 col-md-6 mb-5">
-    <label for="html">From</label><br>
-    <input type="date" id="end_date" name="end_date" id="end_date" class="form-control" placeholder="end date">
-    </div>
-
-
-    <div class="col-lg-12 text-end mb-4">
-    <button type="submit" class="btn btn-info">Export to CSV</button>
-     
-    </div>
-    </form>
-
-      <?php 
-       }
-        ?>
-   
-
         <div class="col-lg-12">
           <div class="card">
             <div class="row">   
