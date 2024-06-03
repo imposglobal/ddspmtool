@@ -1,0 +1,87 @@
+<?php
+require("db.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Capture filter parameters
+    $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
+    $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+    $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+    // Set headers for CSV export
+    header("Content-Type: text/csv");
+    header("Content-Disposition: attachment; filename=employee_tasks.csv");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // Open output stream
+    $output = fopen("php://output", "w");
+
+    // Write headers to CSV
+    fputcsv($output, array('No', 'Date', 'Project Name', 'Employee Name', 'Task Name', 'Status', 'Time Frame', 'Priority'));
+
+    // Construct the SQL query with filters
+    // $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
+    //         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+    //         FROM task 
+    //         LEFT JOIN employees ON task.eid = employees.eid
+    //         INNER JOIN projects ON task.pid = projects.pid
+    //         INNER JOIN task_time ON task.tid = task_time.tid
+    //         WHERE task.pid = '$project_id'";
+
+    $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
+        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+        FROM task 
+        LEFT JOIN employees ON task.eid = employees.eid
+        INNER JOIN projects ON task.pid = projects.pid
+        INNER JOIN task_time ON task.tid = task_time.tid";
+
+    // Append filters to the query if a specific project is selected
+    if ($project_id !== 'All') 
+    {
+    $sql .= " WHERE task.pid = '$project_id'";
+    }
+
+    // Append filters to the query
+    if (!empty($start_date)) {
+        $sql .= " AND task.created_at >= '$start_date'";
+    }
+    if (!empty($end_date)) {
+        $sql .= " AND task.created_at <= '$end_date'";
+    }
+
+    // Execute the query
+    $result = mysqli_query($db, $sql);
+
+    // Check for errors
+    if (!$result) {
+        die('Error: ' . mysqli_error($db));
+    }
+
+    // Fetch and write data to CSV
+    if (mysqli_num_rows($result) > 0) {
+        $i = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data = array(
+                $i++,
+                $row['created_at'],
+                $row['project_name'],
+                $row['fname'] . " " . $row['lname'],
+                $row['title'],
+                $row['status'],
+                $row['total_time'],
+                $row['priority']
+            );
+            fputcsv($output, $data);
+        }
+    } else {
+        // If no results found, echo message
+        echo "No records found for the specified criteria.";
+    }
+
+    // Close output stream
+    fclose($output);
+
+    // Exit script
+    exit;
+}
+?>
