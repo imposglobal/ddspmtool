@@ -100,7 +100,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/report.php">
           <i class="bi bi-person"></i>
-          <span>Reports</span>
+          <span>Report</span>
         </a>
       </li><!-- End Profile Page Nav -->
       <?php } ?>

@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         FROM task 
         LEFT JOIN employees ON task.eid = employees.eid
         INNER JOIN projects ON task.pid = projects.pid
-        INNER JOIN task_time ON task.tid = task_time.tid";
+        INNER JOIN task_time ON task.tid = task_time.tid Order BY task.created_at DESC ";
 
     // Append filters to the query if a specific project is selected
     if ($project_id !== 'All') 
@@ -62,6 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $i = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
+            // feedback
+
+             // removes any HTML tags from it using the strip_tags()
+        $removehtmltags = strip_tags($row["feedback"]);
+        // decodes HTML entities back into their respective characters.
+        $decode_feedback = html_entity_decode($removehtmltags);
+
            // Remove HTML tags from the description
         $removedesc = strip_tags($row["description"]);
         // Decode HTML entities back into their respective characters
@@ -77,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $row['total_time'],
                 $row['priority'],
                 $row['m_status'],               
-                $row['feedback'],
+                $decode_feedback,
                 $decode_desc
             );
             fputcsv($output, $data);
