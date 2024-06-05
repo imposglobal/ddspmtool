@@ -361,71 +361,66 @@ function get_assigned_project($db, $pid)
 
 // to get reports in report page
 
-function get_report($role, $eid, $db, $page = 1, $recordsPerPage = 10)
-{
-    // Calculate offset
-    $offset = ($page - 1) * $recordsPerPage;
-    // query to retrive data from task table
-    if($role == 0)
-    {
-        $sql = "SELECT task.tid, task.eid, task.pid,  DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
-        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
-        FROM task 
-        LEFT JOIN employees ON task.eid = employees.eid
-        INNER JOIN projects ON task.pid = projects.pid
-        INNER JOIN task_time ON task.tid = task_time.tid 
-        ORDER BY 
-            task.created_at DESC 
-        LIMIT 
-            $offset, $recordsPerPage";
-    } else 
-    {
-        $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
-        task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
-        FROM task 
-        LEFT JOIN employees ON task.eid = employees.eid
-        INNER JOIN projects ON task.pid = projects.pid
-        INNER JOIN task_time ON task.tid = task_time.tid 
-        WHERE 
-            employees.eid = '$eid' 
-        ORDER BY 
-            task.created_at DESC 
-        LIMIT 
-            $offset, $recordsPerPage";
-    }
-    $result = mysqli_query($db, $sql);  
-    if (mysqli_num_rows($result) > 0) {
+// function get_report($role, $eid, $db, $page = 1, $recordsPerPage = 10)
+// {
+//     $offset = ($page - 1) * $recordsPerPage;
+//     if($role == 0)
+//     {
+//         $sql = "SELECT task.tid, task.eid, task.pid,  DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+//         FROM task 
+//         LEFT JOIN employees ON task.eid = employees.eid
+//         INNER JOIN projects ON task.pid = projects.pid
+//         INNER JOIN task_time ON task.tid = task_time.tid 
+//         ORDER BY 
+//             task.created_at DESC 
+//         LIMIT 
+//             $offset, $recordsPerPage";
+//     } else 
+//     {
+//         $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
+//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+//         FROM task 
+//         LEFT JOIN employees ON task.eid = employees.eid
+//         INNER JOIN projects ON task.pid = projects.pid
+//         INNER JOIN task_time ON task.tid = task_time.tid 
+//         WHERE 
+//             employees.eid = '$eid' 
+//         ORDER BY 
+//             task.created_at DESC 
+//         LIMIT 
+//             $offset, $recordsPerPage";
+//     }
+//     $result = mysqli_query($db, $sql);  
+//     if (mysqli_num_rows($result) > 0) {
        
-        $i = ($page - 1) * $recordsPerPage + 1;
-        while($row = mysqli_fetch_assoc($result)) {
-            $tid = $row["tid"];
-            $eid = $row["eid"];
-            $pid = $row["pid"];
-            $title = $row["title"];
+//         $i = ($page - 1) * $recordsPerPage + 1;
+//         while($row = mysqli_fetch_assoc($result)) {
+//             $tid = $row["tid"];
+//             $eid = $row["eid"];
+//             $pid = $row["pid"];
+//             $title = $row["title"];
                      
-            echo '<tr>';
-            echo '<th scope="row">'. $i++.'</th>';
-            echo '<td>'. $row["project_name"].'</td>';
-            echo '<td>'. $row["fname"].'</td>';
-            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
-            // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 20)
-            {
-               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
-            }
-            else
-            {
-                echo '<td>'. $row["title"].'</td>';
-            }         
-                
-           
-            echo '<td>'. $row["total_time"].'</td>';
-            echo '</tr>';
-        }
-    } else {
-        echo "<tr><td colspan='5'>No results found.</td></tr>";
-    }
-}
+//             echo '<tr>';
+//             echo '<th scope="row">'. $i++.'</th>';
+//             echo '<td>'. $row["project_name"].'</td>';
+//             echo '<td>'. $row["fname"].'</td>';
+//             echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+//             if (strlen($title) > 20)
+//             {
+//                echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+//             }
+//             else
+//             {
+//                 echo '<td>'. $row["title"].'</td>';
+//             }                   
+//             echo '<td>'. $row["total_time"].'</td>';
+//             echo '</tr>';
+//         }
+//     } else {
+//         echo "<tr><td colspan='5'>No results found.</td></tr>";
+//     }
+// }
 
 // to get task analytics 
 
@@ -492,19 +487,42 @@ LIMIT
             $row2 = mysqli_fetch_assoc($result2);
 
               // Calculate actual time form total_time and total_break 
-              $total_project_time = strtotime($row1['total_project_time']);
-              $total_project_break = strtotime($row2['total_project_break']);
-              // Subtract total_break from total_time
-              $substract_time = $total_project_time - $total_project_break;
-              $time = gmdate('H:i:s', $substract_time);
+            //   $total_project_time = strtotime($row1['total_project_time']);
+            //   $total_project_break = strtotime($row2['total_project_break']);
+            //   $substract_time = $total_project_time - $total_project_break;
+            //   $time = gmdate('H:i:s', $substract_time);
+
+            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['total_project_time']);
+            // for total break time
+            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['total_project_break']);
+            // convert hrs and minuts in seconds for total_time 
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+             // convert hrs and minuts in seconds for total_break_time
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+
+            $total_timeframe = $total_time_seconds - $total_break_time_seconds;
+           
+            // convert total timeframe back to HH:MM:SS format
+            $hours = floor($total_timeframe / 3600);
+            $minutes = floor(($total_timeframe % 3600) / 60);
+            $seconds = $total_timeframe % 60;
+
+           $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["project_name"].'</td>';
             echo '<td>'. $row["total_tasks"].'</td>';                 
             echo '<td>'. $row["total_employees"].'</td>';          
-            echo '<td>'. $row["employee_links"].'</td>';          
-            echo '<td>' . substr($time, 0, 8) .'</td>';
-            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';         
+            echo '<td>'. $row["employee_links"].'</td>';                    
+            // echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
+            echo '<td>' . $actual_task_time .'</td>';
+            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';  
+                  
             echo '</tr>';
            
         }

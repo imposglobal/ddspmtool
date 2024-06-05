@@ -96,12 +96,12 @@
      <!-- Reports -->
      <?php if($role == 0){ ?>
       <li class="nav-heading">Reports</li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/report.php">
           <i class="bi bi-person"></i>
           <span>Export Task</span>
         </a>
-      </li><!-- End Profile Page Nav -->
+      </li> -->
 
       <!-- task analytics -->
       <li class="nav-item">

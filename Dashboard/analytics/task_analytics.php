@@ -88,9 +88,10 @@ require('../../API/function.php');
                     <th scope="col">Project Name</th>
                     <th scope="col">Total Task</th>
                     <th scope="col">Total Employee</th>
-                    <th scope="col">Employee Name</th>
-                    <th scope="col">Total Time (Hrs)</th> 
-                    <th scope="col">Total Break</th>                        
+                    <th scope="col">Employee Name</th> 
+                    <th scope="col">Total Time (Hrs)</th>                  
+                    <th scope="col">Total Break</th>
+                                           
                   </tr>
                 </thead>
                 <tbody>

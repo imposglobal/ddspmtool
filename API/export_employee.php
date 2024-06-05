@@ -56,12 +56,37 @@ if ($result)
               $decode_desc = html_entity_decode($removedesc);
 
               // Convert total_time and total_break to seconds
-              $total_time = strtotime($row['total_time']);
-              $total_break_time = strtotime($row['total_break']);
+            //   $total_time = strtotime($row['total_time']);
+            //   $total_break_time = strtotime($row['total_break']);
+            //    $actual_time = $total_time - $total_break_time;
+            //    $effective_time = gmdate('H:i:s', $actual_time); 
 
-               // Subtract total_break from total_time
-               $actual_time = $total_time - $total_break_time;
-               $effective_time = gmdate('H:i:s', $actual_time); 
+            /////////////////////////////Calculation//////////////////////////
+
+            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row['total_time']);
+            // for total break time
+            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row['total_break']);
+            // convert hrs and minuts in seconds for total_time 
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+
+             // convert hrs and minuts in seconds for total_break_time
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+
+            $total_timeframe = $total_time_seconds - $total_break_time_seconds;
+           
+            // convert total timeframe back to HH:MM:SS format
+            $hours = floor($total_timeframe / 3600);
+            $minutes = floor(($total_timeframe % 3600) / 60);
+            $seconds = $total_timeframe % 60;
+
+            $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+
+
 
             $data = array(  
                 $row['project_name'],              
@@ -70,7 +95,7 @@ if ($result)
                 $row['title'],
                 $row['status'],               
                 $row['priority'],
-                $effective_time,  
+                $actual_task_time,  
                 substr($row['total_break'], 0, 8),
                 $row['m_status'],
                 $row['feedback'],                          
