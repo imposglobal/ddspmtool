@@ -4,40 +4,35 @@ require("db.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Capture filter parameters
     $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
-    $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-    $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=employee_tasks.csv");
+    header("Content-Disposition: attachment; filename=project-report.csv");
     header("Pragma: no-cache");
     header("Expires: 0");
 
     // Open output stream
     $output = fopen("php://output", "w");
+    
 
     // Write headers to CSV
-    fputcsv($output, array('No', 'Project Name', 'Employee Name', 'Date', 'Task Name', 'Status', 'Time Frame', 'Priority', 'Manager Status', 'Feedback', 'Description'));
+    fputcsv($output, array('No', 'Project Name', 'Employee Name', 'Date', 'Task Name', 'Status', 'Priority', 'Total Time', 'Total Break Time', 'Manager Status', 'Feedback', 'Description'));
 
     // Construct the SQL query with filters
-    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+    $sql = "SELECT projects.project_name, task.tid, task.created_at, task.start_date, task.title, task.status, 
         task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
         FROM task 
         LEFT JOIN employees ON task.eid = employees.eid
         INNER JOIN projects ON task.pid = projects.pid
         INNER JOIN task_time ON task.tid = task_time.tid";
 
-    // Append filters to the query if a specific project is selected
-    if ($project_id !== 'All') {
-        $sql .= " WHERE task.pid = '$project_id'";
-    }
 
-    // Append filters to the query
-    if (!empty($start_date)) {
-        $sql .= " AND task.created_at >= '$start_date'";
-    }
-    if (!empty($end_date)) {
-        $sql .= " AND task.created_at <= '$end_date'";
+   
+
+    // Append filters to the query if a specific project is selected
+    if ($project_id !== 'All')
+    {
+        $sql .= " WHERE task.pid = '$project_id'";
     }
 
     // Execute the query
@@ -53,6 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $i = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
+            $tid = $row["tid"];
+
+            $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_task_break FROM time_difference WHERE tid = '$tid' AND time != '00:00:00'";
+            $result1 = mysqli_query($db, $sql1);
+            $row1 = mysqli_fetch_assoc($result1);
+
+
+            // time calculation
+
+            $total_task_time =  strtotime($row['total_time']);
+            $total_task_break_time = strtotime($row1['total_task_break']);
+            $Actual_task_time = $total_task_time - $total_task_break_time;
+            $task_time = gmdate('H:i:s', $Actual_task_time);
+
             // feedback
             $removehtmltags = strip_tags($row["feedback"]);
             $decode_feedback = html_entity_decode($removehtmltags);
@@ -65,11 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $i++,
                 $row['project_name'],
                 $row['fname'] . " " . $row['lname'],
-                htmlspecialchars($row["created_date"]),
+                htmlspecialchars($row["start_date"]),
                 $row['title'],
                 $row['status'],
-                $row['total_time'],
                 $row['priority'],
+                $task_time,
+                substr($row1['total_task_break'], 0, 8),            
                 $row['m_status'],               
                 $decode_feedback,
                 $decode_desc

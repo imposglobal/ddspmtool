@@ -92,7 +92,7 @@ require('../../API/function.php');
         {
         ?> 
 
-<form method="post" action="../../API/export.php">
+<form method="post" action="../../API/export_projects.php">
     <div class="row">
      <!-- project Name -->  
     <div class="col-lg-4 mb-4">
