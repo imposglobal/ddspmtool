@@ -102,7 +102,21 @@ if ($query && mysqli_num_rows($query) > 0)
     while ($row = mysqli_fetch_assoc($query))
     {
 
-         // Status 
+        // for feedback field
+        // removes any HTML tags from it using the strip_tags()
+        $removehtmltags = strip_tags($row["feedback"]);
+        // decodes HTML entities back into their respective characters.
+        $decode_feedback = html_entity_decode($removehtmltags);
+
+
+    //   for description field
+         // removes any HTML tags from it using the strip_tags()
+        $removedesc = strip_tags($row["description"]);
+        // decodes HTML entities back into their respective characters.
+        $decode_desc = html_entity_decode($removedesc);
+
+
+    // Status 
     if($row["status"] == "")
     {
       $priority = '<td> <span style="background:#fff; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
@@ -141,8 +155,7 @@ elseif($row["priority"] == "Medium") {
 elseif($row["priority"] == "Low") {
     $priority_html = '<td> <span style="background:#61ffb8; color:#fff; padding:2px 8px;">'. $row["priority"].' </span></td>';
 }
-
-        ?>
+?>
    
 
   
@@ -232,7 +245,7 @@ elseif($row["priority"] == "Low") {
         <div class="row">
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Estimated Time :</h4>
-                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["estimated_time"];?> Hrs</h6> 
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["estimated_time"];?></h6> 
             </div>
         </div>
         <hr class="hr_margin">
@@ -253,8 +266,28 @@ elseif($row["priority"] == "Low") {
         </div>
         <hr class="hr_margin">
 
-        <h4 class="card-title">Description</h4>
-        <h6 class="card-subtitle "><?php echo $row["description"];?></h6>    
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Description :</h4>
+                <h6 class="card-subtitle pt-4"><?php echo $decode_desc;?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
+        
+        <?php if($role !== 0){ ?>
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Manager Status :</h4>
+                <h6 class="card-subtitle d-inline ml-2 ps-2"><?php echo $row["m_status"];?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
+
+        <h4 class="card-title">Feedback</h4>
+        <h6 class="card-subtitle "><?php echo $decode_feedback;?></h6>  
+        <hr class="hr_margin">
+        <?php } ?>
     </div>
     </div>
     </div>
@@ -266,7 +299,7 @@ elseif($row["priority"] == "Low") {
      if($role == 0)
      {
       ?>
-      <div class="col-lg-6">   
+      <div class="col-lg-12">   
       <div class="card"> 
       <div class="card-body">
       <form method="POST">
@@ -274,9 +307,15 @@ elseif($row["priority"] == "Low") {
       <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
       <select id="m_status" class="form-select">
       <option selected value="<?php echo $row["m_status"];?>"><?php echo $row["m_status"];?></option>
+      <option value="Revised">Revised</option>
       <option value="Accepted">Accepted</option>
       <option value="Rejected">Rejected</option>
-      </select>    
+      <option value="Initiated">Initiated</option>
+      <option value="On hold">On hold</option>
+      </select>  
+      
+      <h5 class="card-title edit">Feedback</h5>
+      <textarea id="feedback" value=""><?php echo $row["feedback"];?></textarea>
       <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
       </form>
       </div>
@@ -470,10 +509,11 @@ tinymce.init({
           // e.preventDefault();
         var tid = $('#tid').val(); 
         var m_status = $('#m_status').val();
+        var feedback = tinymce.get('feedback').getContent();
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
-                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status},
+                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status, feedback: feedback},
                 success: function (response) {
                     // Parse JSON response
                     var data = JSON.parse(response);
@@ -482,12 +522,12 @@ tinymce.init({
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: data.message,
-                            didClose: function() 
-                            {
-                            // Reload the page
-                            window.location.reload();
-                            }
+                            text: data.message
+                            // didClose: function() 
+                            // {
+                            // // Reload the page
+                            // window.location.reload();
+                            // }
                         });
                     } else {
                         // Show SweetAlert error message
@@ -526,31 +566,34 @@ function view_timeframe(tid)
         },
         success: function(data) 
         {
-            var timeframe = data.timeframe;
-            // checks if a variable named timeframe is not null and not undefined
-            if (timeframe !== null && timeframe !== undefined) 
-            {
-                // If the timeframe is greater than or equal to 60, it calculates the number of hours and remaining minutes from the timeframe
-                if (timeframe >= 60) {
+                var timeframe = data.time_frame;
+                if (timeframe !== undefined) 
+                {
+                  // If the timeframe is greater than or equal to 60, it calculates the number of hours and remaining minutes from the timeframe
+                if (timeframe >= 60) 
+                {
                     var hours = Math.floor(timeframe / 60);
                     var remaining_minutes = timeframe % 60;
                     var displayString = (hours > 0 ? hours + ' hr ' : '') + remaining_minutes + ' m';
                     // Display the result in hours and minutes format
                     $('#timeframe_placeholder').html(displayString);
-                } else {
+                } 
+                else 
+                {
                     // Display the result in minutes format 
                     $('#timeframe_placeholder').html(timeframe + 'm');
+                }  
                 }
-            } 
-            else 
-            {
-                // Handle case when timeframe is null or undefined
-                $('#timeframe_placeholder').html('Not Started');
+                // else 
+                // {
+                //     // Handle case when timeframe is not defined
+                //     $('#timeframe_placeholder').text('Not Started');
+                // }
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert('Unable To Load Data');
-        }
+        // error: function(jqXHR, textStatus, errorThrown) 
+        // {
+        //     alert('Unable To Load Data');
+        // }
     });
 }
 view_timeframe(<?php echo $tid; ?>);
@@ -560,18 +603,24 @@ view_timeframe(<?php echo $tid; ?>);
 <script>
 function view_total_break_time(tid) {
     $.ajax({
-        url: "../../API/get.php?tid=" + tid, 
+        url: "../../API/get.php", 
         type: "GET",
         dataType: "JSON",
         data:
         {
-            ops: 'view_total_break_time' 
+            ops: 'view_total_break_time',
+            tid: tid
         },
         success: function (data) 
-        {           
-            $('#total_break_time').html(data.total_break_time);  
+        {  
+            if(data.total_break_time === 0) {
+                $('#total_break_time').html('No Breaks');
+            } else {
+                $('#total_break_time').html(data.total_break_time);
+            } 
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) 
+        {
             alert('Unable To Load Data');
         }
     });
@@ -585,12 +634,13 @@ view_total_break_time(<?php echo $tid; ?>);
 <script>
 function view_breaks(tid) {
     $.ajax({
-        url: "../../API/get.php?tid=" + tid, 
+        url: "../../API/get.php", 
         type: "GET",
         dataType: "JSON",
         data:
         {
-            ops: 'view_breaks' 
+            ops: 'view_breaks',
+            tid: tid           
         },
         success: function (data) 
         {
@@ -608,7 +658,7 @@ function view_breaks(tid) {
                     // Loop through each record and append to the container
                     `<div class="col pt-3">
                         <h4 class="card-title d-inline">Time:</h4>
-                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time} M</h6><br>   
+                        <h6 class="card-subtitle d-inline ml-2 ps-2">${record.time}</h6><br>   
                         <h4 class="card-title d-inline">Reason:</h4>
                         <h6 class="card-subtitle d-inline ml-2 ps-2">${record.reason}</h6>         
                     </div>`
@@ -621,7 +671,7 @@ function view_breaks(tid) {
         }
     });
 }
-view_breaks(<?php echo $tid; ?>);
+view_breaks(<?php echo $tid;?>);
 </script>
 
 

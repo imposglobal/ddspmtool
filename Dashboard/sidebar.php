@@ -10,6 +10,8 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+   
+
       
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -91,8 +93,29 @@
       <hr/>
       <?php } ?>
       
-      <li class="nav-heading">Accounts</li>
+     <!-- Reports -->
+     <?php if($role == 0){ ?>
+      <li class="nav-heading">Reports</li>
+      <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/report.php">
+          <i class="bi bi-person"></i>
+          <span>Export Task</span>
+        </a>
+      </li> -->
 
+      <!-- task analytics -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/task_analytics.php">
+          <i class="bi bi-person"></i>
+          <span>Task Analytics</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      <hr/>
+      <?php } ?>
+     
+     <!-- Reports -->
+   
+      <li class="nav-heading">Accounts</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/employee/user-profile.php">
           <i class="bi bi-person"></i>

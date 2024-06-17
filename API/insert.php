@@ -48,7 +48,7 @@ switch ($operation) {
       //task add
     case "task":
     $pname = $_POST['pname'];
-    $desc = $_POST['description'];
+    $desc = htmlspecialchars($_POST['description']);
     $sdate = $_POST['sdate'];
     $edate = $_POST['edate'];
     $ttype = $_POST['ttype'];
@@ -56,7 +56,7 @@ switch ($operation) {
     // $etime = $_POST['etime'];
     $etime = isset($_POST['etime']) ? $_POST['etime'] : null; 
     // $estimated_time = ($etime != "") ? date("h:i A", strtotime($etime)) : null; 
-    $title = $_POST['title'];
+    $title = htmlspecialchars($_POST['title']);
     $priority = $_POST['priority'];
     $eid = $_POST['eid'];
     $created_at = date('y-m-d H:i:s');

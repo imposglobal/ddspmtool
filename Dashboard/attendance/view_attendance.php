@@ -91,13 +91,18 @@ if(isset($_GET["get_date"]))
                     </tr>
                 </thead>
                 <tbody>
-                <?php 
-                    // Usage:
+                <?php
+                $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $records_per_page = 10; // Number of records per page
+                get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page);
+                ?> 
+                </tbody>
+                <!-- <tbody>              
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
                     get_attendance($role,$eid,$db, $page, $recordsPerPage,  $start_date, $end_date);
-                  ?> 
-                </tbody>
+                    get_attendance($role,$eid,$db, $start_date, $end_date);               
+                </tbody> -->
               </table>
                     </div>
                 </div>
@@ -106,17 +111,47 @@ if(isset($_GET["get_date"]))
 
         </div>
         <?php 
-        if($role == 0){
-          $sql = "SELECT COUNT(*) AS total FROM attendance";
-        }else{
-          $sql = "SELECT COUNT(*) AS total FROM attendance WHERE eid ='$eid'";
-        }
-      $result = mysqli_query($db, $sql);
-      $row = mysqli_fetch_assoc($result);
-      $totalRecords = $row['total'];
-      $totalPages = ceil($totalRecords / $recordsPerPage);      
-      pagination($page, $totalPages);
-      ?>        
+      //   if($role == 0){
+      //     $sql = "SELECT COUNT(*) AS total FROM attendance";
+      //   }else{
+      //     $sql = "SELECT COUNT(*) AS total FROM attendance WHERE eid ='$eid'";
+      //   }
+      // $result = mysqli_query($db, $sql);
+      // $row = mysqli_fetch_assoc($result);
+      // $totalRecords = $row['total'];
+      // $totalPages = ceil($totalRecords / $recordsPerPage);      
+      // pagination($page, $totalPages);
+      // ?>    
+      
+      
+      <?php 
+          if ($role == 0) 
+          {
+              $count_sql = "SELECT COUNT(*) AS total FROM attendance WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date'";
+          } 
+          else
+          {
+              $count_sql = "SELECT COUNT(*) AS total FROM attendance WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid'";
+          }
+    
+  
+      $count_result = mysqli_query($db, $count_sql);
+      $total_records = mysqli_fetch_assoc($count_result)['total'];
+      $total_pages = ceil($total_records / $records_per_page);
+       // Display pagination
+    
+    echo '<div class="d-flex justify-content-center">';
+    echo '<ul class="pagination ">';
+    for ($page = 1; $page <= $total_pages; $page++) 
+    {
+        echo '<li class="page-item' . ($page == $current_page ? ' active' : '') . '">';
+        echo '<a class="page-link" href="?page=' . $page . '&get_date=' . (isset($_GET["get_date"]) ? '1' : '0') . '&start_date=' . $start_date . '&end_date=' . $end_date . '">' . $page . '</a>';
+        echo '</li>';
+    }
+   
+    echo '</ul>';
+    echo '</div>';
+      ?>
       </div>
     </section>
 

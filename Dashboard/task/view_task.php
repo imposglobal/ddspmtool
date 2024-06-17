@@ -63,6 +63,15 @@ require('../../API/function.php');
     background-color: #0056b3;
 }
 
+.taskmessage
+{
+    color: #012970;
+    font-size: 13px;
+    font-family: "Open Sans", sans-serif;
+    padding-top:3px;
+ 
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
@@ -78,8 +87,6 @@ require('../../API/function.php');
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="row">
-       
         <div class="col-lg-12">
           <div class="card">
             <div class="row">   
@@ -147,26 +154,19 @@ require('../footer.php');
 <!-- ajax code for start time -->
 <script>
 $(document).ready(function() {
-    // Use event delegation to handle clicks on dynamically generated buttons
+    // Use event delegation to handle clicks on buttons
     $(document).on('click', '[id^="start_time_"]', function() {
-        // Store the button element in a variable for easy access
+        // Store the button element in a variable 
         var $startButton = $(this);
-        // Store the icon element within the button
-        var $icon = $startButton.find('.fa-play');
-        // Disable start button
-        $startButton.prop('disabled', true);
-        // Change the color of the icon to grey
-        $icon.css('color', 'grey');
-        // Extract task ID, employee ID, and project ID from the clicked button's data attributes
         var tid = $startButton.siblings('#tid').val(); 
         var eid = $startButton.siblings('#eid').val(); 
         var pid = $startButton.siblings('#pid').val(); 
-        var reason = $('#select_reason_' + tid).val();
         $.ajax({
             type: "POST",
             url: "../../API/update.php",
-            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid , reason: reason},
-            success: function(response) {
+            data: { ops: 'start_task_time', tid: tid , eid: eid , pid: pid},
+            success: function(response) 
+                {
                 // Parse JSON response
                 var data = JSON.parse(response);
                 if (data.success) {
@@ -175,14 +175,65 @@ $(document).ready(function() {
                         icon: 'success',
                         title: 'Success',
                         text: 'Task has started',
-                        didClose: function() {
-                            $startButton.prop('disabled', true);
-                            // Change the color of the icon to grey
-                            $icon.css('color', 'grey');
-                        }
                     });
-                    // Store button state in local storage
-                    localStorage.setItem('startButtonState_' + tid, 'disabled');
+                } else {
+                    // Show SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Show SweetAlert error message for AJAX error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'AJAX Error',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
+            },
+        });
+    });
+});
+</script>
+<!-- ajax code for start time -->
+
+
+
+<!-- ajax  code for pause time -->
+<script>
+    $(document).ready(function() {
+    // When any button with class "pause_time" is clicked
+    $('button[name^="pause_time"]').click(function() {
+        // Get the ID of the button that was clicked
+        var tid = $(this).attr('id').split('_')[2];
+        // Show or hide the select box based on its current visibility
+        $('#time_select_' + tid).toggle();
+    });
+
+    // When any button with class "submit_time" is clicked
+    $('button.submit_time').click(function() {
+        // var tid = $(this).closest('div').attr('id').split('_')[2];
+        var tid = $(this).siblings('input[type="hidden"]').val();
+        var eid = $('#eid').val(); 
+        var pid = $('#pid').val(); 
+        var reason = $('#select_reason_' + tid).val();        
+        $.ajax({
+            type: "POST",
+            url: "../../API/update.php",
+            data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid, reason: reason },
+            success: function(response) {
+                // Parse JSON response
+                var data = JSON.parse(response); 
+                if (data.success) {
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        //  text: data.message
+                        text: 'You are on pause'
+                    })
                 } else {
                     // Show SweetAlert error message
                     Swal.fire({
@@ -201,92 +252,14 @@ $(document).ready(function() {
                 });
             },
             complete: function() {
-                // Re-enable the start button regardless of success or error
-                $startButton.prop('disabled', false);
+                // Hide the time_select block after the AJAX request is completed
+                $('#time_select_' + tid).hide();
             }
         });
-    });
-
-    // Disable buttons based on their previous state stored in local storage
-    $('[id^="start_time_"]').each(function() {
-        var tid = $(this).siblings('#tid').val();
-        var buttonState = localStorage.getItem('startButtonState_' + tid);
-        if (buttonState === 'disabled') {
-            $(this).prop('disabled', true);
-            $(this).find('.fa-play').css('color', 'grey');
-        }
-    });
-});
-</script>
-<!-- ajax code for start time -->
-
-
-
-<!-- ajax  code for pause time -->
-<script>
-  // When any button with class "pause_time" is clicked
-$('button[name^="pause_time"]').click(function() {
-    // Get the ID of the button that was clicked
-    var tid = $(this).attr('id').split('_')[2];
-    // Show or hide the select box based on its current visibility
-    $('#time_select_' + tid).toggle();
-});
-
-// When any button with class "submit_time" is clicked
-$('button.submit_time').click(function() {
-    var tid = $(this).closest('div').attr('id').split('_')[2];
-    var eid = $('#eid').val(); 
-    var pid = $('#pid').val();  
-    
-    var $startButton = $('#start_time_' + tid);
-    // Store the icon element within the button
-    var $icon = $startButton.find('.fa-play');
-
-    $.ajax({
-        type: "POST",
-        url: "../../API/update.php",
-        data: { ops: 'pause_task_time', tid: tid , eid: eid , pid: pid},
-        success: function(response) {
-            // Parse JSON response
-            var data = JSON.parse(response); 
-            if (data.success) {
-                // Show SweetAlert success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    //  text: data.message
-                    text: 'You are on pause'
-                }).then(function() {
-                    $startButton.prop('disabled', false);
-                    // Change the color of the icon to grey
-                    $icon.css('color', 'green');
-                });
-            } else {
-                // Show SweetAlert error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            // Show SweetAlert error message for AJAX error
-            Swal.fire({
-                icon: 'error',
-                title: 'AJAX Error',
-                text: 'An error occurred while processing your request. Please try again later.'
-            });
-        },
-        complete: function() {
-            // Hide the time_select block after the AJAX request is completed
-            $('#time_select_' + tid).hide();
-        }
     });
 });
 </script>
 <!-- ajax code for pause time -->
-
 
 <!-- ajax code for stop time -->
 <script>
@@ -388,6 +361,87 @@ function deleteTask(tid) {
     });
 }
 </script>
+
+<!-- code for add timer messages -->
+
+<script>
+    var timerInterval;
+    var isPaused = false;
+    
+    function startTimer(tid) 
+    {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
+        timerDisplay.textContent = "Task started!";
+        localStorage.setItem("timerMessage_" + tid, "Task started!");
+    }
+
+    function pauseTimer(tid) {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "You are on pause";
+        localStorage.setItem("timerMessage_" + tid, "You are on pause");
+        isPaused = true;
+    }
+
+    function stopTimer(tid) {
+        var timerDisplay = document.getElementById("timerDisplay" + tid);
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Timer stopped";
+        localStorage.removeItem("timerMessage_" + tid);
+    }
+
+    function retrieveTimerMessages() {
+    // Check if localStorage is supported
+    if (typeof localStorage === "undefined") {
+        console.error("localStorage is not supported in this browser.");
+        return;
+    }
+
+    // Loop through localStorage items
+    for (var key in localStorage) {
+        // Check if the item is a timer message
+        if (key.startsWith("timerMessage_")) {
+            // Get the status and message from localStorage
+            var status = localStorage.getItem(key);
+            var tid = key.split("_")[1]; 
+
+            // Find timer display element
+            var timerDisplay = document.getElementById("timerDisplay" + tid);
+
+            // Check if timer display element exists
+            if (timerDisplay) {
+                // Update text content based on status
+                timerDisplay.textContent = status;
+            } else {
+                console.error("Timer display element not found for timer ID: " + tid);
+            }
+        }
+    }
+}
+
+// Call retrieveTimerMessages when the page loads
+window.onload = retrieveTimerMessages;  
+
+// Example of storing timer status in localStorage
+// This can be called when the timer starts or pauses
+function updateTimerStatus(timerId, status) {
+    localStorage.setItem("timerMessage_" + timerId, status);
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
 
 
 

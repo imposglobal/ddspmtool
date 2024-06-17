@@ -46,18 +46,43 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     // query to retrive data from task table
     if($role == 0)
     {
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
+        FROM 
+            task 
+        INNER JOIN 
+            employees 
+        ON 
+            task.eid = employees.eid 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
     } else 
     {
-        $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
-        ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        // $sql = "SELECT * FROM task INNER JOIN employees ON task.eid = employees.eid WHERE employees.eid = '$eid' 
+        // ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date , employees.fname, employees.lname, employees.eid  
+        FROM 
+            task 
+        INNER JOIN 
+            employees 
+        ON 
+            task.eid = employees.eid 
+        WHERE 
+            employees.eid = '$eid' 
+        ORDER BY 
+            task.created_at DESC 
+        LIMIT 
+            $offset, $recordsPerPage";
     }
     $result = mysqli_query($db, $sql);  
     if (mysqli_num_rows($result) > 0) {
        
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
-            $tid = $row["tid"]; // Define $tid here
+            $tid = $row["tid"];
             $eid = $row["eid"];
             $pid = $row["pid"];
             $title = $row["title"];
@@ -90,7 +115,8 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             {
                 echo '<td>'. $row["title"].'</td>';
             }         
-            echo '<td>'. $row["created_at"].'</td>';
+            // echo '<td>'. $row["created_at"].'</td>';
+            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
 
@@ -120,28 +146,33 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '<input type="hidden" id="tid" value="' . $tid . '">';
                 echo '<input type="hidden" id="eid" value="' . $eid . '">';
                 echo '<input type="hidden" id="pid" value="' . $pid . '">';
-                echo '<button type="button" name="start_time" id="start_time_' . $tid . '" style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
-                echo '<button type="button" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
+                echo '<button type="button" onclick="startTimer(' . $tid . ')" name="start_time" id="start_time_' . $tid . '"  style="border:none;background-color:transparent"><i class="fas fa-play" style="color:green;"></i></button>';   
+                echo '<button type="button" onclick="pauseTimer(' . $tid . ')" name="pause_time" id="pause_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;">
                         <i class="fas fa-pause" style="color:orange;"></i> 
                       </button>'; 
                       
                 //   After clicking on the pause button, it will show the options to select the break reason.
 
                 echo '
-                <div id="time_select_' . $tid . '" style="display:none;" class="alert-box">
+                <div id="time_select_' . $tid . '" class="alert-box" style="display:none;">
                     <select id="select_reason_' . $tid . '">
-                        <option selected disabled="true">Add Reason</option>
+                        <option selected>Add Reason</option>
                         <option value="Meeting">Meeting</option>
                         <option value="Call">Call</option>
                         <option value="Bio-Break">Bio Break</option>
-                        <option value="Other">Other</option>
+                        <option value="Discussion">Discussion</option>
+                        <option value="Issues">Issues</option>
+                        <option value="Lunch/Tea Break">Lunch/tea Break</option>
+                        <option value="Other-Task">Other Task</option>
                     </select>
+                    <input type="hidden" id="tid" value="' . $tid . '">
                     <input type="hidden" id="eid" value="' . $eid . '">
                     <input type="hidden" id="pid" value="' . $pid . '">
                     <button type="button" class="submit_time">Submit</button>
                 </div>
                 ';
-                echo '<button type="button" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';            
+                echo '<button type="button" onclick="stopTimer(' . $tid . ')" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';   
+                echo '<p id="timerDisplay'.$tid .'" class="taskmessage"></p>';         
                 echo '</form>
                         </div>
                     </div>
@@ -269,7 +300,7 @@ function get_projects_by_current_date($role, $eid, $db)
             {
               echo '<td>'. $row["title"].'</td>';
             }   
-            echo '<td>' . $row["estimated_time"] .' '.'Hrs'. '</td>';
+            echo '<td>' . $row["estimated_time"] . '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
             echo '<td>' . $row["created_at"] . '</td>';
             echo '</tr>';
@@ -318,12 +349,190 @@ function get_assigned_project($db, $pid)
         while ($row = mysqli_fetch_assoc($result))
         {
             echo $row["fname"] . ", "; // Concatenate fname with a space
-        }
-      
+        }     
     }
-    } else {
+    } 
+    else {
         return false; // Return false if no results or error
     }
 }
+
+
+
+// to get reports in report page
+
+// function get_report($role, $eid, $db, $page = 1, $recordsPerPage = 10)
+// {
+//     $offset = ($page - 1) * $recordsPerPage;
+//     if($role == 0)
+//     {
+//         $sql = "SELECT task.tid, task.eid, task.pid,  DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+//         FROM task 
+//         LEFT JOIN employees ON task.eid = employees.eid
+//         INNER JOIN projects ON task.pid = projects.pid
+//         INNER JOIN task_time ON task.tid = task_time.tid 
+//         ORDER BY 
+//             task.created_at DESC 
+//         LIMIT 
+//             $offset, $recordsPerPage";
+//     } else 
+//     {
+//         $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
+//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
+//         FROM task 
+//         LEFT JOIN employees ON task.eid = employees.eid
+//         INNER JOIN projects ON task.pid = projects.pid
+//         INNER JOIN task_time ON task.tid = task_time.tid 
+//         WHERE 
+//             employees.eid = '$eid' 
+//         ORDER BY 
+//             task.created_at DESC 
+//         LIMIT 
+//             $offset, $recordsPerPage";
+//     }
+//     $result = mysqli_query($db, $sql);  
+//     if (mysqli_num_rows($result) > 0) {
+       
+//         $i = ($page - 1) * $recordsPerPage + 1;
+//         while($row = mysqli_fetch_assoc($result)) {
+//             $tid = $row["tid"];
+//             $eid = $row["eid"];
+//             $pid = $row["pid"];
+//             $title = $row["title"];
+                     
+//             echo '<tr>';
+//             echo '<th scope="row">'. $i++.'</th>';
+//             echo '<td>'. $row["project_name"].'</td>';
+//             echo '<td>'. $row["fname"].'</td>';
+//             echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+//             if (strlen($title) > 20)
+//             {
+//                echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+//             }
+//             else
+//             {
+//                 echo '<td>'. $row["title"].'</td>';
+//             }                   
+//             echo '<td>'. $row["total_time"].'</td>';
+//             echo '</tr>';
+//         }
+//     } else {
+//         echo "<tr><td colspan='5'>No results found.</td></tr>";
+//     }
+// }
+
+// to get task analytics 
+
+function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
+{
+    // Calculate offset
+    $offset = ($page - 1) * $recordsPerPage;
+    
+    // Fetch task analytics with pagination
+    $sql = "SELECT 
+    projects.project_name, 
+    projects.status, 
+    projects.start_date, 
+    projects.end_date, 
+    DATE(projects.created_at) AS created_date,
+    task.title, 
+    task.description, 
+    employees.eid, 
+    GROUP_CONCAT(DISTINCT CONCAT('<a href=\"employee_task.php?eid=', employees.eid, '&pid=', task.pid, '\">', employees.fname, '</a>') ORDER BY employees.fname SEPARATOR ', ') AS employee_links,
+    task_time.pid,
+    task_time.tid,
+    project_task_count.total_tasks,
+    project_employee_count.total_employees
+FROM 
+    task 
+INNER JOIN 
+    projects ON task.pid = projects.pid  
+INNER JOIN 
+    employees ON task.eid = employees.eid 
+INNER JOIN 
+    task_time ON task.tid = task_time.tid AND task.pid = task_time.pid
+INNER JOIN 
+    (SELECT pid, COUNT(*) AS total_tasks FROM task GROUP BY pid) AS project_task_count 
+    ON projects.pid = project_task_count.pid
+INNER JOIN 
+    (SELECT pid, COUNT(DISTINCT eid) AS total_employees FROM task GROUP BY pid) AS project_employee_count 
+    ON projects.pid = project_employee_count.pid
+GROUP BY 
+    projects.project_name
+ORDER BY 
+    created_date DESC 
+LIMIT 
+    $offset, $recordsPerPage";
+  
+    $result = mysqli_query($db, $sql);
+    
+    if (mysqli_num_rows($result) > 0) 
+    {
+        // Output data of each row
+        $i = ($page - 1) * $recordsPerPage + 1;
+        while($row = mysqli_fetch_assoc($result)) 
+        {
+            $eid =  $row["eid"];
+            $pid =  $row["pid"]; 
+            
+            // query to fetch sum of total time of any projects
+            $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS total_project_time FROM task_time
+            WHERE pid = '$pid'";
+            $result1 = mysqli_query($db, $sql1);
+            $row1 = mysqli_fetch_assoc($result1);
+            // query to fetch total break time of any project
+            $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_project_break FROM time_difference WHERE pid = '$pid'";
+            $result2 = mysqli_query($db, $sql2);
+            $row2 = mysqli_fetch_assoc($result2);
+
+              // Calculate actual time form total_time and total_break 
+            //   $total_project_time = strtotime($row1['total_project_time']);
+            //   $total_project_break = strtotime($row2['total_project_break']);
+            //   $substract_time = $total_project_time - $total_project_break;
+            //   $time = gmdate('H:i:s', $substract_time);
+
+            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['total_project_time']);
+            // for total break time
+            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['total_project_break']);
+            // convert hrs and minuts in seconds for total_time 
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+             // convert hrs and minuts in seconds for total_break_time
+            // 1 minute = 1 * 60 
+            // 1 hr = 60 * 60
+            $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+
+            $total_timeframe = $total_time_seconds - $total_break_time_seconds;
+           
+            // convert total timeframe back to HH:MM:SS format
+            $hours = floor($total_timeframe / 3600);
+            $minutes = floor(($total_timeframe % 3600) / 60);
+            $seconds = $total_timeframe % 60;
+
+           $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+            echo '<tr>';
+            echo '<th scope="row">'. $i++.'</th>';
+            echo '<td>'. $row["project_name"].'</td>';
+            echo '<td>'. $row["total_tasks"].'</td>';                 
+            echo '<td>'. $row["total_employees"].'</td>';          
+            echo '<td>'. $row["employee_links"].'</td>';                    
+            // echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
+            echo '<td>' . $actual_task_time .'</td>';
+            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';  
+                  
+            echo '</tr>';
+           
+        }
+    } 
+    else 
+    {
+        echo "<tr><td colspan='4'>No results found.</td></tr>";
+    }
+}
+
+
 
 ?>
