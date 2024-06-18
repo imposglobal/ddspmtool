@@ -5,6 +5,7 @@ require('../header.php');
 <?php 
 require('../sidebar.php');
 require('../../API/function.php');
+
 ?>
 <style>
     .offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl 
@@ -17,7 +18,19 @@ require('../../API/function.php');
     olor: #012970;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
-}
+   }
+
+   .exportbtn
+    {
+      background-color: #012970;
+      color:#fff;
+    }
+    .exportbtn:hover
+    {
+      background-color: #012970;
+      color: #fff;
+    }
+ 
 </style>
 
 <main id="main" class="main">
@@ -38,8 +51,7 @@ require('../../API/function.php');
     <form method="post" action="../../API/export_projects.php">
     <div class="row">
      <!-- project Name -->  
-    <div class="col-lg-4 mb-4">
-   
+    <div class="col-lg-3 mb-4">  
     <select class="form-select" name="project_id">
     <option selected>Select Project</option>
     <option value="All">All</option>
@@ -50,8 +62,7 @@ require('../../API/function.php');
     {
      while ($row = mysqli_fetch_assoc($result))
     {
-    ?>
-    
+    ?>    
     <option value="<?php echo $row["pid"]?>"><?php echo $row["project_name"]?></option>
     <?php 
     }
@@ -59,13 +70,36 @@ require('../../API/function.php');
     ?>
     </select>
     </div>
-   
-     <!-- project Name -->
+<!-- project Name -->
+ <!-- status -->
+<div class="col-lg-3 mb-4">  
+<select class="form-select" name="status">
+    <option selected>Select Time</option>
+    <option value="today">Today</option>
+    <option value="yesterday">Yesterday</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option> 
+</select>
+ </div>
+ <!-- status -->
+
+ <!-- start date -->
+ <div class="col-lg-2 mb-4">  
+ <input type="date" class="form-control" name="start_date">
+ </div>
+ <!-- start date -->
+
+<!-- end date -->
+<div class="col-lg-2 mb-4">  
+<input type="date" class="form-control" name="end_date">
+</div>
+<!-- end date -->
 
 
 
-    <div class="col-lg-4 text-start">
-    <button type="submit" class="btn btn-info">Export to CSV</button>  
+
+    <div class="col-lg-2 text-start">
+    <button type="submit" class="btn exportbtn">Export</button>  
     </div>
     </form>
     </div>

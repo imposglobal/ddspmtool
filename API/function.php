@@ -188,6 +188,35 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 
 // code for pagination
 
+// function pagination($currentPage, $totalPages)
+// {
+//     echo '<tr><td colspan="5">';
+//     echo '<ul class="pagination justify-content-center">';
+    
+//     // Previous page link
+//     if ($currentPage > 1) {
+//         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage - 1).'">Previous</a></li>';
+//     }
+
+//     // Page links
+//     for ($i = 1; $i <= $totalPages; $i++) {
+//         echo '<li class="page-item ';
+//         if ($i == $currentPage) echo 'active';
+//         echo '"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+//     }
+    
+//     // Next page link
+//     if ($currentPage < $totalPages) {
+//         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage + 1).'">Next</a></li>';
+//     }
+    
+//     echo '</ul>';
+//     echo '</td></tr>';
+// }
+
+
+// pagination new code
+
 function pagination($currentPage, $totalPages)
 {
     echo '<tr><td colspan="5">';
@@ -198,13 +227,25 @@ function pagination($currentPage, $totalPages)
         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage - 1).'">Previous</a></li>';
     }
 
+    // Determine the range of page links to show
+    $startPage = max(1, $currentPage - 2);
+    $endPage = min($totalPages, $currentPage + 2);
+
+    if ($currentPage <= 3) {
+        $startPage = 1;
+        $endPage = min(5, $totalPages);
+    } elseif ($currentPage >= $totalPages - 2) {
+        $endPage = $totalPages;
+        $startPage = max(1, $totalPages - 4);
+    }
+
     // Page links
-    for ($i = 1; $i <= $totalPages; $i++) {
+    for ($i = $startPage; $i <= $endPage; $i++) {
         echo '<li class="page-item ';
         if ($i == $currentPage) echo 'active';
         echo '"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
     }
-    
+
     // Next page link
     if ($currentPage < $totalPages) {
         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage + 1).'">Next</a></li>';
@@ -213,6 +254,8 @@ function pagination($currentPage, $totalPages)
     echo '</ul>';
     echo '</td></tr>';
 }
+
+
 
 //get task count in dashboard
 function get_task_count($role, $eid, $db)
@@ -358,70 +401,6 @@ function get_assigned_project($db, $pid)
 }
 
 
-
-// to get reports in report page
-
-// function get_report($role, $eid, $db, $page = 1, $recordsPerPage = 10)
-// {
-//     $offset = ($page - 1) * $recordsPerPage;
-//     if($role == 0)
-//     {
-//         $sql = "SELECT task.tid, task.eid, task.pid,  DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
-//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
-//         FROM task 
-//         LEFT JOIN employees ON task.eid = employees.eid
-//         INNER JOIN projects ON task.pid = projects.pid
-//         INNER JOIN task_time ON task.tid = task_time.tid 
-//         ORDER BY 
-//             task.created_at DESC 
-//         LIMIT 
-//             $offset, $recordsPerPage";
-//     } else 
-//     {
-//         $sql = "SELECT task.tid, task.created_at, projects.project_name, task.title, task.status, 
-//         task.estimated_time, task.priority, employees.fname, employees.lname, task_time.total_time
-//         FROM task 
-//         LEFT JOIN employees ON task.eid = employees.eid
-//         INNER JOIN projects ON task.pid = projects.pid
-//         INNER JOIN task_time ON task.tid = task_time.tid 
-//         WHERE 
-//             employees.eid = '$eid' 
-//         ORDER BY 
-//             task.created_at DESC 
-//         LIMIT 
-//             $offset, $recordsPerPage";
-//     }
-//     $result = mysqli_query($db, $sql);  
-//     if (mysqli_num_rows($result) > 0) {
-       
-//         $i = ($page - 1) * $recordsPerPage + 1;
-//         while($row = mysqli_fetch_assoc($result)) {
-//             $tid = $row["tid"];
-//             $eid = $row["eid"];
-//             $pid = $row["pid"];
-//             $title = $row["title"];
-                     
-//             echo '<tr>';
-//             echo '<th scope="row">'. $i++.'</th>';
-//             echo '<td>'. $row["project_name"].'</td>';
-//             echo '<td>'. $row["fname"].'</td>';
-//             echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
-//             if (strlen($title) > 20)
-//             {
-//                echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
-//             }
-//             else
-//             {
-//                 echo '<td>'. $row["title"].'</td>';
-//             }                   
-//             echo '<td>'. $row["total_time"].'</td>';
-//             echo '</tr>';
-//         }
-//     } else {
-//         echo "<tr><td colspan='5'>No results found.</td></tr>";
-//     }
-// }
-
 // to get task analytics 
 
 function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
@@ -492,17 +471,20 @@ LIMIT
             //   $substract_time = $total_project_time - $total_project_break;
             //   $time = gmdate('H:i:s', $substract_time);
 
+            // for total task time
             list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['total_project_time']);
             // for total break time
             list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['total_project_break']);
-            // convert hrs and minuts in seconds for total_time 
-            // 1 minute = 1 * 60 
-            // 1 hr = 60 * 60
+            // convert hrs and minuts in seconds for total task time 
+            // 1 minute = 1 * 60 = 60
+            // 1 hr = 60 * 60 = 3600
             $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
-             // convert hrs and minuts in seconds for total_break_time
-            // 1 minute = 1 * 60 
-            // 1 hr = 60 * 60
+             // convert hrs and minuts in seconds for total break time
+            // 1 minute = 1 * 60 = 60
+            // 1 hr = 60 * 60 = 3600
             $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+
+            // To get the actual time frame, subtract total_break_time_seconds from total_time_seconds
 
             $total_timeframe = $total_time_seconds - $total_break_time_seconds;
            
@@ -521,8 +503,7 @@ LIMIT
             echo '<td>'. $row["employee_links"].'</td>';                    
             // echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
             echo '<td>' . $actual_task_time .'</td>';
-            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';  
-                  
+            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';                    
             echo '</tr>';
            
         }
