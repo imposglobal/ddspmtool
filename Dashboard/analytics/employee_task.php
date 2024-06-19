@@ -111,7 +111,7 @@ require('../../API/function.php');
         <div class="col-lg-3 mt-4 mb-5">   
         <input type="hidden" name="eid" value="<?php echo $eid; ?>">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>"> 
-        <button type="submit" formaction="employee_task.php" class="btn btn-success">Show</button>   
+        <!-- <button type="submit" formaction="employee_task.php" class="btn btn-success">Show</button>    -->
         <button type="submit" class="btn btn-info ms-2">Export</button>        
         </form>
         </div>
