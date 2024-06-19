@@ -544,16 +544,16 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
      switch ($time_status) 
      {
          case 'today':
-             $where_conditions[] = "DATE(task.created_at) = CURDATE()";
+             $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE()";
              break;
          case 'yesterday':
-             $where_conditions[] = "DATE(task.created_at) = CURDATE() - INTERVAL 1 DAY";
+             $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
              break;
          case 'weekly':
-             $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 7 DAY";
+             $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
              break;
          case 'monthly':
-             $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 30 DAY";
+             $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
              break;
      }
 
