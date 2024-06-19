@@ -73,7 +73,7 @@ require('../../API/function.php');
 <!-- project Name -->
  <!-- status -->
 <div class="col-lg-3 mb-4">  
-<select class="form-select" name="status">
+<select class="form-select" name="time_status">
     <option selected>Select Time</option>
     <option value="today">Today</option>
     <option value="yesterday">Yesterday</option>

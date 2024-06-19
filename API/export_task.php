@@ -1,12 +1,12 @@
 <?php
 require("db.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
    
-    $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
-    $employee_id = isset($_POST['employee_id']) ? $_POST['employee_id'] : '';
-    $status = isset($_POST['status']) ? $_POST['status'] : '';
-    $task_status = isset($_POST['task_status']) ? $_POST['task_status'] : '';
+    $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+    $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
+    $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+    $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
 
 
     // Set headers for CSV export
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Add conditions based on the selected status
-    switch ($status) 
+    switch ($time_status) 
     {
         case 'today':
             $where_conditions[] = "DATE(task.created_at) = CURDATE()";
