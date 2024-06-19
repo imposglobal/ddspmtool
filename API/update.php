@@ -346,67 +346,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                          // Output the response as JSON
                         echo json_encode($response);
                         break;
-
-
-                        // stop time 
-
-                        // case "stop_task_time":
-                        //     $response = array();
-                        //     if(isset($_POST['tid'], $_POST['eid'], $_POST['pid'])) {
-                        //         date_default_timezone_set('Asia/Kolkata');
-                        //         $tid = $_POST['tid'];
-                        //         $eid = $_POST['eid'];
-                        //         $pid = $_POST['pid'];   
-                        //         $timestamp = date('h:i:s A');
-                        //         $date = date('Y-m-d');
-                        //         $sql2 = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00','no-breaks','$date')";
-                        //         $db->query($sql2);
-                        //         $sql1 = "UPDATE `task_time` SET `end_time` = '$timestamp' WHERE  eid = '$eid' AND `tid` = '$tid'";                  
-                        //         if ($db->query($sql1) === TRUE)
-                        //          {
-                        //             // Fetch the initial and end times
-                        //             $query = "SELECT * FROM `task_time` WHERE eid = '$eid' AND `tid` = '$tid'";                                       
-                        //             $result = $db->query($query);               
-                        //             if ($result && $result->num_rows == 1) {
-                        //                 $row = $result->fetch_assoc();
-                        //                 // Calculate the time difference
-                        //                 $start_time = new DateTime($row['initial_time']);
-                        //                 $end_time = new DateTime($row['end_time']);
-                        //                 $difference = $end_time->diff($start_time);
-                        //                 $timeframe = $difference->format('%H:%I:%S');                            
-                        //                 // Update total_time in the database
-                        //                 $update_query = "UPDATE `task_time` SET `total_time` = '$timeframe' WHERE  eid = '$eid' AND `tid`= '$tid'";
-                                        
-                        //                 if ($db->query($update_query) === TRUE) 
-                        //                 {
-                        //                     $response['success'] = true;
-                        //                     $response['message'] = "Task stopped successfully.";
-                        //                 } 
-                        //                 else 
-                        //                 {
-                        //                     $response['success'] = false;
-                        //                     $response['message'] = "Error on stopped time.";
-                        //                 }
-                        //             } else {
-                        //                 $response['success'] = false;
-                        //                 $response['message'] = "Error on stopped time.";
-                        //             }
-                        //         } else {
-                        //             $response['success'] = false;
-                        //             $response['message'] = "Error on stopped time.";
-                        //         }
-                        //     }                                
-                        //     else {
-                        //         $response['success'] = false;
-                        //         $response['message'] = "Incomplete data for pausing time.";
-                        //     }
-                        //      // Output the response as JSON
-                        //        echo json_encode($response);
-                        //     break;
-
-                        // stop time
-
-
+                   
             default:
                 echo "Invalid operation";
         }

@@ -72,6 +72,34 @@ require('../../API/function.php');
  
 }
 
+.exportbtn
+    {
+      background-color: #012970;
+      color:#fff;
+    }
+
+
+#status > option:nth-child(2) {
+  background-color: green;
+  color: #fff;
+}
+#status > option:nth-child(3){
+  background-color: #dec016;
+  color: #fff;
+}
+#status > option:nth-child(4){
+  background-color: #eb7e09;
+  color: #fff;
+}
+#status > option:nth-child(5){
+  background-color: #eb6709;
+  color: #fff;
+}
+#status > option:nth-child(6){
+  background-color: red;
+  color: #fff;
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
@@ -87,6 +115,93 @@ require('../../API/function.php');
     </div><!-- End Page Title -->
 
     <section class="section">
+    <?php if($role == 0){ ?>
+    <!-- filter -->
+    <div class="col-lg-12">
+    <form method="post" action="../../API/export_task.php">
+    <div class="row">
+     <!-- project Name -->  
+    <div class="col-lg-3 mb-4">  
+    <select class="form-select" name="project_id">
+    <option selected disabled="true">Select Project</option>
+    <option value="All">All</option>
+    <?php
+    $sql = "SELECT * from projects ORDER BY created_at DESC";
+    $result = mysqli_query($db, $sql);
+    if ($result && mysqli_num_rows($result) > 0)
+    {
+     while ($row = mysqli_fetch_assoc($result))
+    {
+    ?>    
+    <option value="<?php echo $row["pid"]?>"><?php echo $row["project_name"]?></option>
+    <?php 
+    }
+    }
+    ?>
+    </select>
+    </div>
+<!-- project Name -->
+
+
+<!-- employee_name -->
+<div class="col-lg-3 mb-4">  
+    <select class="form-select" name="employee_id">
+    <option selected disabled="true">Select Employee</option>
+    <option value="All">All</option>
+    <?php
+    $sql = "SELECT * from employees where role = '1'";
+    $result = mysqli_query($db, $sql);
+    if ($result && mysqli_num_rows($result) > 0)
+    {
+     while ($row = mysqli_fetch_assoc($result))
+    {
+    ?>    
+    <option value="<?php echo $row["eid"]?>"><?php echo $row["fname"]?></option>
+    <?php 
+    }
+    }
+    ?>
+    </select>
+    </div>
+<!-- employee_name -->
+
+<!-- task status -->
+<div class="col-lg-2 mb-4">  
+<select id="status" class="form-select" name="task_status">
+<option selected="" disabled="true">Select Status</option>
+<option value="Completed">Completed</option>
+<option value="In Progress">In Progress</option>
+<option value="Pending">Pending</option>
+<option value="On Hold">On Hold</option>
+<option value="Abonded">Abonded</option>
+</select>
+ </div>
+<!-- task status -->
+ <!-- time -->
+<div class="col-lg-2 mb-4">  
+<select class="form-select" name="status">
+    <option selected disabled="true">Select Time</option>
+    <option value="today">Today</option>
+    <option value="yesterday">Yesterday</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option> 
+</select>
+ </div>
+ <!-- time-->
+
+
+    <div class="col-lg-2 text-start">
+        
+    <button type="submit" class="btn exportbtn">Export</button> 
+    
+    </div>
+    </form>
+    </div>
+    </div>
+    <?php } ?>
+    <!-- end of div -->
+
+    <!-- filter -->
         <div class="col-lg-12">
           <div class="card">
             <div class="row">   
@@ -125,19 +240,23 @@ require('../../API/function.php');
         
       </div>
 
-      <!-- pagination -->
-      <?php 
-      if($role == 0){
+    <!-- pagination -->
+
+    <?php  
+    if ($role == 0) 
+    {
         $sql = "SELECT COUNT(*) AS total FROM task";
-      }else{
+    } else {
         $sql = "SELECT COUNT(*) AS total FROM task WHERE eid ='$eid'";
-      }
-      $result = mysqli_query($db, $sql);
-      $row = mysqli_fetch_assoc($result);
-      $totalRecords = $row['total'];
-      $totalPages = ceil($totalRecords / $recordsPerPage);
-      
-      pagination($page, $totalPages);
+    }
+    
+    $result = mysqli_query($db, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $totalRecords = $row['total'];
+    $totalPages = ceil($totalRecords / $recordsPerPage);
+    
+    pagination($page, $totalPages);
+
       ?>
     </section>
 
@@ -206,7 +325,7 @@ $(document).ready(function() {
     $(document).ready(function() {
     // When any button with class "pause_time" is clicked
     $('button[name^="pause_time"]').click(function() {
-        // Get the ID of the button that was clicked
+        // Get the ID of the button that is clicked
         var tid = $(this).attr('id').split('_')[2];
         // Show or hide the select box based on its current visibility
         $('#time_select_' + tid).toggle();

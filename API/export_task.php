@@ -2,10 +2,12 @@
 require("db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Capture filter parameters
+   
     $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
-    $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-    $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+    $employee_id = isset($_POST['employee_id']) ? $_POST['employee_id'] : '';
+    $status = isset($_POST['status']) ? $_POST['status'] : '';
+    $task_status = isset($_POST['task_status']) ? $_POST['task_status'] : '';
+
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
@@ -21,24 +23,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Construct the SQL query with filters
     $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
-        task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
-        FROM task 
-        LEFT JOIN employees ON task.eid = employees.eid
-        INNER JOIN projects ON task.pid = projects.pid
-        INNER JOIN task_time ON task.tid = task_time.tid";
+     task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
+     FROM task 
+     LEFT JOIN employees ON task.eid = employees.eid
+     INNER JOIN projects ON task.pid = projects.pid
+     INNER JOIN task_time ON task.tid = task_time.tid";
+
+    // Initialize where conditions array
+    $where_conditions = [];
 
     // Append filters to the query if a specific project is selected
     if ($project_id !== 'All') {
-        $sql .= " WHERE task.pid = '$project_id'";
+        $where_conditions[] = "task.pid = '$project_id'";
     }
 
-    // Append filters to the query
-    if (!empty($start_date)) {
-        $sql .= " AND task.created_at >= '$start_date'";
+    if ($employee_id !== 'All') {
+        $where_conditions[] = "task.eid = '$employee_id'";
     }
-    if (!empty($end_date)) {
-        $sql .= " AND task.created_at <= '$end_date'";
+
+    // Add conditions based on the selected status
+    switch ($status) 
+    {
+        case 'today':
+            $where_conditions[] = "DATE(task.created_at) = CURDATE()";
+            break;
+        case 'yesterday':
+            $where_conditions[] = "DATE(task.created_at) = CURDATE() - INTERVAL 1 DAY";
+            break;
+        case 'weekly':
+            $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 7 DAY";
+            break;
+        case 'monthly':
+            $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 30 DAY";
+            break;
     }
+
+    // Add the task status condition if selected
+    if (!empty($task_status) && $task_status !== 'Select Task Status') {
+        $where_conditions[] = "task.status = '$task_status'";
+    }
+
+    // If there are any conditions, they are combined and appended to the SQL query.
+    if (!empty($where_conditions)) 
+    {
+        $sql .= " WHERE " . implode(" AND ", $where_conditions);
+    }
+
+    $sql .= " ORDER BY task.created_at DESC";
 
     // Execute the query
     $result = mysqli_query($db, $sql);

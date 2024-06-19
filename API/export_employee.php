@@ -6,6 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     $eid = isset($_POST['eid']) ? $_POST['eid'] : '';
     $pid = isset($_POST['pid']) ? $_POST['pid'] : '';
+    $status = isset($_POST['time_status']) ? $_POST['time_status'] : '';
+    $task_status = isset($_POST['task_status']) ? $_POST['task_status'] : '';
+
     // Set headers for CSV export
     header("Content-Type: text/csv");
     header("Content-Disposition: attachment; filename=employee_tasks.csv");
@@ -42,6 +45,35 @@ AND task.eid = break.eid
 AND task.pid = break.pid
 WHERE task.eid = '$eid' AND task.pid = '$pid'";
 
+ // Initialize where conditions array
+ $where_conditions = [];
+
+   // Add conditions based on the selected status
+   switch ($status) {
+    case 'today':
+        $where_conditions[] = "DATE(task.created_at) = CURDATE()";
+        break;
+    case 'yesterday':
+        $where_conditions[] = "DATE(task.created_at) = CURDATE() - INTERVAL 1 DAY";
+        break;
+    case 'weekly':
+        $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 7 DAY";
+        break;
+    case 'monthly':
+        $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 30 DAY";
+        break;
+}
+
+// Add the task status condition if selected
+if (!empty($task_status) && $task_status !== 'Select Task Status') {
+    $where_conditions[] = "task.status = '$task_status'";
+}
+
+// If there are any conditions, they are combined and appended to the SQL query.
+if (!empty($where_conditions)) {
+    $sql .= " AND " . implode(" AND ", $where_conditions);
+}
+
 $result = mysqli_query($db, $sql);
 
 if ($result)
@@ -55,12 +87,6 @@ if ($result)
               // Decode HTML entities back into their respective characters
               $decode_desc = html_entity_decode($removedesc);
 
-              // Convert total_time and total_break to seconds
-            //   $total_time = strtotime($row['total_time']);
-            //   $total_break_time = strtotime($row['total_break']);
-            //    $actual_time = $total_time - $total_break_time;
-            //    $effective_time = gmdate('H:i:s', $actual_time); 
-
             /////////////////////////////Calculation//////////////////////////
 
             list($total_hours, $total_minutes, $total_seconds) = explode(':', $row['total_time']);
@@ -68,12 +94,12 @@ if ($result)
             list($break_hours, $break_minutes, $break_seconds) = explode(':', $row['total_break']);
             // convert hrs and minuts in seconds for total_time 
             // 1 minute = 1 * 60 
-            // 1 hr = 60 * 60
+            // 1 hr = 60 * 60 =3600
             $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
 
              // convert hrs and minuts in seconds for total_break_time
             // 1 minute = 1 * 60 
-            // 1 hr = 60 * 60
+            // 1 hr = 60 * 60 = 3600
             $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
 
             $total_timeframe = $total_time_seconds - $total_break_time_seconds;
@@ -84,9 +110,6 @@ if ($result)
             $seconds = $total_timeframe % 60;
 
             $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-
-
-
 
             $data = array(  
                 $row['project_name'],              
@@ -109,9 +132,6 @@ if ($result)
         echo "No records found for the specified criteria.";
     }
 }
-
-   
-   
 
     // Close output stream
     fclose($output);

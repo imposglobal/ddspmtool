@@ -557,7 +557,7 @@ tinymce.init({
 function view_timeframe(tid) 
 {
     $.ajax({
-        url: "../../API/get.php",
+        url: "../../API/get_task_detail.php",
         type: "GET",
         dataType: "JSON",
         data: {
@@ -603,7 +603,7 @@ view_timeframe(<?php echo $tid; ?>);
 <script>
 function view_total_break_time(tid) {
     $.ajax({
-        url: "../../API/get.php", 
+        url: "../../API/get_task_detail.php", 
         type: "GET",
         dataType: "JSON",
         data:
@@ -634,7 +634,7 @@ view_total_break_time(<?php echo $tid; ?>);
 <script>
 function view_breaks(tid) {
     $.ajax({
-        url: "../../API/get.php", 
+        url: "../../API/get_task_detail.php", 
         type: "GET",
         dataType: "JSON",
         data:
