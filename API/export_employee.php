@@ -1,13 +1,13 @@
 <?php
 require("db.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") 
+if ($_SERVER["REQUEST_METHOD"] == "GET") 
 {
 
-    $eid = isset($_POST['eid']) ? $_POST['eid'] : '';
-    $pid = isset($_POST['pid']) ? $_POST['pid'] : '';
-    $status = isset($_POST['time_status']) ? $_POST['time_status'] : '';
-    $task_status = isset($_POST['task_status']) ? $_POST['task_status'] : '';
+    $eid = isset($_GET['eid']) ? $_GET['eid'] : '';
+    $pid = isset($_GET['pid']) ? $_GET['pid'] : '';
+    $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+    $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
@@ -49,18 +49,18 @@ WHERE task.eid = '$eid' AND task.pid = '$pid'";
  $where_conditions = [];
 
    // Add conditions based on the selected status
-   switch ($status) {
+   switch ($time_status) {
     case 'today':
-        $where_conditions[] = "DATE(task.created_at) = CURDATE()";
+        $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE()";
         break;
     case 'yesterday':
-        $where_conditions[] = "DATE(task.created_at) = CURDATE() - INTERVAL 1 DAY";
+        $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
         break;
     case 'weekly':
-        $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 7 DAY";
+        $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
         break;
     case 'monthly':
-        $where_conditions[] = "task.created_at >= CURDATE() - INTERVAL 30 DAY";
+        $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
         break;
 }
 
