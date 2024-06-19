@@ -4,7 +4,7 @@ require("db.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
     $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
-    $status = isset($_POST['status']) ? $_POST['status'] : '';
+    $time_status = isset($_POST['time_status']) ? $_POST['time_status'] : '';
     $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
     $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Add conditions based on the selected status
-    switch ($status) {
+    switch ($time_status) {
         case 'today':
             $where_conditions[] = "DATE(task.created_at) = CURDATE()";
             break;

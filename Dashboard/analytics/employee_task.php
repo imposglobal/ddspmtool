@@ -83,7 +83,7 @@ require('../../API/function.php');
         $eid = $_GET['eid'];
         $pid = $_GET['pid'];
         ?>
-         <!-- status -->
+         <!--Time status -->
 <div class="row">
 <form method="POST" action="../../API/export_employee.php">
 <div class="col-lg-3 mt-4 mb-5">  
@@ -95,8 +95,8 @@ require('../../API/function.php');
     <option value="monthly">Monthly</option> 
 </select>
  </div>
- <!-- status -->
-  <!-- task status -->
+ <!--Time status-->
+  <!-- Task status -->
 <div class="col-lg-3 mt-4 mb-5">  
 <select id="status" class="form-select" name="task_status">
 <option selected="" disabled="true">Select Status</option>
@@ -107,17 +107,16 @@ require('../../API/function.php');
 <option value="Abonded">Abonded</option>
 </select>
  </div>
-<!-- task status -->
+<!-- Task status -->
         <div class="col-lg-3 mt-4 mb-5">   
         <input type="hidden" name="eid" value="<?php echo $eid; ?>">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>"> 
-        <button type="submit" class="btn btn-info ms-2">Export</button> 
-       
+        <button type="submit" formaction="employee_task.php" class="btn btn-success">Show</button>   
+        <button type="submit" class="btn btn-info ms-2">Export</button>        
         </form>
         </div>
         </div>
         <?php
-
         // Main query to fetch task details
         $sql = "SELECT task.tid, task.pid, task.created_at, task.start_date, task.title, task.description, employees.fname, employees.eid, task_time.total_time, break.all_breaks_of_a_task
                 FROM task
@@ -125,6 +124,7 @@ require('../../API/function.php');
                 INNER JOIN task_time ON task.tid = task_time.tid AND task.eid = task_time.eid 
                 INNER JOIN 
         -- subquery to fetch total break time of a particular task 
+        -- this query will calculate sum of a single task time
       ( SELECT 
             tid, 
             eid, 
@@ -141,31 +141,33 @@ ON
     AND task.pid = break.pid
 
     WHERE task.eid = '$eid' AND task.pid = '$pid' ORDER BY  task.created_at DESC";
+    $result = mysqli_query($db, $sql);
 
-        $result1 = mysqli_query($db, $sql);
 
-        // Query to fetch total time frame
+
+       // This query calculates the sum of all task times to determine the overall task time for all tasks.        
         $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS all_task_time 
                  FROM task_time
                  WHERE eid = '$eid' AND pid = '$pid'";
-        $result2 = mysqli_query($db, $sql1);
+        $result1 = mysqli_query($db, $sql1);
 
+        // This query calculates the sum of all task break times to determine the overall task break time for all tasks.
         $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS all_task_break FROM time_difference WHERE pid = '$pid' AND eid = '$eid'";
-        $result3 = mysqli_query($db, $sql2);
+        $result2 = mysqli_query($db, $sql2);
 
        
 
-        if ($result1 && $result2 && $result3 ) {
+        if ($result && $result1 && $result2 ) {
             $i = 1;
-            if (mysqli_num_rows($result1) > 0) {
-                while ($row1 = mysqli_fetch_assoc($result1)) {
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
                     // Remove HTML tags from the description
-                    $removedesc = strip_tags($row1["description"]);
+                    $removedesc = strip_tags($row["description"]);
                     // Decode HTML entities back into their respective characters
                     $decode_desc = html_entity_decode($removedesc);
 
-                    $single_task_total_time = strtotime($row1['total_time']);
-                    $single_task_break_time = strtotime($row1['all_breaks_of_a_task']);
+                    $single_task_total_time = strtotime($row['total_time']);
+                    $single_task_break_time = strtotime($row['all_breaks_of_a_task']);
                 
                     // Subtract total_break from total_time
                     $actual_time = $single_task_total_time - $single_task_break_time;
@@ -174,12 +176,12 @@ ON
                     ?>
                     <tr>
                         <td><?php echo $i++; ?></td>
-                        <td><?php echo $row1['fname']; ?></td>
-                        <td><?php echo $row1['title']; ?></td>
-                        <td><?php echo $row1['start_date']; ?></td>
+                        <td><?php echo $row['fname']; ?></td>
+                        <td><?php echo $row['title']; ?></td>
+                        <td><?php echo $row['start_date']; ?></td>
                         <td><?php echo $decode_desc; ?></td>                       
-                        <td><?php echo $row1['total_time']; ?></td>                                       
-                        <td><?php echo substr( $row1["all_breaks_of_a_task"], 0, 8); ?></td>
+                        <td><?php echo $row['total_time']; ?></td>                                       
+                        <td><?php echo substr( $row["all_breaks_of_a_task"], 0, 8); ?></td>
                         <td class="text-green"><?php echo $single_task_actual_time;?></td>
                         
                     </tr>
@@ -190,12 +192,12 @@ ON
                 echo "<tr><td colspan='8'>No results found.</td></tr>";
             }
             // Display total time frame
+            $row1 = mysqli_fetch_assoc($result1);
             $row2 = mysqli_fetch_assoc($result2);
-            $row3 = mysqli_fetch_assoc($result3);
 
-            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row2['all_task_time']);
+            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['all_task_time']);
             // for total break time
-            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row3['all_task_break']);
+            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['all_task_break']);
             // convert hrs and minuts in seconds for total_time 
             // 1 minute = 1 * 60 
             // 1 hr = 60 * 60 = 3600
@@ -217,10 +219,10 @@ ON
 
             ?>
             <tr>
-              
+
                 <td  colspan= "6" class="text-end time_frame">Total Time:</td> 
-                <!-- <td class="time_frame">Total Task Time:<?php echo  $row2['all_task_time'];?></td> 
-                <td  class="time_frame">Total Break Time:  <?php echo  $row3['all_task_break'];?></td> -->
+                <!-- <td class="time_frame">Total Task Time:<?php echo  $row1['all_task_time'];?></td> 
+                <td  class="time_frame">Total Break Time:  <?php echo  $row2['all_task_break'];?></td> -->            
                 <td  colspan= "6" class="time_frame"><?php echo $actual_time_of_all_task;?></td> 
             </tr>
             <?php
@@ -238,10 +240,8 @@ ON
             </div>
           </div>
 
-        </div>
-        
-      </div>
-      
+        </div>      
+      </div>   
     </section>
 
   </main><!-- End #main -->

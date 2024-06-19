@@ -74,6 +74,8 @@ if (!empty($where_conditions)) {
     $sql .= " AND " . implode(" AND ", $where_conditions);
 }
 
+$sql .= " ORDER BY task.created_at DESC";
+
 $result = mysqli_query($db, $sql);
 
 if ($result)
@@ -108,6 +110,8 @@ if ($result)
             $hours = floor($total_timeframe / 3600);
             $minutes = floor(($total_timeframe % 3600) / 60);
             $seconds = $total_timeframe % 60;
+            
+            // This line formats the hours, minutes, and seconds into a string in the HH:MM:SS format
 
             $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 

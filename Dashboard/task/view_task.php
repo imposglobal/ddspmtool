@@ -118,7 +118,7 @@ require('../../API/function.php');
     <?php if($role == 0){ ?>
     <!-- filter -->
     <div class="col-lg-12">
-    <form method="post" action="../../API/export_task.php">
+    <form method="GET" action="../../API/export_task.php">
     <div class="row">
      <!-- project Name -->  
     <div class="col-lg-3 mb-4">  
@@ -179,7 +179,7 @@ require('../../API/function.php');
 <!-- task status -->
  <!-- time -->
 <div class="col-lg-2 mb-4">  
-<select class="form-select" name="status">
+<select class="form-select" name="time_status">
     <option selected disabled="true">Select Time</option>
     <option value="today">Today</option>
     <option value="yesterday">Yesterday</option>
@@ -190,10 +190,9 @@ require('../../API/function.php');
  <!-- time-->
 
 
-    <div class="col-lg-2 text-start">
-        
-    <button type="submit" class="btn exportbtn">Export</button> 
-    
+    <div class="col-lg-2 text-start"> 
+    <button type="submit" formaction="task_by_filter.php" class="btn btn-info">Show</button>     
+    <button type="submit" class="btn exportbtn">Export</button>   
     </div>
     </form>
     </div>
@@ -240,11 +239,9 @@ require('../../API/function.php');
         
       </div>
 
-    <!-- pagination -->
-
-    <?php  
-    if ($role == 0) 
-    {
+      <!-- pagination -->
+      <?php      
+    if ($role == 0) {
         $sql = "SELECT COUNT(*) AS total FROM task";
     } else {
         $sql = "SELECT COUNT(*) AS total FROM task WHERE eid ='$eid'";
