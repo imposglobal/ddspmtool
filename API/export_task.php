@@ -79,18 +79,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         die('Error: ' . mysqli_error($db));
     }
 
+ // Helper function to clean HTML content
+ function RemoveHTMLTags($html) {
+    // Decode HTML entities
+    $html = html_entity_decode($html);
+    
+    // Replace non-breaking space , &amp; , -  with a regular space , & and - 
+    $html = str_replace(['&nbsp;', '&amp;', '-'], [' ', '&', ''], $html);
+
+    // now Strip the HTML tags means it will remove all the html tags from input in html tags
+    return strip_tags($html);
+   
+}
+
     // Fetch and write data to CSV
     if (mysqli_num_rows($result) > 0) {
         $i = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
-            // feedback
-            $removehtmltags = strip_tags($row["feedback"]);
-            $decode_feedback = html_entity_decode($removehtmltags);
-
-            // Remove HTML tags from the description
-            $removedesc = strip_tags($row["description"]);
-            $decode_desc = html_entity_decode($removedesc);
+             // Clean and decode feedback and description
+            $decode_feedback = RemoveHTMLTags($row["feedback"]);
+            $decode_desc = RemoveHTMLTags($row["description"]);
             
             $data = array(
                 $i++,

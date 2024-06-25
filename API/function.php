@@ -1,3 +1,9 @@
+<style>
+    .pagination-box{
+        margin-left:376px;
+    }
+</style>
+
 <?php
 require("db.php");
 
@@ -509,171 +515,355 @@ LIMIT
 }
 
 
-
+/************************************************* code by shraddha **************************************************************** */
 // get tasks by filter
+
+// function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
+// {
+//     if ($_SERVER["REQUEST_METHOD"] == "GET")
+//     {
+//     $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+//     $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
+//     $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
+//     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+
+//     // Calculate offset
+//     $offset = ($page - 1) * $recordsPerPage;
+    
+//     // query to retrive data from task table
+//     $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
+//     FROM task INNER JOIN employees ON task.eid = employees.eid";
+    
+
+//     // Initialize where conditions array
+//     $where_conditions = [];
+    
+//     // Append filters to the query if a specific project is selected
+//     if ($project_id !== 'All') {
+//         $where_conditions[] = "task.pid = '$project_id'";
+//     }
+
+//     if ($employee_id !== 'All') {
+//         $where_conditions[] = "task.eid = '$employee_id'";
+//     }
+
+//      // Add conditions based on the selected status
+//      switch ($time_status) 
+//      {
+//          case 'today':
+//              $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE()";
+//              break;
+//          case 'yesterday':
+//              $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
+//              break;
+//          case 'weekly':
+//              $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
+//              break;
+//          case 'monthly':
+//              $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
+//              break;
+//      }
+
+//       // Add the task status condition if selected
+//     if (!empty($task_status) && $task_status !== 'Select Task Status') {
+//         $where_conditions[] = "task.status = '$task_status'";
+//     }
+
+//     // If there are any conditions, they are combined and appended to the SQL query.
+//     if (!empty($where_conditions)) 
+//     {
+//         $sql .= " WHERE " . implode(" AND ", $where_conditions);
+//     }
+
+//     $sql .= " ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+
+//     // Execute the query
+//     $result = mysqli_query($db, $sql);
+
+//     // Check for errors
+//      if (!$result) {
+//         die('Error: ' . mysqli_error($db));
+//     }
+
+
+//     // Initialize table HTML
+//     echo '<table class="table">';
+//     echo '<thead>';
+//     echo '<tr>';
+//     echo '<th scope="col">#</th>';
+//     echo '<th scope="col">Employee Name</th>';
+//     echo '<th scope="col">Title</th>';
+//     echo '<th scope="col">Created Date</th>';
+//     echo '<th scope="col">Status</th>';
+//     echo '<th scope="col">M Status</th>';
+//     echo '<th scope="col">Actions</th>';
+//     echo '</tr>';
+//     echo '</thead>';
+//     echo '<tbody>';
+
+
+//     if (mysqli_num_rows($result) > 0) 
+//     {  
+//         $i = ($page - 1) * $recordsPerPage + 1;
+//         while($row = mysqli_fetch_assoc($result)) {
+//             $tid = $row["tid"];
+//             $eid = $row["eid"];
+//             $pid = $row["pid"];
+//             $title = $row["title"];
+//             if($row["m_status"] == ""){
+//                 $mstatus = "Reviewing";
+//             } else {
+//                 $mstatus = $row["m_status"];
+//             }
+//             if($row["status"] == "Completed"){
+//                 $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+//             } elseif($row["status"] == "In Progress"){
+//                 $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+//             } elseif($row["status"] == "Pending"){
+//                 $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+//             } elseif($row["status"] == "On Hold"){
+//                 $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+//             } elseif($row["status"] == "Abandoned"){
+//                 $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+//             }
+           
+//             echo '<tr>';
+//             echo '<th scope="row">'. $i++.'</th>';
+//             echo '<td>'. $row["fname"].'</td>';
+//             // code to retrieve title from task table where it will show only 20 character title
+//             if (strlen($title) > 20)
+//             {
+//                echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+//             }
+//             else
+//             {
+//                 echo '<td>'. $row["title"].'</td>';
+//             }         
+//             // echo '<td>'. $row["created_at"].'</td>';
+//             echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+//             echo $status;
+//             echo '<td>'. $mstatus.'</td>';            
+//             echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
+//             echo '</tr>';
+//         }
+//     } 
+//     else 
+//     {
+//         echo "<tr><td colspan='5'>No results found.</td></tr>";
+//     }
+
+//     echo '</tbody>';
+//     echo '</table>';
+
+//      // Calculate the total number of records
+
+//      $count_sql = "SELECT COUNT(*) as count FROM task INNER JOIN employees ON task.eid = employees.eid";
+//      if (!empty($where_conditions)) 
+//     {
+//       $count_sql .= " WHERE " . implode(" AND ", $where_conditions);
+//     }
+//     $count_result = mysqli_query($db, $count_sql);
+//     $row = mysqli_fetch_assoc($count_result);
+//     $totalRecords = $row['count'];
+//     $totalPages = ceil($totalRecords / $recordsPerPage);
+
+//     // Display pagination links
+//         echo '<nav class="mt-5">';
+//         echo '<ul class="pagination">';
+//         for ($i = 1; $i <= $totalPages; $i++) {
+//             echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">';
+//             echo '<a class="page-link" href="?page=' . $i . '&project_id=' . $project_id . '&employee_id=' . $employee_id.'">' . $i . '</a>';
+//             echo '</li>';
+//         }
+//         echo '</ul>';
+//         echo '</nav>';
+    
+//     }    
+// }
+
+
+/*****************************************************************************************************************************/
+
+
+
+/*************************************************************************************************************************/
+// In below function code for pagination is added by krushna
+
 function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 {
     if ($_SERVER["REQUEST_METHOD"] == "GET")
     {
-    $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
-    $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
-    $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
-    $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+        $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+        $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
+        $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
+        $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
 
-    // Calculate offset
-    $offset = ($page - 1) * $recordsPerPage;
-    
-    // query to retrive data from task table
-    $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
-    FROM task INNER JOIN employees ON task.eid = employees.eid";
-    
+        // Calculate offset
+        $offset = ($page - 1) * $recordsPerPage;
 
-    // Initialize where conditions array
-    $where_conditions = [];
-    
-    // Append filters to the query if a specific project is selected
-    if ($project_id !== 'All') {
-        $where_conditions[] = "task.pid = '$project_id'";
-    }
+        // Query to retrieve data from task table
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
+                FROM task INNER JOIN employees ON task.eid = employees.eid";
 
-    if ($employee_id !== 'All') {
-        $where_conditions[] = "task.eid = '$employee_id'";
-    }
+        // Initialize where conditions array
+        $where_conditions = [];
 
-     // Add conditions based on the selected status
-     switch ($time_status) 
-     {
-         case 'today':
-             $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE()";
-             break;
-         case 'yesterday':
-             $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
-             break;
-         case 'weekly':
-             $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
-             break;
-         case 'monthly':
-             $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
-             break;
-     }
-
-      // Add the task status condition if selected
-    if (!empty($task_status) && $task_status !== 'Select Task Status') {
-        $where_conditions[] = "task.status = '$task_status'";
-    }
-
-    // If there are any conditions, they are combined and appended to the SQL query.
-    if (!empty($where_conditions)) 
-    {
-        $sql .= " WHERE " . implode(" AND ", $where_conditions);
-    }
-
-    $sql .= " ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
-
-    // Execute the query
-    $result = mysqli_query($db, $sql);
-
-    // Check for errors
-     if (!$result) {
-        die('Error: ' . mysqli_error($db));
-    }
-
-
-    // Initialize table HTML
-    echo '<table class="table">';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th scope="col">#</th>';
-    echo '<th scope="col">Employee Name</th>';
-    echo '<th scope="col">Title</th>';
-    echo '<th scope="col">Created Date</th>';
-    echo '<th scope="col">Status</th>';
-    echo '<th scope="col">M Status</th>';
-    echo '<th scope="col">Actions</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
-
-
-    if (mysqli_num_rows($result) > 0) 
-    {  
-        $i = ($page - 1) * $recordsPerPage + 1;
-        while($row = mysqli_fetch_assoc($result)) {
-            $tid = $row["tid"];
-            $eid = $row["eid"];
-            $pid = $row["pid"];
-            $title = $row["title"];
-            if($row["m_status"] == ""){
-                $mstatus = "Reviewing";
-            } else {
-                $mstatus = $row["m_status"];
-            }
-            if($row["status"] == "Completed"){
-                $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            } elseif($row["status"] == "In Progress"){
-                $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            } elseif($row["status"] == "Pending"){
-                $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            } elseif($row["status"] == "On Hold"){
-                $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            } elseif($row["status"] == "Abandoned"){
-                $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
-            }
-           
-            echo '<tr>';
-            echo '<th scope="row">'. $i++.'</th>';
-            echo '<td>'. $row["fname"].'</td>';
-            // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 20)
-            {
-               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
-            }
-            else
-            {
-                echo '<td>'. $row["title"].'</td>';
-            }         
-            // echo '<td>'. $row["created_at"].'</td>';
-            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
-            echo $status;
-            echo '<td>'. $mstatus.'</td>';            
-            echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
-            echo '</tr>';
+        // Append filters to the query if a specific project is selected
+        if ($project_id !== 'All') {
+            $where_conditions[] = "task.pid = '$project_id'";
         }
-    } 
-    else 
-    {
-        echo "<tr><td colspan='5'>No results found.</td></tr>";
-    }
 
-    echo '</tbody>';
-    echo '</table>';
+        if ($employee_id !== 'All') {
+            $where_conditions[] = "task.eid = '$employee_id'";
+        }
 
-     // Calculate the total number of records
+        // Add conditions based on the selected status
+        switch ($time_status) 
+        {
+            case 'today':
+                $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE()";
+                break;
+            case 'yesterday':
+                $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
+                break;
+            case 'weekly':
+                $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
+                break;
+            case 'monthly':
+                $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
+                break;
+        }
 
-     $count_sql = "SELECT COUNT(*) as count FROM task INNER JOIN employees ON task.eid = employees.eid";
-     if (!empty($where_conditions)) 
-    {
-      $count_sql .= " WHERE " . implode(" AND ", $where_conditions);
-    }
-    $count_result = mysqli_query($db, $count_sql);
-    $row = mysqli_fetch_assoc($count_result);
-    $totalRecords = $row['count'];
-    $totalPages = ceil($totalRecords / $recordsPerPage);
+        // Add the task status condition if selected
+        if (!empty($task_status) && $task_status !== 'Select Task Status') {
+            $where_conditions[] = "task.status = '$task_status'";
+        }
 
-    // Display pagination links
+        // If there are any conditions, they are combined and appended to the SQL query.
+        if (!empty($where_conditions)) 
+        {
+            $sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+
+        $sql .= " ORDER BY task.created_at DESC LIMIT $offset, $recordsPerPage";
+
+        // Execute the query
+        $result = mysqli_query($db, $sql);
+
+        // Check for errors
+        if (!$result) {
+            die('Error: ' . mysqli_error($db));
+        }
+
+        // Initialize table HTML
+        echo '<table class="table">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th scope="col">#</th>';
+        echo '<th scope="col">Employee Name</th>';
+        echo '<th scope="col">Title</th>';
+        echo '<th scope="col">Created Date</th>';
+        echo '<th scope="col">Status</th>';
+        echo '<th scope="col">M Status</th>';
+        echo '<th scope="col">Actions</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        if (mysqli_num_rows($result) > 0) 
+        {  
+            $i = ($page - 1) * $recordsPerPage + 1;
+            while($row = mysqli_fetch_assoc($result)) {
+                $tid = $row["tid"];
+                $eid = $row["eid"];
+                $pid = $row["pid"];
+                $title = $row["title"];
+                if($row["m_status"] == ""){
+                    $mstatus = "Reviewing";
+                } else {
+                    $mstatus = $row["m_status"];
+                }
+                if($row["status"] == "Completed"){
+                    $status = '<td> <span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+                } elseif($row["status"] == "In Progress"){
+                    $status = '<td> <span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+                } elseif($row["status"] == "Pending"){
+                    $status = '<td> <span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+                } elseif($row["status"] == "On Hold"){
+                    $status = '<td> <span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+                } elseif($row["status"] == "Abandoned"){
+                    $status = '<td> <span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span></td>';
+                }
+
+                echo '<tr>';
+                echo '<th scope="row">'. $i++.'</th>';
+                echo '<td>'. $row["fname"].'</td>';
+                // code to retrieve title from task table where it will show only 20 character title
+                if (strlen($title) > 20)
+                {
+                    echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+                }
+                else
+                {
+                    echo '<td>'. $row["title"].'</td>';
+                }         
+                echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+                echo $status;
+                echo '<td>'. $mstatus.'</td>';            
+                echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
+                echo '</tr>';
+            }
+        } 
+        else 
+        {
+            echo "<tr><td colspan='5'>No results found.</td></tr>";
+        }
+
+        echo '</tbody>';
+        echo '</table>';
+
+        // Calculate the total number of records
+        $count_sql = "SELECT COUNT(*) as count FROM task INNER JOIN employees ON task.eid = employees.eid";
+        if (!empty($where_conditions)) 
+        {
+            $count_sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+        $count_result = mysqli_query($db, $count_sql);
+        $row = mysqli_fetch_assoc($count_result);
+        $totalRecords = $row['count'];
+        $totalPages = ceil($totalRecords / $recordsPerPage);
+
+        // Display pagination links
+        $range = 4; // Number of pages to display on both side of the current page
         echo '<nav class="mt-5">';
-        echo '<ul class="pagination">';
-        for ($i = 1; $i <= $totalPages; $i++) {
-            echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">';
-            echo '<a class="page-link" href="?page=' . $i . '&project_id=' . $project_id . '&employee_id=' . $employee_id.'">' . $i . '</a>';
+        echo '<ul class="pagination pagination-box">';
+        
+        // Previous Page Link
+        if ($page > 1) {
+            echo '<li class="page-item">';
+            echo '<a class="page-link" href="?page=' . ($page - 1) . '&project_id=' . $project_id . '&employee_id=' . $employee_id.'&task_status='.$task_status.'&time_status='.$time_status.'">Previous</a>';
             echo '</li>';
         }
+
+        
+        // Page Number Links
+        for ($i = max(1, $page - $range); $i <= min($totalPages, $page + $range); $i++) {
+            echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">';
+            echo '<a class="page-link" href="?page=' . $i . '&project_id=' . $project_id . '&employee_id=' . $employee_id.'&task_status='.$task_status.'&time_status='.$time_status.'">' . $i . '</a>';
+            echo '</li>';
+        }
+
+        // Next Page Link
+        if ($page < $totalPages) {
+            echo '<li class="page-item">';
+            echo '<a class="page-link" href="?page=' . ($page + 1) . '&project_id=' . $project_id . '&employee_id=' . $employee_id.'&task_status='.$task_status.'&time_status='.$time_status.'">Next</a>';
+            echo '</li>';
+        }
+
         echo '</ul>';
         echo '</nav>';
-    
     }    
 }
-
 
 
 ?>
