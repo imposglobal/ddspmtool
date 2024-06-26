@@ -49,7 +49,7 @@ require('../../API/function.php');
     <section class="section">
     <div class="row">
     <div class="col-lg-12">
-    <form method="post" action="../../API/export_projects.php">
+    <form method="post">
     <div class="row">
      <!-- project Name -->  
     <div class="col-lg-3 mb-4">  
@@ -97,8 +97,8 @@ require('../../API/function.php');
 <!-- end date -->
 
     <div class="col-lg-2 text-start">
-      
-    <button type="submit" class="btn exportbtn">Export</button>  
+    <button type="submit" name="show" class="btn btn-success">Show</button> 
+    <button type="submit" formaction="../../API/export_projects.php" class="btn exportbtn">Export</button>  
     
     </div>
     </form>

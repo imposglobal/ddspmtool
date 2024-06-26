@@ -39,8 +39,12 @@ require('../../API/function.php');
         background-color: red;
         color: #fff;
     }
-
-    
+    .exportbtn
+    {
+      background-color: #012970;
+      color:#fff;
+    }
+      
 </style>
 
 <main id="main" class="main">
@@ -110,9 +114,9 @@ require('../../API/function.php');
                                             <th scope="col">Start Date</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Total Task Time</th>                                          
-                                            <th scope="col">Total Break Time</th> 
-                                            <th scope="col">Total Productive Time</th>                                     
+                                            <th scope="col">Total Time</th>                                          
+                                            <th scope="col">Break Time</th> 
+                                            <th scope="col">Productive Time</th>                                     
                                         </tr>
                                     </thead>               
                                     <tbody>
