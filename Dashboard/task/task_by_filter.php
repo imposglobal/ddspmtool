@@ -117,7 +117,7 @@ require('../../API/function.php');
   </div><!-- End Page Title -->
 
   <section class="section">
-    <?php if($role == 0){ ?>
+   
     <!-- filter -->
     <div class="col-lg-12">
       <form method="GET" action="../../API/export_task.php">
@@ -149,28 +149,44 @@ require('../../API/function.php');
 
 
           <!-- employee_name -->
-          <div class="col-lg-4 mb-4">
-            <select class="form-select" name="employee_id">
-              <option selected disabled="true">Select Employee</option>
-              <option value="All">All</option>
-              <?php
-    $sql = "SELECT * from employees where role = '1'";
-    $result = mysqli_query($db, $sql);
-    if ($result && mysqli_num_rows($result) > 0)
-    {
-     while ($row = mysqli_fetch_assoc($result))
-    {
+
+     <?php if($role == 0)
+     { 
+        ?>
+        <div class="col-lg-4 mb-4">  
+        <select class="form-select" name="employee_id">
+        <option selected disabled="true">Select Employee</option>
+        <option value="All">All</option>
+        <?php
+        $sql = "SELECT * from employees where role = '1'";
+        $result = mysqli_query($db, $sql);
+        if ($result && mysqli_num_rows($result) > 0)
+        {
+         while ($row = mysqli_fetch_assoc($result))
+        {
+        ?>    
+        <option value="<?php echo $row["eid"]?>"><?php echo $row["fname"]?></option>
+        <?php 
+        }
+        }
+        ?>
+        </select>
+        </div>
+
+   <?php  } 
+     else
+     {
     ?>
-              <option value="<?php echo $row["eid"]?>">
-                <?php echo $row["fname"]?>
-              </option>
-              <?php 
+    <div class="col-lg-4 mb-4">
+    <input type="text" Readonly class="form-control" name="employee_id" value="<?php echo $eid ?>">
+    </div>
+    <?php 
     }
-    }
-    ?>
-            </select>
-          </div>
-          <!-- employee_name -->
+     
+     ?>
+   
+   
+<!-- employee_name -->
 
           <!-- task status -->
           <div class="col-lg-4 mb-4">
@@ -216,7 +232,7 @@ require('../../API/function.php');
       </form>
     </div>
     </div>
-    <?php } ?>
+   
     <!-- end of div -->
 
     <!-- filter -->

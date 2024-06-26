@@ -30,11 +30,14 @@ function generatePassword($length = 8) {
 switch ($operation) {
     //project Add
     case "project":
+
+      
       $pname = $_POST['pname'];
+      $ptype = $_POST['ptype'];
       $desc = $_POST['description'];
       $created_at = date('y-m-d H:i:s');
 
-      $sql = "INSERT INTO projects (project_name, description, created_at) VALUES ('$pname', '$desc', '$created_at')";
+      $sql = "INSERT INTO projects (project_name, project_type, description, created_at) VALUES ('$pname', '$ptype', '$desc', '$created_at')";
       if ($db->query($sql) === TRUE) {
         echo "Project Added successfully";
         } else {

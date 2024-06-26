@@ -417,6 +417,17 @@ function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
 {
     // Calculate offset
     $offset = ($page - 1) * $recordsPerPage;
+
+    $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
+
+    // Initialize where conditions array
+    $where_conditions = [];
+
+    // Append filters to the query if a specific project is selected
+    if ($project_id !== 'All' && $project_id !== '') 
+    {
+     $where_conditions[] = "task.pid = '$project_id'";
+    }
     
     // Fetch task analytics with pagination
     $sql = "SELECT 
@@ -446,13 +457,16 @@ INNER JOIN
     ON projects.pid = project_task_count.pid
 INNER JOIN 
     (SELECT pid, COUNT(DISTINCT eid) AS total_employees FROM task GROUP BY pid) AS project_employee_count 
-    ON projects.pid = project_employee_count.pid
-GROUP BY 
-    projects.project_name
-ORDER BY 
-    created_date DESC 
-LIMIT 
-    $offset, $recordsPerPage";
+    ON projects.pid = project_employee_count.pid";
+
+    // Combine where conditions if any
+    if (!empty($where_conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $where_conditions);
+    }
+
+
+      // Add group by, order by, and limit clauses
+      $sql .= " GROUP BY projects.project_name ORDER BY created_date DESC LIMIT $offset, $recordsPerPage";
   
     $result = mysqli_query($db, $sql);
     
@@ -462,7 +476,6 @@ LIMIT
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) 
         {
-            $eid =  $row["eid"];
             $pid =  $row["pid"]; 
             
             // query to fetch sum of total time of any projects
@@ -510,7 +523,7 @@ LIMIT
             echo '<td>'. $row["total_employees"].'</td>';          
             echo '<td>'. $row["employee_links"].'</td>';                    
             echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
-            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>'; 
+            echo '<td>' .substr($row2["total_project_break"], 0, 8) .' </td>'; 
             echo '<td class="text-green">' . $actual_task_time .'</td>';                
             echo '</tr>';
            
@@ -521,6 +534,7 @@ LIMIT
         echo "<tr><td colspan='4'>No results found.</td></tr>";
     }
 }
+
 
 
 /************************************************* code by shraddha **************************************************************** */
