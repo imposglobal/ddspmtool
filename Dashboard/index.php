@@ -37,7 +37,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
           <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
-                <h5 class="card-title">Tasks <span>| Till Now</span></h5>
+                <h5 class="card-title">Tasks <span>| This Month</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-code-square"></i>
@@ -56,7 +56,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
           <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card customers-card">
               <div class="card-body">
-                <h5 class="card-title">Projects <span>| Till Now</span></h5>
+                <h5 class="card-title">Projects <span>| This Month</span></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-laptop"></i>
@@ -81,8 +81,8 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                     <i class="bi bi-calendar"></i>
                   </div>
                   <div class="ps-3">
-                    <h6> <?php echo $totalWeeklyWorkingDays;?> </h6>
-                     <span class="text-success small pt-1 fw-bold"><?php echo "$totalMonthlyWorkingDays";?></span> 
+                    <p> <?php echo  $workingDaysInfo['remainingWorkingDays'] . " Days to go"; ?>  </p>
+                     <span class="text-success small pt-1 fw-bold"> <?php echo $totalWeeklyWorkingDays;?> / <?php echo "$totalMonthlyWorkingDays";?></span> 
                      <span   class="text-muted small pt-2 ps-1">Days</span>            
                   </div>
                 </div>

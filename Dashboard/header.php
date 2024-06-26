@@ -16,7 +16,7 @@ if(isset($_SESSION['username'])) {
 } else {
     // Redirect user to the login page if not logged in
     header("Location: http://dds.doodlo.in/index.php");
-    //header("Location: http://localhost/ddspmtool");
+    //header("Location: http://localhost/ddspmtool/");
     
 }
 
