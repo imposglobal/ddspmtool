@@ -97,5 +97,42 @@ $tilldateyWorkingDays = MonthlyWorkingDays();
 $totalMonthlyWorkingDays = getMonthlyWorkingDays();
 
 
+function getMonthlyWorkingDaysCountdown() {
+    $currentDate = strtotime('first day of this month');
+    $today = strtotime('today');
+    $lastDayOfMonth = strtotime('last day of this month');
+    $totalWorkingDays = 0;
+    $remainingWorkingDays = 0;
+
+    // Loop through each day of the month
+    while ($currentDate <= $lastDayOfMonth) {
+        // Check if the current day is not a Saturday or Sunday
+        if (date('N', $currentDate) < 6) {
+            $totalWorkingDays++;
+            // Count remaining working days from today
+            if ($currentDate >= $today) {
+                $remainingWorkingDays++;
+            }
+        }
+        // Move to the next day
+        $currentDate = strtotime('+1 day', $currentDate);
+    }
+
+    $countdownMessage = "$remainingWorkingDays days to go";
+    return [
+        'totalWorkingDays' => $totalWorkingDays,
+        'remainingWorkingDays' => $remainingWorkingDays,
+        'countdownMessage' => $countdownMessage,
+    ];
+}
+
+// Example usage
+$workingDaysInfo = getMonthlyWorkingDaysCountdown();
+echo "Total working days this month: " . $workingDaysInfo['totalWorkingDays'] . "\n";
+echo "Remaining working days this month: " . $workingDaysInfo['remainingWorkingDays'] . "\n";
+echo "Countdown message: " . $workingDaysInfo['countdownMessage'] . "\n";
+
+
+
 
 ?>
