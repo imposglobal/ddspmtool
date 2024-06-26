@@ -123,7 +123,7 @@ require('../../API/function.php');
       <form method="GET" action="../../API/export_task.php">
         <div class="row">
           <!-- project Name -->
-          <div class="col-lg-3 mb-4">
+          <div class="col-lg-4 mb-4">
             <select class="form-select" name="project_id">
               <option selected disabled="true">Select Project</option>
               <option value="All">All</option>
@@ -149,7 +149,7 @@ require('../../API/function.php');
 
 
           <!-- employee_name -->
-          <div class="col-lg-3 mb-4">
+          <div class="col-lg-4 mb-4">
             <select class="form-select" name="employee_id">
               <option selected disabled="true">Select Employee</option>
               <option value="All">All</option>
@@ -173,7 +173,7 @@ require('../../API/function.php');
           <!-- employee_name -->
 
           <!-- task status -->
-          <div class="col-lg-2 mb-4">
+          <div class="col-lg-4 mb-4">
             <select id="status" class="form-select" name="task_status">
               <option selected="" disabled="true">Select Status</option>
               <option value="Completed">Completed</option>
@@ -185,7 +185,7 @@ require('../../API/function.php');
           </div>
           <!-- task status -->
           <!-- time -->
-          <div class="col-lg-2 mb-4">
+          <div class="col-lg-3 mb-4">
             <select class="form-select" name="time_status">
               <option selected disabled="true">Select Time</option>
               <option value="today">Today</option>
@@ -196,8 +196,20 @@ require('../../API/function.php');
           </div>
           <!-- time-->
 
+          <!-- start date -->
+          <div class="col-lg-3 mb-4">  
+          <input type="date" class="form-control" name="start_date">
+          </div>
+          <!-- start date -->
 
-          <div class="col-lg-2 text-start">
+          <!-- end date -->
+         <div class="col-lg-3 mb-4">  
+         <input type="date" class="form-control" name="end_date">
+         </div>
+         <!-- end date -->
+
+
+          <div class="col-lg-3 text-start">
             <button type="submit" formaction="task_by_filter.php" class="btn btn-info">Show</button>
             <button type="submit" class="btn exportbtn">Export</button>
           </div>
