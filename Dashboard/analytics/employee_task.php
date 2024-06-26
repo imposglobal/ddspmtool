@@ -39,6 +39,8 @@ require('../../API/function.php');
         background-color: red;
         color: #fff;
     }
+
+    
 </style>
 
 <main id="main" class="main">
@@ -64,8 +66,8 @@ require('../../API/function.php');
                     <option selected>Select Time </option>
                     <option value="today">Today</option>
                     <option value="yesterday">Yesterday</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option> 
+                    <option value="weekly">This Week</option>
+                    <option value="monthly">This Month</option> 
                 </select>
             </div>
             <!--Time status-->
@@ -91,7 +93,7 @@ require('../../API/function.php');
                 <input type="hidden" name="eid" value="<?php echo $eid; ?>">
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>"> 
                 <button type="submit" name="show" class="btn btn-success">Show</button>   
-                <button type="submit" formaction="../../API/export_employee.php" class="btn btn-info ms-2">Export</button>        
+                <button type="submit" formaction="../../API/export_employee.php" class="btn exportbtn ms-2">Export</button>        
             </div>
         
                   </div>
@@ -108,9 +110,9 @@ require('../../API/function.php');
                                             <th scope="col">Start Date</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Task Time</th>                                          
-                                            <th scope="col">Break Time</th> 
-                                            <th scope="col">Total Time</th>                                     
+                                            <th scope="col">Total Task Time</th>                                          
+                                            <th scope="col">Total Break Time</th> 
+                                            <th scope="col">Total Productive Time</th>                                     
                                         </tr>
                                     </thead>               
                                     <tbody>

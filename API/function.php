@@ -2,6 +2,10 @@
     .pagination-box{
         margin-left:376px;
     }
+    .text-green {
+        color: green !important;
+        font-weight: 700;
+    }
 </style>
 
 <?php
@@ -466,6 +470,7 @@ LIMIT
             WHERE pid = '$pid'";
             $result1 = mysqli_query($db, $sql1);
             $row1 = mysqli_fetch_assoc($result1);
+
             // query to fetch total break time of any project
             $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_project_break FROM time_difference WHERE pid = '$pid'";
             $result2 = mysqli_query($db, $sql2);
@@ -473,12 +478,15 @@ LIMIT
 
             // for total task time
             list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['total_project_time']);
+
             // for total break time
             list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['total_project_break']);
+
             // convert hrs and minuts in seconds for total task time 
             // 1 minute = 1 * 60 = 60
             // 1 hr = 60 * 60 = 3600
             $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+
              // convert hrs and minuts in seconds for total break time
             // 1 minute = 1 * 60 = 60
             // 1 hr = 60 * 60 = 3600
@@ -501,9 +509,9 @@ LIMIT
             echo '<td>'. $row["total_tasks"].'</td>';                 
             echo '<td>'. $row["total_employees"].'</td>';          
             echo '<td>'. $row["employee_links"].'</td>';                    
-            // echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
-            echo '<td>' . $actual_task_time .'</td>';
-            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>';                    
+            echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
+            echo '<td>' . substr($row2["total_project_break"], 0, 8) .' </td>'; 
+            echo '<td class="text-green">' . $actual_task_time .'</td>';                
             echo '</tr>';
            
         }
