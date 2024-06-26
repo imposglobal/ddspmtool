@@ -7,6 +7,7 @@ require('../sidebar.php');
 require('../../API/function.php');
 
 ?>
+
 <style>
     .offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl 
     {
@@ -77,8 +78,8 @@ require('../../API/function.php');
     <option selected>Select Time</option>
     <option value="today">Today</option>
     <option value="yesterday">Yesterday</option>
-    <option value="weekly">Weekly</option>
-    <option value="monthly">Monthly</option> 
+    <option value="weekly">This Week</option>
+    <option value="monthly">This Month</option> 
 </select>
  </div>
  <!-- status -->
@@ -95,11 +96,10 @@ require('../../API/function.php');
 </div>
 <!-- end date -->
 
-
-
-
     <div class="col-lg-2 text-start">
+      
     <button type="submit" class="btn exportbtn">Export</button>  
+    
     </div>
     </form>
     </div>
@@ -123,8 +123,10 @@ require('../../API/function.php');
                     <th scope="col">Total Task</th>
                     <th scope="col">Total Employee</th>
                     <th scope="col">Employee Name</th> 
-                    <th scope="col">Total Time (Hrs)</th>                  
-                    <th scope="col">Total Break</th>
+                    <th scope="col">Total Projects Time </th> 
+                    <th scope="col">Total Break Time </th>
+                    <th scope="col">Total Productive Time</th>                  
+                   
                                            
                   </tr>
                 </thead>
@@ -161,10 +163,7 @@ require('../../API/function.php');
       ?>
     </section>
 
-  </main><!-- End #main -->
-
-
-
+  </main>
  
 <?php 
 require('../footer.php');
