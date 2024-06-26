@@ -32,15 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Initialize where conditions array
     $where_conditions = [];
 
-    // Append filters to the query if a specific project is selected
-    if ($project_id !== 'All' && !empty($project_id)) {
-        $where_conditions[] = "task.pid = '$project_id'";
+     // Append filters to the query if a specific project is selected
+    if ($project_id !== 'All') {
+    $where_conditions[] = "task.pid = '$project_id'";
     }
 
-    if ($employee_id !== 'All' && !empty($employee_id)) {
-        $where_conditions[] = "task.eid = '$employee_id'";
-    }
-
+   if ($employee_id !== 'All') {
+    $where_conditions[] = "task.eid = '$employee_id'";
+   }
     // Add conditions based on the selected time status
     switch ($time_status) {
         case 'today':
