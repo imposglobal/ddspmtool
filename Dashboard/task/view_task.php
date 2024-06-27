@@ -172,9 +172,9 @@ require('../../API/function.php');
      else
      {
     ?>
-    <div class="col-lg-4 mb-4">
-    <input type="text" Readonly class="form-control" name="employee_id" value="<?php echo $eid ?>">
-    </div>
+    
+    <input type="hidden" Readonly class="form-control" name="employee_id" value="<?php echo $eid ?>">
+   
     <?php 
     }
      
@@ -222,7 +222,7 @@ require('../../API/function.php');
 
     <div class="col-lg-3 text-start"> 
     <button type="submit" formaction="task_by_filter.php" class="btn btn-info">Show</button>     
-    <button type="submit" class="btn exportbtn ms-3">Export</button>   
+    <button type="submit" class="btn exportbtn ms-2">Export</button>   
     </div>
     </form>
     </div>

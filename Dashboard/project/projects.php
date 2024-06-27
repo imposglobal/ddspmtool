@@ -47,14 +47,7 @@ require('../sidebar.php');
                         <div class="row mt-3">
                             <div class="col-lg-12">
                                 <h5 class="ctitle mb-3">Project Name</h5>
-                                <input type="text" id="pname" class="form-control" placeholder="Impos Global">
-
-
-                                <h5 class="ctitle mb-3">Project Type</h5>
-                                <input type="text" id="ptype" class="form-control" placeholder="Branding">
-
-                                
-
+                                <input type="text" id="pname" class="form-control">
 
                                 <h5 class="ctitle">Write Project Description</h5>
                                     <!-- TinyMCE Editor -->
@@ -90,7 +83,6 @@ $(document).ready(function() {
     $('#saveBtn').click(function(e) {
         e.preventDefault();
         var pname = $('#pname').val().trim(); // Trim whitespace
-        var ptype = $('#ptype').val().trim(); // Trim whitespace
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
 
         if(pname !== "" && description !== "") {
@@ -98,7 +90,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'project', pname: pname, ptype: ptype, description: description },
+                data: { ops: 'project', pname: pname, description: description },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
@@ -108,7 +100,6 @@ $(document).ready(function() {
                     });
                     // Reset the form
                     $('#pname').val('');
-                    $('#ptype').val('');
                     tinymce.get('description').setContent('');
                 },
                 error: function(xhr, status, error) {
