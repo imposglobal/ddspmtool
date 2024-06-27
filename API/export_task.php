@@ -26,23 +26,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Construct the SQL query with filters
 
   
-     $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
-     task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
-     FROM task 
-     LEFT JOIN employees ON task.eid = employees.eid
-     INNER JOIN projects ON task.pid = projects.pid
-     INNER JOIN task_time ON task.tid = task_time.tid";
+    //  $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+    //  task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time
+    //  FROM task 
+    //  LEFT JOIN employees ON task.eid = employees.eid
+    //  INNER JOIN projects ON task.pid = projects.pid
+    //  INNER JOIN task_time ON task.tid = task_time.tid";
   
    
    
-    // $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
-    // task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time, break.total_break
-    // FROM task 
-    // LEFT JOIN employees ON task.eid = employees.eid
-    // INNER JOIN projects ON task.pid = projects.pid
-    // INNER JOIN task_time ON task.tid = task_time.tid
-    // LEFT JOIN (SELECT tid, eid, pid, SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_break FROM 
-    // time_difference GROUP BY tid) AS break ON task.tid = break.tid AND task.eid = break.eid";
+    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+    task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time, break.total_break
+    FROM task 
+    LEFT JOIN employees ON task.eid = employees.eid
+    INNER JOIN projects ON task.pid = projects.pid
+    INNER JOIN task_time ON task.tid = task_time.tid
+    LEFT JOIN (SELECT tid, eid, pid, SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_break FROM 
+    time_difference GROUP BY tid) AS break ON task.tid = break.tid AND task.eid = break.eid";
 
     // Initialize where conditions array
     $where_conditions = [];
@@ -56,14 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $where_conditions[] = "task.eid = '$employee_id'";
     }
 
-    // Append filters start-date and end-date to the query
+    // Append filters start-date and end-date to the query  
     if (!empty($start_date)) {
         $where_conditions[] = "task.created_at >= '$start_date'";
     }
-
     if (!empty($end_date)) {
         $where_conditions[] = "task.created_at <= '$end_date'";
     }
+
+   
 
     // Add conditions based on the selected status
     switch ($time_status) 
@@ -128,17 +129,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $decode_desc = RemoveHTMLTags($row["description"]);
 
              // Calculate total productive time
-            //  list($total_hours, $total_minutes, $total_seconds) = explode(':', $row['total_time']);
-            //  list($break_hours, $break_minutes, $break_seconds) = explode(':', $row['total_break']);
+             list($total_hours, $total_minutes, $total_seconds) = explode(':', $row['total_time']);
+             list($break_hours, $break_minutes, $break_seconds) = explode(':', $row['total_break']);
  
-            //  $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
-            //  $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
-            //  $total_timeframe = $total_time_seconds - $total_break_time_seconds;
+             $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+             $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+             $total_timeframe = $total_time_seconds - $total_break_time_seconds;
  
-            //  $hours = floor($total_timeframe / 3600);
-            //  $minutes = floor(($total_timeframe % 3600) / 60);
-            //  $seconds = $total_timeframe % 60;
-            //  $productive_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+             $hours = floor($total_timeframe / 3600);
+             $minutes = floor(($total_timeframe % 3600) / 60);
+             $seconds = $total_timeframe % 60;
+             $productive_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
             
             $data = array(
                 $i++,
@@ -150,8 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $row['priority'],
                 $row['status'],
                 $row['total_time'],
-                // substr($row['total_break'], 0, 8),
-                // $productive_task_time,
+                substr($row['total_break'], 0, 8),
+                $productive_task_time,
                 $row['m_status'],
                 $decode_feedback
             );
