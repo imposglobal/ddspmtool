@@ -95,7 +95,7 @@ if(isset($_GET['tid']))
 {
   $tid = $_GET['tid'];
 }
-$sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
+$sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, task.project_type, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
 $query = mysqli_query($db, $sql);
 if ($query && mysqli_num_rows($query) > 0)
 {
@@ -176,6 +176,14 @@ elseif($row["priority"] == "Low") {
             <div class="col pt-3">
                 <h4 class="card-title d-inline">Project Name :</h4>
                 <h6 class="card-subtitle d-inline ms-2 ps-2"><?php echo $row["project_name"];?></h6>
+            </div>
+        </div>
+        <hr class="hr_margin">
+
+        <div class="row">
+            <div class="col pt-3">
+                <h4 class="card-title d-inline">Project Type :</h4>
+                <h6 class="card-subtitle d-inline ms-2 ps-2"><?php echo $row["project_type"];?></h6>
             </div>
         </div>
         <hr class="hr_margin">

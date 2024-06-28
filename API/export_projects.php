@@ -1,11 +1,12 @@
 <?php
 require("db.php");
 
- if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $project_id = isset($_POST['project_id']) ? $_POST['project_id'] : '';
-    $time_status = isset($_POST['time_status']) ? $_POST['time_status'] : '';
-    $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : '';
-    $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+ if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 'All';
+    $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : 'All';
+    $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+    $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+    $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
@@ -17,10 +18,10 @@ require("db.php");
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('No', 'Project Name', 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time',  'Manager Status', 'Feedback'));
+    fputcsv($output, array('No', 'Project Name', 'Project Type', 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time',  'Manager Status', 'Feedback'));
 
     // Construct the SQL query with filters
-    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.project_type, task.title, task.status, 
             task.estimated_time, task.priority, task.description, task.m_status, task.feedback, 
             employees.fname, employees.lname, task_time.total_time
             FROM task 
@@ -34,6 +35,11 @@ require("db.php");
     // Append filters to the query if a specific project is selected
     if ($project_id !== 'All') {
         $where_conditions[] = "task.pid = '$project_id'";
+    }
+
+    // Append filters to the query if a specific project is selected
+    if ($project_type !== 'All') {
+        $where_conditions[] = "task.project_type = '$project_type'";
     }
 
     // Append filters to the query
@@ -115,6 +121,7 @@ require("db.php");
             $data = array(
                 $i++,
                 htmlspecialchars($row['project_name']),
+                htmlspecialchars($row['project_type']),
                 htmlspecialchars($row['fname'] . " " . $row['lname']),
                 htmlspecialchars($row["created_date"]),
                 htmlspecialchars($row['title']),

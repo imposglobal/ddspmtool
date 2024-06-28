@@ -61,10 +61,11 @@ switch ($operation) {
     $title = htmlspecialchars($_POST['title']);
     $priority = $_POST['priority'];
     $eid = $_POST['eid'];
+    $project_type = $_POST['project_type'];
     $created_at = date('y-m-d H:i:s');
 
-    $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, estimated_time, priority, created_at) VALUES
-            ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$etime', '$priority', '$created_at')";
+    $sql = "INSERT INTO task (start_date, end_date, task_type, eid, pid, title, description, status, estimated_time, priority, project_type, created_at) VALUES
+            ('$sdate', '$edate','$ttype', '$eid', '$pname', '$title', '$desc', '$status', '$etime', '$priority', '$project_type', '$created_at')";
     if ($db->query($sql) === TRUE) {
         echo "Task Added successfully";
     } else {

@@ -49,10 +49,10 @@ require('../../API/function.php');
     <section class="section">
     <div class="row">
     <div class="col-lg-12">
-    <form method="post">
+    <form method="GET">
     <div class="row">
      <!-- project Name -->  
-    <div class="col-lg-3 mb-4">  
+    <div class="col-lg-4 mb-4">  
     <select class="form-select" name="project_id">
     <option selected>Select Project</option>
     <option value="All">All</option>
@@ -72,8 +72,22 @@ require('../../API/function.php');
     </select>
     </div>
 <!-- project Name -->
+
+<!-- project type -->
+<div class="col-lg-4 mb-4">  
+<select class="form-select" name="project_type">
+<option selected="">Select Project Type</option>
+<option value="All">All</option>
+<option value="social-media">Social Media</option>
+<option value="branding">Branding</option>
+<option value="packaging">Packaging</option>
+<option value="ux-ui">UX & UI</option>
+<option value="development">Development</option> 
+</select>
+ </div>
+<!-- project type -->
  <!-- status -->
-<div class="col-lg-3 mb-4">  
+<div class="col-lg-4 mb-4">  
 <select class="form-select" name="time_status">
     <option selected>Select Time</option>
     <option value="today">Today</option>
@@ -85,21 +99,20 @@ require('../../API/function.php');
  <!-- status -->
 
  <!-- start date -->
- <div class="col-lg-2 mb-4">  
+ <div class="col-lg-3 mb-4">  
  <input type="date" class="form-control" name="start_date">
  </div>
  <!-- start date -->
 
 <!-- end date -->
-<div class="col-lg-2 mb-4">  
+<div class="col-lg-3 mb-4">  
 <input type="date" class="form-control" name="end_date">
 </div>
 <!-- end date -->
 
     <div class="col-lg-2 text-start">
     <button type="submit" name="show" class="btn btn-success">Show</button> 
-    <button type="submit" formaction="../../API/export_projects.php" class="btn exportbtn">Export</button>  
-    
+    <button type="submit" formaction="../../API/export_projects.php" class="btn exportbtn ms-2">Export</button>  
     </div>
     </form>
     </div>

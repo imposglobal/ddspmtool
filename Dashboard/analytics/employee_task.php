@@ -44,6 +44,11 @@ require('../../API/function.php');
       background-color: #012970;
       color:#fff;
     }
+    .text-blue
+    {
+        color: #012970 !important;
+        font-weight: 700;
+    }
       
 </style>
 
@@ -110,8 +115,9 @@ require('../../API/function.php');
                                         <tr>
                                             <th scope="col">S No.</th>
                                             <th scope="col">Name</th>
-                                            <th scope="col">Task Name</th>
+                                            <th scope="col">Project_type</th>
                                             <th scope="col">Start Date</th>
+                                            <th scope="col">Task Name</th>                                          
                                             <th scope="col">Description</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Total Time</th>                                          
@@ -156,7 +162,7 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
 
 
         // Main query to fetch task details
-        $sql = "SELECT task.tid, task.pid, task.created_at, task.start_date, task.title, task.status, task.description, employees.fname, employees.eid, task_time.total_time, break.all_breaks_of_a_task
+        $sql = "SELECT task.tid, task.pid, task.created_at, task.start_date, task.title, task.project_type, task.status, task.description, employees.fname, employees.eid, task_time.total_time, break.all_breaks_of_a_task
                 FROM task
                 INNER JOIN employees ON task.eid = employees.eid 
                 INNER JOIN task_time ON task.tid = task_time.tid AND task.eid = task_time.eid 
@@ -170,14 +176,12 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
       $result = mysqli_query($db, $sql);
         // Query to calculate the sum of all task times to determine the overall task time for all tasks.        
         $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS all_task_time 
-                 FROM task_time
-                 WHERE eid = '$eid' AND pid = '$pid'";
+                 FROM task_time WHERE eid = '$eid' AND pid = '$pid'";
         $result1 = mysqli_query($db, $sql1);
 
         // Query to calculate the sum of all task break times to determine the overall task break time for all tasks.
         $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS all_task_break 
-                 FROM time_difference 
-                 WHERE pid = '$pid' AND eid = '$eid'";
+                 FROM time_difference WHERE pid = '$pid' AND eid = '$eid'";
         $result2 = mysqli_query($db, $sql2);
 
         if ($result && $result1 && $result2) {
@@ -201,8 +205,9 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
                     <tr>
                         <td><?php echo $i++; ?></td>
                         <td><?php echo $row['fname']; ?></td>
-                        <td><?php echo $row['title']; ?></td>
-                        <td><?php echo $row['start_date']; ?></td>                                         
+                        <td class="text-blue"><?php echo $row['project_type']; ?></td>
+                        <td><?php echo $row['start_date']; ?></td> 
+                        <td><?php echo $row['title']; ?></td>                                                                
                         <td><?php echo $decode_desc; ?></td>  
                         <td><?php echo $row['status'];?></td>                                                   
                         <td><?php echo $row['total_time']; ?></td>                                       

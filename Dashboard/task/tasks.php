@@ -108,7 +108,7 @@ require('../../API/function.php');
                 </div>
 
 
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card-body">
                       <h5 class="card-title">Select Project</h5>
                       <select id="pname" class="form-select" aria-label="Default select example">
@@ -123,6 +123,20 @@ require('../../API/function.php');
                         }
                         ?>
                         
+                      </select>
+                   </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card-body">
+                      <h5 class="card-title">Select Project Type</h5>
+                      <select id="project_type" class="form-select" aria-label="Default select example">
+                        <option selected="">Select Project Type</option>
+                        <option value="social-media">Social Media</option>
+                        <option value="branding">Branding</option>
+                        <option value="packaging">Packaging</option>
+                        <option value="ux-ui">UX & UI</option>
+                        <option value="development">Development</option>
                       </select>
                    </div>
                 </div>
@@ -192,13 +206,14 @@ $(document).ready(function() {
         var eid = $('#eid').val().trim();
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
         var priority = $('#priority').val().trim();
+        var project_type = $('#project_type').val().trim(); // Trim whitespace
 
-        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" &&  title !== "" && priority !== "") {
+        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" &&  title !== "" && priority !== "" && project_type !== "") {
             // AJAX request
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'task', pname: pname, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, title:title, priority:priority, eid:eid },
+                data: { ops: 'task', pname: pname, project_type: project_type, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, title:title, priority:priority, eid:eid },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
