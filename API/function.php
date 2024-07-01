@@ -545,6 +545,7 @@ function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
     $offset = ($page - 1) * $recordsPerPage;
 
     $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+    
 
     // Initialize where conditions array
     $where_conditions = [];
@@ -822,6 +823,7 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
     if ($_SERVER["REQUEST_METHOD"] == "GET")
     {
         $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+        $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : '';
         $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
         $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
         $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
@@ -830,7 +832,7 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         $offset = ($page - 1) * $recordsPerPage;
 
         // Query to retrieve data from task table
-        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
+        $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.project_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
                 FROM task INNER JOIN employees ON task.eid = employees.eid";
 
         // Initialize where conditions array
@@ -839,6 +841,10 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         // Append filters to the query if a specific project is selected
         if ($project_id !== 'All') {
             $where_conditions[] = "task.pid = '$project_id'";
+        }
+
+        if ($project_type !== 'All') {
+            $where_conditions[] = "task.project_type = '$project_type'";
         }
 
         if ($employee_id !== 'All') {

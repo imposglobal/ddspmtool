@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
 
     $eid = isset($_GET['eid']) ? $_GET['eid'] : '';
     $pid = isset($_GET['pid']) ? $_GET['pid'] : '';
+    $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : '';
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
     $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
 
@@ -19,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('Project Name', 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Total Break', 'Productive Time', 'Manager Status', 'Feedback'));
+    fputcsv($output, array('Project Name', 'Project Type' , 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Total Break', 'Productive Time', 'Manager Status', 'Feedback'));
 
     // Construct the SQL query 
-    $sql = "SELECT task.tid, task.pid, task.created_at,  task.start_date, task.title, task.status, task.priority, task.feedback, task.m_status, task.description, projects.project_name, projects.pid,  employees.fname, employees.eid, task_time.total_time, break.total_break
+    $sql = "SELECT task.tid, task.pid, task.project_type, task.created_at,  task.start_date, task.title, task.status, task.priority, task.feedback, task.m_status, task.description, projects.project_name, projects.pid,  employees.fname, employees.eid, task_time.total_time, break.total_break
     FROM task
     INNER JOIN employees ON task.eid = employees.eid
     INNER JOIN projects ON task.pid = projects.pid 
@@ -47,6 +48,11 @@ WHERE task.eid = '$eid' AND task.pid = '$pid'";
 
  // Initialize where conditions array
  $where_conditions = [];
+
+ // Append filters to the query if a specific project_type is selected
+ if ($project_type !== 'All') {
+    $where_conditions[] = "task.project_type = '$project_type'";
+  }
 
    // Add conditions based on the selected status
    switch ($time_status) {
@@ -125,7 +131,8 @@ if ($result)
             $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 
             $data = array(  
-                $row['project_name'],              
+                $row['project_name'], 
+                $row['project_type'],             
                 $row['fname'],
                 htmlspecialchars($row["start_date"]),
                 $row['title'],

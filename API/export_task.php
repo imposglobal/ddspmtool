@@ -4,6 +4,7 @@ require("db.php");
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
    
     $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 'All';
+    $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : 'All';
     $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : 'All';
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
     $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
@@ -21,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('No', 'Project Name', 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time', 'Manager Status', 'Feedback'));
+    fputcsv($output, array('No', 'Project Name', 'Project Type', 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time', 'Manager Status', 'Feedback'));
  
     // Construct the SQL query with filters
 
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
   
    
    
-    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.title, task.status, 
+    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.project_type, task.title, task.status, 
     task.estimated_time, task.priority, task.description, task.m_status, task.feedback, employees.fname, employees.lname, task_time.total_time, break.total_break
     FROM task 
     LEFT JOIN employees ON task.eid = employees.eid
@@ -50,6 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Append filters to the query if a specific project is selected
     if ($project_id !== 'All') {
         $where_conditions[] = "task.pid = '$project_id'";
+    }
+
+    // Append filters to the query if a specific project_type is selected
+    if ($project_type !== 'All') {
+        $where_conditions[] = "task.project_type = '$project_type'";
     }
 
     if ($employee_id !== 'All') {
@@ -144,6 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $data = array(
                 $i++,
                 $row['project_name'],
+                $row['project_type'],
                 $row['fname'] . " " . $row['lname'],
                 htmlspecialchars($row["created_date"]),
                 $row['title'],

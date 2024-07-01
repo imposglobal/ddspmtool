@@ -123,7 +123,7 @@ require('../../API/function.php');
       <form method="GET" action="../../API/export_task.php">
         <div class="row">
           <!-- project Name -->
-          <div class="col-lg-4 mb-4">
+          <div class="col-lg-3 mb-4">
             <select class="form-select" name="project_id">
               <option selected disabled="true">Select Project</option>
               <option value="All">All</option>
@@ -147,13 +147,27 @@ require('../../API/function.php');
           </div>
           <!-- project Name -->
 
+<!-- project type -->
+<div class="col-lg-3 mb-4">  
+<select class="form-select" name="project_type">
+<option selected="">Select Project Type</option>
+<option value="All">All</option>
+<option value="social-media">Social Media</option>
+<option value="branding">Branding</option>
+<option value="packaging">Packaging</option>
+<option value="ux-ui">UX & UI</option>
+<option value="development">Development</option> 
+</select>
+ </div>
+<!-- project type -->
+
 
           <!-- employee_name -->
 
      <?php if($role == 0)
      { 
         ?>
-        <div class="col-lg-4 mb-4">  
+        <div class="col-lg-3 mb-4">  
         <select class="form-select" name="employee_id">
         <option selected disabled="true">Select Employee</option>
         <option value="All">All</option>
@@ -189,7 +203,7 @@ require('../../API/function.php');
 <!-- employee_name -->
 
           <!-- task status -->
-          <div class="col-lg-4 mb-4">
+          <div class="col-lg-3 mb-4">
             <select id="status" class="form-select" name="task_status">
               <option selected="" disabled="true">Select Status</option>
               <option value="Completed">Completed</option>

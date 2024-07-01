@@ -87,7 +87,10 @@ if(isset($_GET["get_date"]))
                       <th scope="col">Employee Name </th>
                       <th scope="col">Date</th>
                       <th scope="col">Login Time</th>            
-                      <th scope="col">Logout Time</th>                   
+                      <th scope="col">Logout Time</th> 
+                      <th scope="col">Total Time</th>
+                      <th scope="col">Productive Time</th>
+                      <th scope="col">Break Time</th>                    
                     </tr>
                 </thead>
                 <tbody>
@@ -97,33 +100,13 @@ if(isset($_GET["get_date"]))
                 get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page);
                 ?> 
                 </tbody>
-                <!-- <tbody>              
-                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                    $recordsPerPage = 10;
-                    get_attendance($role,$eid,$db, $page, $recordsPerPage,  $start_date, $end_date);
-                    get_attendance($role,$eid,$db, $start_date, $end_date);               
-                </tbody> -->
               </table>
                     </div>
                 </div>
             </div>
           </div>
 
-        </div>
-        <?php 
-      //   if($role == 0){
-      //     $sql = "SELECT COUNT(*) AS total FROM attendance";
-      //   }else{
-      //     $sql = "SELECT COUNT(*) AS total FROM attendance WHERE eid ='$eid'";
-      //   }
-      // $result = mysqli_query($db, $sql);
-      // $row = mysqli_fetch_assoc($result);
-      // $totalRecords = $row['total'];
-      // $totalPages = ceil($totalRecords / $recordsPerPage);      
-      // pagination($page, $totalPages);
-      // ?>    
-      
-      
+        </div>  
       <?php 
           if ($role == 0) 
           {

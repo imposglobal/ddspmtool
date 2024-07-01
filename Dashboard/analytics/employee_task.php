@@ -69,6 +69,20 @@ require('../../API/function.php');
                 <div class="card">
                 <form method="GET" action="">
                   <div class="row ms-4">
+
+            <!-- project type -->
+            <div class="col-lg-3 mt-4 mb-4">  
+            <select class="form-select" name="project_type">
+            <option selected="">Select Project Type</option>
+            <option value="All">All</option>
+            <option value="social-media">Social Media</option>
+            <option value="branding">Branding</option>
+            <option value="packaging">Packaging</option>
+            <option value="ux-ui">UX & UI</option>
+            <option value="development">Development</option> 
+            </select>
+            </div>
+            <!-- project type -->
                 
             <div class="col-lg-3 mt-4 mb-5">  
                 <select class="form-select" name="time_status">
@@ -80,6 +94,7 @@ require('../../API/function.php');
                 </select>
             </div>
             <!--Time status-->
+
             <!-- Task status -->
             <div class="col-lg-3 mt-4 mb-5">  
                 <select id="status" class="form-select" name="task_status">
@@ -130,11 +145,18 @@ require('../../API/function.php');
 if (isset($_GET['eid']) && isset($_GET['pid'])) {
     $eid = $_GET['eid'];
     $pid = $_GET['pid'];
+    $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : 'All';
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
     $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
 
      // Initialize where conditions array
      $where_conditions = ["task.eid = '$eid'", "task.pid = '$pid'"];
+
+
+     // Append filters to the query if a specific project_type is selected
+     if ($project_type !== 'All') {
+        $where_conditions[] = "task.project_type = '$project_type'";
+      }
 
      // Add conditions based on the selected status
      switch ($time_status) {

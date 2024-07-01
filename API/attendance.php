@@ -78,37 +78,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
+// Get attendance in attendance page with pagination
 
-// Get attendance in attendance page
-
-
-// function get_attendance($role, $eid, $db, $page = 1, $recordsPerPage = 10, $start_date, $end_date)
+// function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page)
 // {
 //     // Calculate offset
-//     $offset = ($page - 1) * $recordsPerPage;
-//     $date = date("Y-m-d"); 
+//     $offset = ($current_page - 1) * $records_per_page;
+//     $date = date("Y-m-d");
 
 //     // Check if the 'get_date' parameter is set, and if it is, filter the data by the specified date range.
-//     if(isset($_GET["get_date"])) {
-//        // If "get_date" is set, filter by provided start_date and end_date
-//        if ($role == 0) {
-//         $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
+//     if (isset($_GET["get_date"])) {
+//         // If "get_date" is set, filter by provided start_date and end_date
+//         if ($role == 0) {
+//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
+//                     FROM attendance 
+//                     INNER JOIN employees ON attendance.eid = employees.eid 
+//                     WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' 
+//                     ORDER BY attendance.date DESC 
+//                     LIMIT $records_per_page OFFSET $offset";
+//         } else {
+//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
+//                     FROM attendance 
+//                     INNER JOIN employees ON attendance.eid = employees.eid 
+//                     WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid' 
+//                     ORDER BY attendance.date DESC 
+//                     LIMIT $records_per_page OFFSET $offset";
+//         }
 //     } else {
-//         $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
-//     }
-//     } else {
-// // If "get_date" is not set, filter by today's date
-//   if ($role == 0) {
-//     $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) = '$date' ORDER BY attendance.date DESC  LIMIT $offset, $recordsPerPage";
-//    } else {
-//     $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid FROM attendance INNER JOIN employees ON attendance.eid = employees.eid WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid' ORDER BY attendance.date DESC LIMIT $offset, $recordsPerPage";
-//    }
+//         // If "get_date" is not set, filter by today's date
+//         if ($role == 0) {
+//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
+//                     FROM attendance 
+//                     INNER JOIN employees ON attendance.eid = employees.eid 
+//                     WHERE DATE(attendance.date) = '$date' 
+//                     ORDER BY attendance.date DESC 
+//                     LIMIT $records_per_page OFFSET $offset";
+//         } else {
+//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
+//                     FROM attendance 
+//                     INNER JOIN employees ON attendance.eid = employees.eid 
+//                     WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid' 
+//                     ORDER BY attendance.date DESC 
+//                     LIMIT $records_per_page OFFSET $offset";
+//         }
 //     }
 
 //     $result = mysqli_query($db, $sql);
 //     if (mysqli_num_rows($result) > 0) {
 //         // Output data of each row
-//         $i = ($page - 1) * $recordsPerPage + 1;
+//         $i = 1 + $offset;
 //         while ($row = mysqli_fetch_assoc($result)) {
 //             echo '<tr>';
 //             echo '<th scope="row">' . $i++ . '</th>';
@@ -121,9 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //     }
 // }
 
-
-
-// Get attendance in attendance page with pagination
+// New code
 
 function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page)
 {
@@ -131,58 +147,94 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
     $offset = ($current_page - 1) * $records_per_page;
     $date = date("Y-m-d");
 
-    // Check if the 'get_date' parameter is set, and if it is, filter the data by the specified date range.
+    // SQL query based on role and date range
     if (isset($_GET["get_date"])) {
-        // If "get_date" is set, filter by provided start_date and end_date
+        // Filter by provided start_date and end_date
         if ($role == 0) {
-            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-                    FROM attendance 
-                    INNER JOIN employees ON attendance.eid = employees.eid 
-                    WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' 
-                    ORDER BY attendance.date DESC 
+            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname
+                    FROM attendance
+                    INNER JOIN employees ON attendance.eid = employees.eid
+                    WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date'
+                    ORDER BY attendance.date DESC
                     LIMIT $records_per_page OFFSET $offset";
         } else {
-            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-                    FROM attendance 
-                    INNER JOIN employees ON attendance.eid = employees.eid 
-                    WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid' 
-                    ORDER BY attendance.date DESC 
+            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname
+                    FROM attendance
+                    INNER JOIN employees ON attendance.eid = employees.eid
+                    WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid'
+                    ORDER BY attendance.date DESC
                     LIMIT $records_per_page OFFSET $offset";
         }
     } else {
-        // If "get_date" is not set, filter by today's date
+        // Filter by today's date
         if ($role == 0) {
-            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-                    FROM attendance 
-                    INNER JOIN employees ON attendance.eid = employees.eid 
-                    WHERE DATE(attendance.date) = '$date' 
-                    ORDER BY attendance.date DESC 
+            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname
+                    FROM attendance
+                    INNER JOIN employees ON attendance.eid = employees.eid
+                    WHERE DATE(attendance.date) = '$date'
+                    ORDER BY attendance.date DESC
                     LIMIT $records_per_page OFFSET $offset";
         } else {
-            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-                    FROM attendance 
-                    INNER JOIN employees ON attendance.eid = employees.eid 
-                    WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid' 
-                    ORDER BY attendance.date DESC 
+            $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname
+                    FROM attendance
+                    INNER JOIN employees ON attendance.eid = employees.eid
+                    WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid'
+                    ORDER BY attendance.date DESC
                     LIMIT $records_per_page OFFSET $offset";
         }
     }
 
     $result = mysqli_query($db, $sql);
     if (mysqli_num_rows($result) > 0) {
-        // Output data of each row
         $i = 1 + $offset;
         while ($row = mysqli_fetch_assoc($result)) {
+
+            $eid =  $row['eid'];
+            $data = $row["date"];
+
+            // Calculate the difference between login_time and logout_time
+            $login_time = strtotime($row["login_time"]);
+            $logout_time = strtotime($row["logout_time"]);
+            $time_difference = $logout_time - $login_time;
+            $total_time = gmdate('H:i:s', $time_difference);
+
+            // Fetch total day task and break time for the specific date
+            $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS total_day_task
+                     FROM task_time
+                     WHERE eid = '$eid' AND task_time.date = '$data'";
+            $result1 = mysqli_query($db, $sql1);
+            $row1 = mysqli_fetch_assoc($result1);
+
+            $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
+                     FROM time_difference
+                     WHERE eid = '$eid' AND time_difference.date = '$data'";
+            $result2 = mysqli_query($db, $sql2);
+            $row2 = mysqli_fetch_assoc($result2);
+
+            // Calculate the difference between task time and break time
+            $total_day_task = isset($row1["total_day_task"]) ? strtotime($row1["total_day_task"]) : 0;
+            $total_day_break = isset($row2["total_day_break"]) ? strtotime($row2["total_day_break"]) : 0;
+            $actual_time = $total_day_task - $total_day_break;
+            $productive_time = gmdate('H:i:s',  $actual_time);
+
+            // Calculate productive time
+            $day_break_time = $time_difference -  $actual_time;
+            $day_total_break_time = gmdate('H:i:s',  $day_break_time);
+
             echo '<tr>';
             echo '<th scope="row">' . $i++ . '</th>';
             echo '<td>' . $row["fname"] . " " . $row["lname"] . '</td>';
             echo '<td>' . $row["date"] . '</td>';
             echo '<td>' . $row["login_time"] . '</td>';
             echo '<td>' . $row["logout_time"] . '</td>';
+            echo '<td>' . $total_time . '</td>';
+            echo '<td>' . $productive_time . '</td>';
+            echo '<td>' . $day_total_break_time . '</td>';
             echo '</tr>';
         }
     }
 }
+
 
 
 ?>
