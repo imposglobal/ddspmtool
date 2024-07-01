@@ -117,15 +117,16 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["fname"].'</td>';
             // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 20)
+            if (strlen($title) > 50)
             {
-               echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+               echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
             }
             else
             {
                 echo '<td>'. $row["title"].'</td>';
             }         
             // echo '<td>'. $row["created_at"].'</td>';
+            // echo '<td>'. $row["title"].'</td>';
             echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
             echo $status;
             echo '<td>'. $mstatus.'</td>';
@@ -345,9 +346,9 @@ function get_projects_by_current_date($role, $eid, $db)
             echo '<td>' . $row["task_type"] . '</td>';
 
             // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 20)
+            if (strlen($title) > 50)
             {
-              echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+              echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
             }
             else
             {
@@ -998,6 +999,30 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         echo '</nav>';
     }    
 }
+
+
+// get In-Progress count in dashboard
+
+function get_in_progress_task_count($role, $eid, $db)
+{
+    if($role==0)
+    {
+      $sql = "SELECT COUNT(DISTINCT tid) FROM task WHERE status = 'In Progress' AND MONTH(created_at) = MONTH(CURRENT_DATE())";  
+      $result = mysqli_query($db, $sql);
+    }
+    else{      
+      $sql = "SELECT COUNT(DISTINCT tid) FROM task WHERE eid = '$eid' AND status = 'In Progress' AND MONTH(created_at) = MONTH(CURRENT_DATE())";
+      $result = mysqli_query($db, $sql);
+    }
+  
+    // Assuming you want to return the count value
+    $count = mysqli_fetch_array($result)[0];
+    return $count;
+}
+
+
+
+
 
 
 ?>

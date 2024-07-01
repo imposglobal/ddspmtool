@@ -10,6 +10,7 @@ require('sidebar.php');
 $task_count = get_task_count($role, $eid, $db);
 $project_count = get_project_count($role, $eid, $db);
 $attendance_count = get_attendance_count($role, $eid, $db);
+$in_progress_count = get_in_progress_task_count($role, $eid, $db);
 $totalWeeklyWorkingDays = MonthlyWorkingDays();
 
 ?>
@@ -91,7 +92,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
           </div><!-- End working days Card -->
 
           <!-- Present days Card -->
-          <div class="col-xxl-3 col-lg-3 col-md-6">
+          <!-- <div class="col-xxl-3 col-lg-3 col-md-6">
             <div class="card info-card revenue-card">
               <div class="card-body">
                 <h5 class="card-title">Present Days <span>| This Month</span></h5>
@@ -104,9 +105,36 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                   </div>
                 </div>
               </div>
-
             </div>
-          </div><!-- End Present days Card -->
+          </div> -->
+          <!-- End Present days Card -->
+
+
+           <!-- In-Progress Task for this month -->
+         
+           <div class="col-xxl-3 col-lg-3 col-md-6">
+           <a href="task/task_by_filter.php">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">In-Progress Task <span>| This Month</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><?php echo $in_progress_count; ?></h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          
+          <!-- In-Progress Task for this month -->
+
+
+
+
 
           <!-- Recent Sales -->
           <div class="col-12">
