@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('Project Name', 'Project Type' , 'Employee Name', 'Date', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Total Break', 'Productive Time', 'Manager Status', 'Feedback'));
+    fputcsv($output, array('No', 'Date', 'Project Name', 'Project Type' , 'Employee Name', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Total Break', 'Productive Time', 'Manager Status', 'Feedback'));
 
     // Construct the SQL query 
     $sql = "SELECT task.tid, task.pid, task.project_type, task.created_at,  task.start_date, task.title, task.status, task.priority, task.feedback, task.m_status, task.description, projects.project_name, projects.pid,  employees.fname, employees.eid, task_time.total_time, break.total_break
@@ -63,7 +63,7 @@ WHERE task.eid = '$eid' AND task.pid = '$pid'";
         $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
         break;
     case 'weekly':
-        $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
+        $where_conditions[] = "WEEK(task.created_at) = WEEK(CURRENT_DATE())";
         break;
     case 'monthly':
         $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
@@ -98,6 +98,7 @@ if ($result)
 {
     if (mysqli_num_rows($result) > 0)
     {
+        $i = 1;
         while ($row = mysqli_fetch_assoc($result))
         {
               // Remove HTML tags from the description
@@ -130,11 +131,12 @@ if ($result)
 
             $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
 
-            $data = array(  
+            $data = array(
+                $i++,
+                htmlspecialchars($row["start_date"]),  
                 $row['project_name'], 
                 $row['project_type'],             
-                $row['fname'],
-                htmlspecialchars($row["start_date"]),
+                $row['fname'],               
                 $row['title'],
                 $decode_desc,
                 $row['priority'],

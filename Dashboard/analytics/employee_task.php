@@ -167,7 +167,7 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
              $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
              break;
          case 'weekly':
-             $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
+             $where_conditions[] = "WEEK(task.created_at) = WEEK(CURRENT_DATE())";
              break;
          case 'monthly':
              $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";
@@ -210,11 +210,14 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
             $i = 1;
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
+
+                  
+
+                     
                     // Remove HTML tags from the description
                     $removedesc = strip_tags($row["description"]);
                     // Decode HTML entities back into their respective characters
-                    $decode_desc = html_entity_decode($removedesc);
-
+                    $decode_desc = html_entity_decode($removedesc);           
                    
                     // calculation for single task
                     $single_task_total_time = strtotime($row['total_time']);
@@ -236,7 +239,7 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
                         <td><?php echo substr($row["all_breaks_of_a_task"], 0, 8); ?></td>
                         <td class="text-green"><?php echo $single_task_actual_time; ?></td>
                     </tr>
-<?php
+                <?php
                 }
             } else {
                 echo "<tr><td>No results found.</td></tr>";

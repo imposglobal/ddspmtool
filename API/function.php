@@ -867,7 +867,7 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 $where_conditions[] = "DATE(task.created_at) = CURRENT_DATE() - INTERVAL 1 DAY";
                 break;
             case 'weekly':
-                $where_conditions[] = "task.created_at >= CURRENT_DATE() - INTERVAL 7 DAY";
+                $where_conditions[] = "WEEK(task.created_at) = WEEK(CURRENT_DATE())";
                 break;
             case 'monthly':
                 $where_conditions[] = "MONTH(task.created_at) = MONTH(CURRENT_DATE())";

@@ -192,19 +192,26 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             $eid =  $row['eid'];
             $data = $row["date"];
 
+            // Initialize time variables
+            $total_time = '';
+            $productive_time = '';
+
             // Calculate the difference between login_time and logout_time
+            if (!empty($row["login_time"]) && !empty($row["logout_time"])) 
+            {
             $login_time = strtotime($row["login_time"]);
             $logout_time = strtotime($row["logout_time"]);
             $time_difference = $logout_time - $login_time;
             $total_time = gmdate('H:i:s', $time_difference);
 
-            // Fetch total day task and break time for the specific date
+            // Fetch total day task for the specific date
             $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS total_day_task
                      FROM task_time
                      WHERE eid = '$eid' AND task_time.date = '$data'";
             $result1 = mysqli_query($db, $sql1);
             $row1 = mysqli_fetch_assoc($result1);
 
+             // Fetch break time for the specific date
             $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
                      FROM time_difference
                      WHERE eid = '$eid' AND time_difference.date = '$data'";
@@ -217,10 +224,8 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             $actual_time = $total_day_task - $total_day_break;
             $productive_time = gmdate('H:i:s',  $actual_time);
 
-            // Calculate productive time
-            $day_break_time = $time_difference -  $actual_time;
-            $day_total_break_time = gmdate('H:i:s',  $day_break_time);
-
+        }
+       
             echo '<tr>';
             echo '<th scope="row">' . $i++ . '</th>';
             echo '<td>' . $row["fname"] . " " . $row["lname"] . '</td>';
@@ -229,8 +234,8 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             echo '<td>' . $row["logout_time"] . '</td>';
             echo '<td>' . $total_time . '</td>';
             echo '<td>' . $productive_time . '</td>';
-            // echo '<td>' . $day_total_break_time . '</td>';
             echo '</tr>';
+       
         }
     }
 }
