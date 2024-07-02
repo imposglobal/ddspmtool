@@ -831,6 +831,7 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 
         // Calculate offset
         $offset = ($page - 1) * $recordsPerPage;
+        
 
         // Query to retrieve data from task table
         $sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.project_type, task.eid, task.pid, task.title, task.description, task.status, task.estimated_time, task.priority, task.m_status, task.feedback, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid  
@@ -839,16 +840,21 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         // Initialize where conditions array
         $where_conditions = [];
 
+         // Add role-specific condition
+        if ($role != 0) {
+            $where_conditions[] = "task.eid = '$eid'";
+        }
+
         // Append filters to the query if a specific project is selected
-        if ($project_id !== 'All') {
+        if (!empty($project_id) && $project_id !== 'All') {
             $where_conditions[] = "task.pid = '$project_id'";
         }
 
-        if ($project_type !== 'All') {
+        if (!empty($project_type) && $project_type !== 'All') {
             $where_conditions[] = "task.project_type = '$project_type'";
         }
 
-        if ($employee_id !== 'All') {
+        if (!empty($employee_id) && $employee_id !== 'All') {
             $where_conditions[] = "task.eid = '$employee_id'";
         }
 

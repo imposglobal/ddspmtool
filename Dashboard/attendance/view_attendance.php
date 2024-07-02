@@ -90,7 +90,7 @@ if(isset($_GET["get_date"]))
                       <th scope="col">Logout Time</th> 
                       <th scope="col">Total Time</th>
                       <th scope="col">Productive Time</th>
-                      <th scope="col">Break Time</th>                    
+                      <!-- <th scope="col">Break Time</th>                     -->
                     </tr>
                 </thead>
                 <tbody>

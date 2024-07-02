@@ -229,7 +229,7 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             echo '<td>' . $row["logout_time"] . '</td>';
             echo '<td>' . $total_time . '</td>';
             echo '<td>' . $productive_time . '</td>';
-            echo '<td>' . $day_total_break_time . '</td>';
+            // echo '<td>' . $day_total_break_time . '</td>';
             echo '</tr>';
         }
     }
