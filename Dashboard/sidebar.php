@@ -3,16 +3,46 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+<!-- /**********************************************************************************************************/ -->
+
+  <!-- Sales managment section start-->
+  <?php if($role == 0){ ?>
+      <li class="nav-heading">Sales</li>
+    
+
+      <!-- add leads  -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/sales/add_leads.php">
+          <i class="bi bi-file-plus-fill"></i>
+          <span>Add Leads</span>
+        </a>
+      </li>
+      <!-- End addleads Page Nav -->
+
+      <!-- View leads -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/sales/view_leads.php">
+          <i class="bi bi-person"></i>
+          <span>View Leads</span>
+        </a>
+      </li><!-- End view leads Nav -->
+      
+      <hr/>
+
+      <?php } ?>
+     
+     <!-- Sales managment section  end -->
+
+<!-- /****************************************************************************************************/ -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+      </li>
+      <!-- End Dashboard Nav -->
 
-   
-
-      
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-file-earmark-text-fill"></i><span>Tasks</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -37,21 +67,21 @@
           </li>
         </ul>
       </li>
-      
+
+      <!-- end task nav -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/analytics_view.php"">
           <i class="bi bi-bar-chart-fill"></i>
           <span>Analytics</span>
         </a>
-      </li><!-- End Analytics Page Nav -->
+      </li>
+      <!-- End Analytics Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/attendance/view_attendance.php">
-          <i class="bi bi-calendar2-week-fill"></i>
-          <span>Attendance</span>
-        </a>
-      </li><!-- End Analytics Page Nav -->
       <hr/>
+
+<!-- /****************************************************************************************************/ -->
+
 
       <?php if($role == 0){ ?>
       <li class="nav-heading">Operations</li>
@@ -103,6 +133,14 @@
         </a>
       </li> -->
 
+      <!-- attendance  -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/attendance/view_attendance.php">
+          <i class="bi bi-calendar2-week-fill"></i>
+          <span>Attendance</span>
+        </a>
+      </li><!-- End Attendance Page Nav -->
+
       <!-- task analytics -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/analytics/task_analytics.php">
@@ -110,11 +148,14 @@
           <span>Task Analytics</span>
         </a>
       </li><!-- End Profile Page Nav -->
+      
       <hr/>
+
       <?php } ?>
      
      <!-- Reports -->
-   
+
+      
       <li class="nav-heading">Accounts</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/employee/user-profile.php">
