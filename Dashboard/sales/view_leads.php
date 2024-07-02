@@ -39,6 +39,21 @@ require('../../API/function.php');
     .custom-offcanvas {
             width: 50% !important; /* Adjust the width as needed */
         }
+
+/* export button code */
+
+.exportbtn
+    {
+      background-color: #012970;
+      color:#fff;
+    }
+    .exportbtn:hover
+    {
+      background-color: #012970;
+      color: #fff;
+    }
+ 
+
 </style>
 
 
@@ -56,9 +71,46 @@ require('../../API/function.php');
 
     <section class="section">
       <div class="row">
-       
-        <div class="col-lg-12">
 
+      <!-- /********************************************** export form ****************************************************/ -->
+                
+            <div class="row">
+              <div class="col-lg-12">
+                  <form method="GET">
+                      <div class="row">
+                          <!-- Start Date -->
+                          <div class="col-lg-3 mb-4">
+                              <input type="date" class="form-control" name="start_date">
+                          </div>
+                          <!-- End Date -->
+                          <div class="col-lg-3 mb-4">
+                              <input type="date" class="form-control" name="end_date">
+                          </div>
+                          <!-- time -->
+          <div class="col-lg-3 mb-4">
+            <select class="form-select" name="time_status">
+              <option selected disabled="true">Select Time</option>
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <!-- time-->
+                          <!-- Buttons -->
+                         
+                          <div class="col-lg-3 mb-4 text-start">
+                              <button type="submit" name="show" class="btn btn-success">Show</button>
+                              <button type="submit" formaction="../../API/export_leads_api.php" class="btn exportbtn ms-2">Export</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+
+
+      <!-- /*************************************************** export form ends ***********************************************************/ -->
+        <div class="col-lg-12">
           <div class="card">
             <div class="row">   
                 <div class="col-lg-12">
@@ -86,8 +138,10 @@ require('../../API/function.php');
                     // Usage:
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
+                    $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+                    $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-                    get_leads($base_url,$db, $page, $recordsPerPage);
+                    get_leads($base_url,$db, $page, $recordsPerPage, $startDate, $endDate);
                   ?> 
                 </tbody>
               </table>
@@ -103,6 +157,9 @@ require('../../API/function.php');
       <?php 
       //for Leads pagination 
       $sql = "SELECT COUNT(*) AS total FROM sales_lead_generation";
+      if ($startDate && $endDate) {
+        $sql .= " WHERE created_at BETWEEN '$startDate' AND '$endDate'";
+    }
       $result = mysqli_query($db, $sql);
       $row = mysqli_fetch_assoc($result);
       $totalRecords = $row['total'];

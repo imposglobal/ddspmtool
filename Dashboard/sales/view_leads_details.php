@@ -42,6 +42,14 @@ require('../../API/sales_lead_generation_api.php');
     font-weight: 600;
     font-family: "Poppins", sans-serif;
 }
+
+.drop-area {
+    border: 2px dashed #ccc;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 </style>
 
 <?php
@@ -146,17 +154,34 @@ if (isset($_GET['lead_id'])) {
                                         <input type="text" id="status" value="<?php echo $status;?>" class="form-control"> <br><br>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="ctitle">Notes</label>
-                                    <!-- TinyMCE Editor -->
-                                    <textarea id="notes" class="tinymce-editor">
-                                        <?php echo $decode_notes;?>
-                                    </textarea><!-- End TinyMCE Editor -->
+ <!-- /**********************************************************************************************************/ -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="ctitle">Notes</label>
+                                        <!-- TinyMCE Editor -->
+                                        <textarea id="notes" class="tinymce-editor">
+                                            <?php echo $decode_notes; ?>
+                                        </textarea><!-- End TinyMCE Editor --> <br> 
+                                        <!-- <button type="button" id="addcomment" class=" btn bg-primary text-white px-3 py-2"> Add Comment </button> -->
+                                    </div>
+
+                                    <!-- <div class="col-md-6">
+                                        <label class="font-weight-bold" for="notes">All Comments</label>
+                                        <div id="drop-area" class="drop-area" style="height: 370px; overflow-x:auto">
+                                            <div id="commentResponse" class="text-left">
+                                                
+                                            </div>
+                                        </div>
+                                    </div> -->
+
                                 </div>
+                                   <br>
+<!-- /********************************************************************************************************/ -->
                                 <input type="hidden" id="lead_id" class="form-control" value="<?php echo $lead_id_value;?>">  
 
                                 <div class="float-left" style="float: left;">
-                                    <input type="button" class="btn mt-3" id="updateLead" name="updateLead" value="Update" style="background-color: #012970;color:#fff;">
+                                    <input type="button" class="btn mt-3" id="updateLead" name="updateLead" value="Update" style="background-color: #012970;color:#fff; margin-left: 480px;">
                                 </div>
                             </div>
                         </div>

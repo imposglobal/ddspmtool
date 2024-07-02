@@ -68,7 +68,7 @@ if(isset($_SESSION['username'])) {
 <div class="d-flex align-items-center justify-content-between">
   <a href="<?php echo $base_url;?>/Dashboard/index.php" class="logo d-flex align-items-center">
     <img src="https://dds.doodlo.in/assets/img/logo.png" alt="">
-    <span class="d-none d-lg-block">DDS</span>
+    <!-- <span class="d-none d-lg-block"></span> -->
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
