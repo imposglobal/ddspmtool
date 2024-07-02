@@ -827,6 +827,8 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         $employee_id = isset($_GET['employee_id']) ? $_GET['employee_id'] : '';
         $task_status = isset($_GET['task_status']) ? $_GET['task_status'] : '';
         $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+        $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+        $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
         // Calculate offset
         $offset = ($page - 1) * $recordsPerPage;
@@ -877,6 +879,14 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         // Add the task status condition if selected
         if (!empty($task_status) && $task_status !== 'Select Task Status') {
             $where_conditions[] = "task.status = '$task_status'";
+        }
+
+        // Append filters to the query
+        if (!empty($start_date)) {
+        $where_conditions[] = "task.created_at >= '$start_date'";
+        }
+        if (!empty($end_date)) {
+        $where_conditions[] = "task.created_at <= '$end_date'";
         }
 
         // If there are any conditions, they are combined and appended to the SQL query.
