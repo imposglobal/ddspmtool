@@ -133,13 +133,7 @@
         </a>
       </li> -->
 
-      <!-- attendance  -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/attendance/view_attendance.php">
-          <i class="bi bi-calendar2-week-fill"></i>
-          <span>Attendance</span>
-        </a>
-      </li><!-- End Attendance Page Nav -->
+     
 
       <!-- task analytics -->
       <li class="nav-item">
@@ -149,9 +143,20 @@
         </a>
       </li><!-- End Profile Page Nav -->
       
-      <hr/>
+      
 
       <?php } ?>
+
+       <!-- attendance  -->
+       <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/attendance/view_attendance.php">
+          <i class="bi bi-calendar2-week-fill"></i>
+          <span>Attendance</span>
+        </a>
+      </li><!-- End Attendance Page Nav -->
+
+     <hr/>
+
      
      <!-- Reports -->
 

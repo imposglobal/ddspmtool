@@ -72,7 +72,7 @@ if (isset($_GET['lead_id'])) {
                         <p>'.$status.'</span></p>
                     </div>
                     <hr>
-                    <div class="col-lg-4"> 
+                    <div class="col-lg-12"> 
                         <p><b> Notes </b> </p> 
                         <p>'.$decode_notes.'</span></p>
                     </div>
