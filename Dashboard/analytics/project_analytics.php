@@ -48,8 +48,8 @@ require('../../API/function.php');
                                     <thead>
                                     <tr>
                                             <th scope="col">S No.</th>
-                                            <th scope="col">Project Name</th>
                                             <th scope="col">Start Date</th>
+                                            <th scope="col">Project Name</th>                                          
                                             <th scope="col">Project Type</th>
                                             <th scope="col">Task Count</th>
                                             <th scope="col">Employee Name</th>
@@ -114,12 +114,11 @@ require('../../API/function.php');
 
                 $productive_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     ?>
-
-              
+             
                 <tr>
                     <td><?php echo $i++; ?></td>
-                    <td><?php echo htmlspecialchars($row1['project_name']); ?></td>
                     <td><?php echo htmlspecialchars($row1['start_date']); ?></td>
+                    <td><?php echo htmlspecialchars($row1['project_name']); ?></td>                   
                     <td><?php echo htmlspecialchars($row1['project_type']); ?></td>
                     <td><?php echo htmlspecialchars($row1["task_count"]); ?></td>
                     <td><?php echo $row1["employee_links"]; ?></td>

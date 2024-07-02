@@ -266,9 +266,9 @@ button:disabled
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Date</th>
                     <th scope="col"> Employeee</th>
-                    <th scope="col">Task Name</th>
-                    <th scope="col">Date</th>                 
+                    <th scope="col">Task Title</th>                                   
                     <th scope="col">My Status</th>
                     <th scope="col">Manager Status</th>
                     <th scope="col">Timeframe</th>

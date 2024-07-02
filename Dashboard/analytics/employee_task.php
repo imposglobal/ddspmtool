@@ -129,9 +129,9 @@ require('../../API/function.php');
                                     <thead>
                                         <tr>
                                             <th scope="col">S No.</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Project_type</th>
                                             <th scope="col">Start Date</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Project_type</th>                                           
                                             <th scope="col">Task Name</th>                                          
                                             <th scope="col">Description</th>
                                             <th scope="col">Status</th>
@@ -226,9 +226,9 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
 ?>
                     <tr>
                         <td><?php echo $i++; ?></td>
-                        <td><?php echo $row['fname']; ?></td>
-                        <td class="text-blue"><?php echo $row['project_type']; ?></td>
                         <td><?php echo $row['start_date']; ?></td> 
+                        <td><?php echo $row['fname']; ?></td>
+                        <td class="text-blue"><?php echo $row['project_type']; ?></td>                      
                         <td><?php echo $row['title']; ?></td>                                                                
                         <td><?php echo $decode_desc; ?></td>  
                         <td><?php echo $row['status'];?></td>                                                   

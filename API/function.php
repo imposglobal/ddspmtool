@@ -115,19 +115,17 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
            
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
+            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
             echo '<td>'. $row["fname"].'</td>';
             // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 50)
+            if (strlen($title) > 80)
             {
-               echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
+               echo '<td>'. substr($title , 0, 70) . '...' .'</td>';
             }
             else
             {
                 echo '<td>'. $row["title"].'</td>';
-            }         
-            // echo '<td>'. $row["created_at"].'</td>';
-            // echo '<td>'. $row["title"].'</td>';
-            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+            }                     
             echo $status;
             echo '<td>'. $mstatus.'</td>';
 
@@ -325,12 +323,12 @@ function get_projects_by_current_date($role, $eid, $db)
     $date = date("y-m-d");
     //echo $date;
     if ($role == 0) {
-        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
         WHERE DATE(task.created_at) = '$date' ORDER BY task.created_at DESC";
     } else {
-        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, task.created_at, employees.fname, employees.lname, employees.eid 
+        $sql = "SELECT task.eid, task.task_type, task.title, task.estimated_time, task.m_status, DATE(task.created_at) as created_date, employees.fname, employees.lname, employees.eid 
         FROM task 
         INNER JOIN employees ON task.eid = employees.eid 
         WHERE DATE(task.created_at) = '$date' AND task.eid = '$eid' ORDER BY task.created_at DESC";
@@ -342,13 +340,14 @@ function get_projects_by_current_date($role, $eid, $db)
             $title = $row["title"];
             echo '<tr>';
             echo '<th scope="row">'.$i++.'</th>';
+            echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
             echo '<td>' . $row["fname"] . '</td>';
             echo '<td>' . $row["task_type"] . '</td>';
 
             // code to retrieve title from task table where it will show only 20 character title
-            if (strlen($title) > 50)
+            if (strlen($title) > 70)
             {
-              echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
+              echo '<td>'. substr($title , 0, 70) . '...' .'</td>';
             }
             else
             {
@@ -356,7 +355,7 @@ function get_projects_by_current_date($role, $eid, $db)
             }   
             echo '<td>' . $row["estimated_time"] . '</td>';
             echo '<td>' . $row["m_status"] . '</td>';
-            echo '<td>' . $row["created_at"] . '</td>';
+            
             echo '</tr>';
         }
     } 
@@ -901,9 +900,9 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
         echo '<thead>';
         echo '<tr>';
         echo '<th scope="col">#</th>';
-        echo '<th scope="col">Employee Name</th>';
-        echo '<th scope="col">Title</th>';
-        echo '<th scope="col">Created Date</th>';
+        echo '<th scope="col">Date</th>';
+        echo '<th scope="col">Employee</th>';
+        echo '<th scope="col">Task Title</th>';     
         echo '<th scope="col">Status</th>';
         echo '<th scope="col">M Status</th>';
         echo '<th scope="col">Actions</th>';
@@ -938,17 +937,18 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 
                 echo '<tr>';
                 echo '<th scope="row">'. $i++.'</th>';
+                echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
                 echo '<td>'. $row["fname"].'</td>';
                 // code to retrieve title from task table where it will show only 20 character title
-                if (strlen($title) > 50)
+                if (strlen($title) > 70)
                 {
-                    echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
+                    echo '<td>'. substr($title , 0, 70) . '...' .'</td>';
                 }
                 else
                 {
                     echo '<td>'. $row["title"].'</td>';
                 }         
-                echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+                
                 echo $status;
                 echo '<td>'. $mstatus.'</td>';            
                 echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
