@@ -182,7 +182,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                     <button type="button" class="submit_time">Submit</button>
                 </div>
                 ';
-                echo '<button type="button" onclick="stopTimer(' . $tid . ')" name="stop_time" id="stop_time_' . $tid . '" style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';   
+                echo '<button type="button" onclick="stopTimer(' . $tid . ')" name="stop_time" id="stop_time_' . $tid . '" disabled style="margin-left:10px;border:none;background-color:transparent;"><i class="fas fa-stop" style="color:red;"></i></button>';   
                 echo '<p id="timerDisplay'.$tid .'" class="taskmessage"></p>';         
                 echo '</form>
                         </div>
@@ -273,11 +273,11 @@ function get_task_count($role, $eid, $db)
 {
   if($role==0)
   {
-    $sql = "SELECT COUNT(*) FROM task";
+    $sql = "SELECT COUNT(*) FROM task WHERE MONTH(created_at) = MONTH(CURRENT_DATE())";
     $result = mysqli_query($db, $sql);
   }
   else{
-    $sql = "SELECT COUNT(*) FROM task WHERE eid = '$eid'";
+    $sql = "SELECT COUNT(*) FROM task WHERE eid = '$eid' AND MONTH(created_at) = MONTH(CURRENT_DATE())";
     $result = mysqli_query($db, $sql);
   }
 
@@ -940,9 +940,9 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 echo '<th scope="row">'. $i++.'</th>';
                 echo '<td>'. $row["fname"].'</td>';
                 // code to retrieve title from task table where it will show only 20 character title
-                if (strlen($title) > 20)
+                if (strlen($title) > 50)
                 {
-                    echo '<td>'. substr($title , 0, 20) . '...' .'</td>';
+                    echo '<td>'. substr($title , 0, 50) . '...' .'</td>';
                 }
                 else
                 {

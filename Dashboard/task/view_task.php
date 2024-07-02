@@ -100,6 +100,16 @@ require('../../API/function.php');
   color: #fff;
 }
 
+/* Styles for disabled buttons */
+button:disabled 
+{
+   cursor: not-allowed; /* Change cursor to indicate button is disabled */
+   color: grey !important;
+}
+
+
+
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <main id="main" class="main">
@@ -318,7 +328,8 @@ $(document).ready(function() {
     $(document).on('click', '[id^="start_time_"]', function() {
         // Store the button element in a variable 
         var $startButton = $(this);
-        var tid = $startButton.siblings('#tid').val(); 
+        var tid = $startButton.attr('id').split('_')[2]; 
+        // var tid = $startButton.siblings('#tid').val(); 
         var eid = $startButton.siblings('#eid').val(); 
         var pid = $startButton.siblings('#pid').val(); 
         $.ajax({
@@ -336,6 +347,10 @@ $(document).ready(function() {
                         title: 'Success',
                         text: 'Task has started',
                     });
+                    // Enable the stop button and update localStorage
+                    $('#stop_time_' + tid).prop('disabled', false);
+                    localStorage.setItem('timer_status_' + tid, 'running');
+
                 } else {
                     // Show SweetAlert error message
                     Swal.fire({
@@ -393,8 +408,12 @@ $(document).ready(function() {
                         title: 'Success',
                         //  text: data.message
                         text: 'You are on pause'
-                    })
-                } else {
+                    });
+                    // Disable the stop button and update localStorage
+                    $('#stop_time_' + tid).prop('disabled', true);
+                    localStorage.setItem('timer_status_' + tid, 'paused');
+                } 
+                else {
                     // Show SweetAlert error message
                     Swal.fire({
                         icon: 'error',
@@ -425,7 +444,8 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
       $(document).on('click', '[id^="stop_time_"]', function() {
-        var tid = $(this).siblings('#tid').val(); 
+        var tid = $(this).attr('id').split('_')[2]; 
+        // var tid = $(this).siblings('#tid').val(); 
         var eid = $(this).siblings('#eid').val(); 
         var pid = $(this).siblings('#pid').val();  
         $.ajax({
@@ -470,6 +490,23 @@ $(document).ready(function() {
 });
 </script>
 <!-- end -->
+
+<!-- to save disable feature even afer page reload -->
+<script>
+$(document).ready(function() {
+    // Retrieve timer statuses from localStorage
+    $('[id^="stop_time_"]').each(function() {
+        var tid = $(this).attr('id').split('_')[2]; // Extract timer ID
+        var status = localStorage.getItem('timer_status_' + tid);
+
+        if (status === 'paused') {
+            $(this).prop('disabled', true); // Disable stop button if timer is paused
+        } else if (status === 'running') {
+            $(this).prop('disabled', false); // Enable stop button if timer is running
+        }
+    });
+});
+</script>
 
 
 <!-- delete task -->
