@@ -23,6 +23,11 @@ require('../../API/function.php');
       background-color: #012970;
       color:#fff;
     }
+    .text-blue
+    {
+        color: #012970 !important;
+        font-weight: 700;
+    }
       
 </style>
 
@@ -119,7 +124,7 @@ require('../../API/function.php');
                     <td><?php echo $i++; ?></td>
                     <td><?php echo htmlspecialchars($row1['start_date']); ?></td>
                     <td><?php echo htmlspecialchars($row1['project_name']); ?></td>                   
-                    <td><?php echo htmlspecialchars($row1['project_type']); ?></td>
+                    <td class="text-blue"><?php echo htmlspecialchars($row1['project_type']); ?></td>
                     <td><?php echo htmlspecialchars($row1["task_count"]); ?></td>
                     <td><?php echo $row1["employee_links"]; ?></td>
                     <td><?php echo substr($row1["total_project_time"], 0, 8);?></td>

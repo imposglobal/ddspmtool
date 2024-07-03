@@ -1,7 +1,8 @@
 <?php
 require("db.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
     $operation = $_POST['ops'];
     $eid = $_POST['eid'];
     switch ($operation) {
@@ -45,101 +46,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             {
                 echo "Error: " . $sql . "<br>" . $db->error;
             }       
-            // Close dbection
+            // Close dbconnection
             $db->close();
             break;
     
     
         //  add clockout in dashboard
-        case "clockout":
+
+           case "clockout":
             // Set IST Timezone
             date_default_timezone_set('Asia/Kolkata');
             $eid = $_POST['eid'];
             $time = date('h:i:s A'); 
-            // $date = date('Y-m-d');                    
-            $sql = "UPDATE `attendance` SET `logout_time`= '$time' WHERE `eid` = '$eid' AND `date` = CURDATE()";       
-            if ($db->query($sql) === TRUE) 
+        
+            $sql = "SELECT `end_time` FROM `task_time` WHERE `eid` = '$eid' AND `date` = CURDATE();";
+            $result = $db->query($sql);
+        
+
+  //if the query is successful, it initializes a flag ($allTasksEnded) to true., then iterates through each row of the result set to check if any task has an empty end_time.
+ // if any task's end_time is empty, it sets $allTasksEnded to false and breaks out of the loop.
+
+            if ($result) 
             {
-            echo "success";
+                $allTasksEnded = true;
+                while ($row = $result->fetch_assoc()) {
+                    if (empty($row['end_time'])) {
+                        $allTasksEnded = false;
+                        break;
+                    }
+                }
+        
+                if ($allTasksEnded) {
+                    $sql = "UPDATE `attendance` SET `logout_time`= '$time' WHERE `eid` = '$eid' AND `date` = CURDATE()";
+                    if ($db->query($sql)) {
+                        echo json_encode(['status' => 'success']);
+                    } else {
+                        echo json_encode(['status' => 'error', 'message' => 'Failed to update logout time']);
+                    }
+                } 
+                else {
+                    echo json_encode(['status' => 'error', 'message' => 'Before Clock-out kindly stop your task']);
+                }
             } 
-            else 
-            {
-            echo "Error: " . $sql . "<br>" . $db->error;
-            }         
-            // Close dbection
+            else {
+                echo json_encode(['status' => 'error', 'message' => 'Database query failed: ' . $db->error]);
+            }
+        
+            // Close db connection
             $db->close();
             break;
-    
-    
-        default:
-          echo "Bad Gateway";
-      }
-    
 
+        
+        default:
+        echo "Bad Gateway";
+
+}
 }
 
 // Get attendance in attendance page with pagination
-
-// function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page)
-// {
-//     // Calculate offset
-//     $offset = ($current_page - 1) * $records_per_page;
-//     $date = date("Y-m-d");
-
-//     // Check if the 'get_date' parameter is set, and if it is, filter the data by the specified date range.
-//     if (isset($_GET["get_date"])) {
-//         // If "get_date" is set, filter by provided start_date and end_date
-//         if ($role == 0) {
-//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-//                     FROM attendance 
-//                     INNER JOIN employees ON attendance.eid = employees.eid 
-//                     WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' 
-//                     ORDER BY attendance.date DESC 
-//                     LIMIT $records_per_page OFFSET $offset";
-//         } else {
-//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-//                     FROM attendance 
-//                     INNER JOIN employees ON attendance.eid = employees.eid 
-//                     WHERE DATE(attendance.date) BETWEEN '$start_date' AND '$end_date' AND attendance.eid = '$eid' 
-//                     ORDER BY attendance.date DESC 
-//                     LIMIT $records_per_page OFFSET $offset";
-//         }
-//     } else {
-//         // If "get_date" is not set, filter by today's date
-//         if ($role == 0) {
-//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-//                     FROM attendance 
-//                     INNER JOIN employees ON attendance.eid = employees.eid 
-//                     WHERE DATE(attendance.date) = '$date' 
-//                     ORDER BY attendance.date DESC 
-//                     LIMIT $records_per_page OFFSET $offset";
-//         } else {
-//             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname, employees.eid 
-//                     FROM attendance 
-//                     INNER JOIN employees ON attendance.eid = employees.eid 
-//                     WHERE DATE(attendance.date) = '$date' AND attendance.eid = '$eid' 
-//                     ORDER BY attendance.date DESC 
-//                     LIMIT $records_per_page OFFSET $offset";
-//         }
-//     }
-
-//     $result = mysqli_query($db, $sql);
-//     if (mysqli_num_rows($result) > 0) {
-//         // Output data of each row
-//         $i = 1 + $offset;
-//         while ($row = mysqli_fetch_assoc($result)) {
-//             echo '<tr>';
-//             echo '<th scope="row">' . $i++ . '</th>';
-//             echo '<td>' . $row["fname"] . " " . $row["lname"] . '</td>';
-//             echo '<td>' . $row["date"] . '</td>';
-//             echo '<td>' . $row["login_time"] . '</td>';
-//             echo '<td>' . $row["logout_time"] . '</td>';
-//             echo '</tr>';
-//         }
-//     }
-// }
-
-// New code
 
 function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page, $records_per_page)
 {
@@ -148,7 +112,8 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
     $date = date("Y-m-d");
 
     // SQL query based on role and date range
-    if (isset($_GET["get_date"])) {
+    if (isset($_GET["get_date"])) 
+    {
         // Filter by provided start_date and end_date
         if ($role == 0) {
             $sql = "SELECT attendance.eid, attendance.login_time, attendance.logout_time, attendance.date, employees.fname, employees.lname
@@ -239,7 +204,4 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
         }
     }
 }
-
-
-
 ?>

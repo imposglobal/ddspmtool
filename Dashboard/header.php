@@ -45,6 +45,7 @@ if(isset($_SESSION['username'])) {
   <link href="https://dds.doodlo.in/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="https://dds.doodlo.in/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="https://dds.doodlo.in/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
   <!-- Template Main CSS File -->
   <link href="https://dds.doodlo.in/assets/css/style.css" rel="stylesheet">

@@ -21,6 +21,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert library -->
 
 
+
   <!-- Template Main JS File -->
   <script src="https://dds.doodlo.in/assets/js/main.js"></script>
 
@@ -85,25 +86,40 @@
 <!-- Ajax Request for Clockout -->
 
 <script>
-  function clockout() {
-    var eid = '<?php echo $eid ?>';    
-    // AJAX request
-      $.ajax({
-      type: 'POST', 
-      url: '../API/attendance.php', 
-      data: { 
-        ops: 'clockout', 
-        eid: eid
-      },
-      success: function(response) { 
+function clockout() 
+{
+  var eid = '<?php echo $eid ?>';
+  // AJAX request
+  $.ajax({
+    type: 'POST',
+    url: '../API/attendance.php',
+    data: {
+      ops: 'clockout',
+      eid: eid
+    },
+    success: function(response) 
+    {
+      var result = JSON.parse(response);
+      if (result.status === 'success') 
+      {
         console.log('Data sent successfully!');
         window.location.reload();
-      },
-      error: function(xhr, status, error) { 
-        console.error('Error occurred while sending data:', error);
+      } 
+      else 
+      {
+        Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: result.message,
+        });
       }
-    });
-  }
+    },
+    error: function(xhr, status, error) {
+      console.error('Error occurred while sending data:', error);
+    }
+  });
+}
 </script>
+
 </body>
 </html>

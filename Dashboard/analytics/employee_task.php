@@ -211,7 +211,19 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
 
-                  
+                    if($row["status"] == "") {
+                        $status = '<span style="background:#fff; color:#000; padding:2px 8px;">Not Started</span>';
+                    } elseif($row["status"] == "Completed") {
+                        $status = '<span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+                    } elseif($row["status"] == "In Progress") {
+                        $status = '<span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+                    } elseif($row["status"] == "Pending") {
+                        $status = '<span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+                    } elseif($row["status"] == "On Hold") {
+                        $status = '<span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+                    } elseif($row["status"] == "Abandoned") {
+                        $status = '<span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+                    }
 
                      
                     // Remove HTML tags from the description
@@ -234,7 +246,7 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
                         <td class="text-blue"><?php echo $row['project_type']; ?></td>                      
                         <td><?php echo $row['title']; ?></td>                                                                
                         <td><?php echo $decode_desc; ?></td>  
-                        <td><?php echo $row['status'];?></td>                                                   
+                        <td><?php echo $status;?></td>                                                   
                         <td><?php echo $row['total_time']; ?></td>                                       
                         <td><?php echo substr($row["all_breaks_of_a_task"], 0, 8); ?></td>
                         <td class="text-green"><?php echo $single_task_actual_time; ?></td>

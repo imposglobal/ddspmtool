@@ -24,11 +24,27 @@ function get_projects($db, $page = 1, $recordsPerPage = 10){
         // Output data of each row
         $i = ($page - 1) * $recordsPerPage + 1;
         while($row = mysqli_fetch_assoc($result)) {
-            if($row['status'] == ""){
-                $status = "Not Started";
-            } else {
-                $status = $row['status'];
+            // if($row['status'] == ""){
+            //     $status = "Not Started";
+            // } else {
+            //     $status = $row['status'];
+            // }
+
+            if($row["status"] == "") {
+                $status = '<span style="background:#fff; color:#000; padding:2px 8px;">Not Started</span>';
+            } elseif($row["status"] == "Completed") {
+                $status = '<span style="background:green; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+            } elseif($row["status"] == "In Progress") {
+                $status = '<span style="background:#dec016; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+            } elseif($row["status"] == "Pending") {
+                $status = '<span style="background:#eb7e09; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+            } elseif($row["status"] == "On Hold") {
+                $status = '<span style="background:#eb6709; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
+            } elseif($row["status"] == "Abandoned") {
+                $status = '<span style="background:red; color:#fff; padding:2px 8px;">'. $row["status"].' </span>';
             }
+              
+            
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             echo '<td>'. $row["project_name"].'</td>';
@@ -291,12 +307,12 @@ function get_project_count($role, $eid, $db)
 {
     if($role==0)
     {
-      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid";
+      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid WHERE projects.status = 'In Progress'";
       $result = mysqli_query($db, $sql);
     }
     else{
       $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid 
-      WHERE task.eid = '$eid';";  
+      WHERE task.eid = '$eid' AND projects.status = 'In Progress';";  
       $result = mysqli_query($db, $sql);
     }
   
