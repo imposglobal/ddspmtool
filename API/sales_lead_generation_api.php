@@ -87,9 +87,9 @@ function get_leads($base_url, $db, $page = 1, $recordsPerPage = 10, $start_date 
             echo '<td>'. $row["services_looking"].'</td>';
             echo '<td>'. $row["status"].'</td>';
             echo '<td>
-                    <a href="../../Dashboard/sales/view_leads_details.php?lead_id='. $row["lead_id"].'"><i class="icon bi bi-info-circle-fill "></i></a>
-                    <a href="javascript:void(0);" onclick="openLeadDrawer('.$row["lead_id"].')"><i class="icon bi bi-info-circle-fill"></i></a>
-                    <i onclick="deleteLead('. $row["lead_id"].')" class="icon text-danger bi bi-trash3"></i>
+                    <a href="../../Dashboard/sales/view_leads_details.php?lead_id='. $row["lead_id"].'"><i class=" bi bi-person-circle "></i></a>
+                    <a href="javascript:void(0);" onclick="openLeadDrawer('.$row["lead_id"].')"><i class=" bi bi-info-circle-fill"></i></a>
+                    <i onclick="deleteLead('. $row["lead_id"].')" class=" text-danger bi bi-trash3"></i>
                 </td>';
             echo '</tr>';
         }

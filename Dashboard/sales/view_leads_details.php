@@ -7,6 +7,8 @@ require('../header.php');
 require('../sidebar.php');
 
 require('../../API/sales_lead_generation_api.php');
+require('../../API/add_lead_lotes_api.php');
+
 ?>
 <style>
   #status > option:nth-child(2) {
@@ -154,26 +156,36 @@ if (isset($_GET['lead_id'])) {
                                         <input type="text" id="status" value="<?php echo $status;?>" class="form-control"> <br><br>
                                     </div>
                                 </div>
- <!-- /**********************************************************************************************************/ -->
+ <!-- /****************************************************** add note****************************************************/ -->
 
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label class="ctitle">Notes</label>
-                                        <!-- TinyMCE Editor -->
-                                        <textarea id="notes" class="tinymce-editor">
-                                            <?php echo $decode_notes; ?>
-                                        </textarea><!-- End TinyMCE Editor --> <br> 
-                                        <!-- <button type="button" id="addcomment" class=" btn bg-primary text-white px-3 py-2"> Add Comment </button> -->
-                                    </div>
-
-                                    <!-- <div class="col-md-6">
-                                        <label class="font-weight-bold" for="notes">All Comments</label>
-                                        <div id="drop-area" class="drop-area" style="height: 370px; overflow-x:auto">
-                                            <div id="commentResponse" class="text-left">
+                                    <form id="leadform" method="POST">
+                                        <div class="col-md-6">
+                                            <label class="ctitle">Notes</label>
+                                            <!-- TinyMCE Editor -->
+                                            <textarea id="notes" class="tinymce-editor">
                                                 
+                                            </textarea><!-- End TinyMCE Editor --> <br> 
+                                            <input type="hidden" id="emp_id" class="form-control" value="<?php echo $eid;?>">  
+                                            <input type="hidden" id="lead_id" class="form-control" value="<?php echo $lead_id_value;?>">  
+
+                                            <button type="button" id="addcomment"  name="eid" class=" btn bg-primary text-white px-3 py-2"> Add Comment </button>
+                                        </div>
+                                        </form>
+                                    <div class="col-md-6">
+                                        <label class="font-weight-bold" for="notes">All Notes</label>
+                                        <div id="drop-area" class="drop-area" style="height: 370px; overflow-x:auto">
+                                            <div class="">
+                                                <div style="text-align: justify;">
+                                                <p><?php echo $decode_notes; ?></p>    
+                                                    <hr>
+                                                </div>
+                                                    <?php 
+                                                        get_notes($base_url,$db, $lead_id);
+                                                    ?>    
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                 </div>
                                    <br>
@@ -192,6 +204,7 @@ if (isset($_GET['lead_id'])) {
           </div>
         </div>
       </div>
+
 
     </section>
 
@@ -281,3 +294,117 @@ tinymce.init({
         });
     });
 </script>
+
+<!-- /*********************** Add comment script **************************/ -->
+<!-- <script>
+$(document).ready(function() {
+    $('#addcomment').click(function(e) {
+        e.preventDefault();
+
+        var notes = tinymce.get('notes').getContent().trim();
+        var eid = $('#emp_id').val().trim();
+        var lead_id = $('#lead_id').val().trim();
+
+
+        if (notes !== "" && eid !== "" && lead_id !== "" ) {
+            $.ajax({
+                type: "POST",
+                url: "../../API/add_lead_lotes_api.php",
+                data: { ops: 'add_notes', notes: notes , eid: eid , lead_id: lead_id},
+                success: function(response) {
+                    // Check if the response contains an error message
+                    if (response.startsWith('Error:')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    } else {
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Note added successfully!',
+                            text: response
+                        });
+                    }
+                    $('#leadform').trigger('reset'); // Reset the form
+                    tinymce.get('notes').setContent(''); // Clear TinyMCE content
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred. Please try again later.'
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required!',
+                text: 'Please add note.'
+            });
+        }
+    });
+});
+</script> -->
+
+<script>
+$(document).ready(function() {
+    // Function to add comment
+    function addComment() {
+        var notes = tinymce.get('notes').getContent().trim();
+        var eid = $('#emp_id').val().trim();
+        var lead_id = $('#lead_id').val().trim();
+
+        if (notes !== "" && eid !== "" && lead_id !== "" ) {
+            $.ajax({
+                type: "POST",
+                url: "../../API/add_lead_lotes_api.php",
+                data: { ops: 'add_notes', notes: notes , eid: eid , lead_id: lead_id},
+                success: function(response) {
+                    if (response.startsWith('Error:')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    } else {
+                        // Swal.fire({
+                        //     icon: 'success',
+                        //     title: 'Note added successfully!',
+                        //     text: response
+                        // });
+                        // Reload the page after successful submission
+                        location.reload();
+                    }
+                    $('#leadform').trigger('reset'); // Reset the form
+                    tinymce.get('notes').setContent(''); // Clear TinyMCE content
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred. Please try again later.'
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required!',
+                text: 'Please add note.'
+            });
+        }
+    }
+
+    // Bind click event to add comment button
+    $('#addcomment').click(function(e) {
+        e.preventDefault();
+        addComment(); // Call the function when button is clicked
+    });
+});
+</script>
+
