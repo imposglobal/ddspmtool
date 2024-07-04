@@ -101,8 +101,8 @@ require('../../API/function.php');
                                         <input type="text" id="contact_number" class="form-control" placeholder="Contact Number"> <br>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="ctitle mb-3">Services Looking For ?</label>
-                                        <input type="text" id="services_looking" class="form-control" placeholder="Services Looking For ?"> <br><br>
+                                        <label class="ctitle mb-3">Looking For ?</label>
+                                        <input type="text" id="services_looking" class="form-control" placeholder="Looking For ?"> <br><br>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Channel</label>
