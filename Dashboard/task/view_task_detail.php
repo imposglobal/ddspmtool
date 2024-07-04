@@ -96,7 +96,7 @@ if (isset($_GET['tid']) && isset($_GET['eid']))
   $tid = $_GET['tid'];
   $eid = $_GET['eid'];
 }
-$sql = "SELECT task.tid, task.eid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, task.project_type, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
+$sql = "SELECT task.tid, task.eid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, task.project_type, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid' AND eid = '$eid';";
 $query = mysqli_query($db, $sql);
 if ($query && mysqli_num_rows($query) > 0)
 {
@@ -313,8 +313,8 @@ elseif($row["priority"] == "Low") {
       <div class="card-body">
       <form method="POST">
       <h4 class="card-title">Manager Status</h4>
-      <input type="text" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
-      <input type="text"  id="eid" class="form-control" value="<?php echo $row["eid"];?>">
+      <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+      <input type="hidden"  id="eid" class="form-control" value="<?php echo $row["eid"];?>">
       <select id="m_status" class="form-select">
       <option selected value="<?php echo $row["m_status"];?>"><?php echo $row["m_status"];?></option>
       <option value="Revised">Revised</option>

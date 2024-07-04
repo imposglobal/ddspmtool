@@ -114,12 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                       // Update Manager Status
                  case "update_mstatus":
-                    if(isset($_POST['tid'], $_POST['m_status'], $_POST['feedback']))
+                    if(isset($_POST['tid'], $_POST['eid'], $_POST['m_status'], $_POST['feedback']))
                      {
                         $tid = $_POST['tid'];
+                        $eid = $_POST['eid'];
                         $m_status= $_POST['m_status'];
                         $feedback= htmlspecialchars($_POST['feedback']); 
-                        $sql = "UPDATE task SET m_status = '$m_status', feedback = '$feedback'  WHERE tid = '$tid'";
+                        $sql = "UPDATE task SET m_status = '$m_status', feedback = '$feedback'  WHERE tid = '$tid' AND eid = '$eid'";
                         if ($db->query($sql) === TRUE) 
                         {
                             // Return success message as JSON
