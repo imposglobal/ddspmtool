@@ -20,6 +20,9 @@ if(isset($_SESSION['username'])) {
     
 }
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +96,68 @@ if(isset($_SESSION['username'])) {
   
 
 <!-- End Messages Nav -->
+
+<!-- notification -->
+<?php
+$conn = mysqli_connect("localhost", "ballapo7_pmtool", "pmtool@2024", "ballapo7_pmtool");
+// Fetch feedback count from the database for the logged-in user
+$sql_count = "SELECT COUNT(feedback) AS feedback_count FROM task WHERE eid = '$eid' AND feedback != ''";
+$result = mysqli_query($conn, $sql_count);
+if ($result) 
+{
+    $count = mysqli_fetch_assoc($result);
+    $feedback_count = $count['feedback_count'];
+} 
+else 
+{
+    $feedback_count = 0; 
+}
+?> 
+<li class="nav-item dropdown pe-3">
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+<i class="bi bi-bell-fill">
+
+</i>
+  <span class="d-none d-md-block dropdown-toggle ps-2" style="font-size:16px;"><?php
+  if(isset($_SESSION['username'])) 
+  {
+     echo $feedback_count;
+  }
+?> </span>
+</a><!-- End Profile Iamge Icon -->
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+<?php
+$sql = "SELECT * FROM task  WHERE eid = '$eid' AND  feedback != '' ORDER BY created_at DESC";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0)
+{
+  while($row = mysqli_fetch_assoc($result))
+  {
+     $title = $row["title"];
+     $tid = $row["tid"];
+     $eid = $row["eid"];      
+ ?>
+<li>
+  <a href="https://dds.doodlo.in/Dashboard/task/view_task_detail.php?tid=<?php echo $tid; ?>&eid=<?php echo $eid; ?>" class="dropdown-item d-flex align-items-center">
+    <span><?php echo $title; ?></span>
+  </a>
+</li>
+<?php 
+}
+}
+else
+{
+  ?>
+  <span class="px-3">Nothing to show here</span>
+<?php 
+}
+?>
+</ul><!-- End Profile Dropdown Items -->
+</li><!-- End Profile Nav -->
+
+<!-- notification -->
+
+<!-- settings -->
     <li class="nav-item dropdown pe-3">
 
       <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -127,7 +192,7 @@ if(isset($_SESSION['username'])) {
         </li>
 
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="<?php echo $base_url;?>/Dashboard/logout.php"">
+          <a class="dropdown-item d-flex align-items-center" href="<?php echo $base_url;?>/Dashboard/logout.php">
             <i class="bi bi-box-arrow-right"></i>
             <span>Sign Out</span>
           </a>

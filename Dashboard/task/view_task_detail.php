@@ -91,11 +91,12 @@ require('../../API/function.php');
 
 <!-- code for fetching task -->
 <?php
-if(isset($_GET['tid']))
+if (isset($_GET['tid']) && isset($_GET['eid']))
 {
   $tid = $_GET['tid'];
+  $eid = $_GET['eid'];
 }
-$sql = "SELECT task.tid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, task.project_type, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
+$sql = "SELECT task.tid, task.eid, task.start_date, task.end_date, task.task_type, task.title, task.description, task.status, task.priority, task.estimated_time, task.m_status, task.feedback, task.pid, task.project_type, projects.project_name FROM `task` inner join projects on task.pid = projects.pid WHERE tid = '$tid';";
 $query = mysqli_query($db, $sql);
 if ($query && mysqli_num_rows($query) > 0)
 {
@@ -312,7 +313,8 @@ elseif($row["priority"] == "Low") {
       <div class="card-body">
       <form method="POST">
       <h4 class="card-title">Manager Status</h4>
-      <input type="hidden" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+      <input type="text" id="tid" class="form-control" value="<?php echo $row["tid"];?>">
+      <input type="text"  id="eid" class="form-control" value="<?php echo $row["eid"];?>">
       <select id="m_status" class="form-select">
       <option selected value="<?php echo $row["m_status"];?>"><?php echo $row["m_status"];?></option>
       <option value="Revised">Revised</option>
@@ -324,6 +326,7 @@ elseif($row["priority"] == "Low") {
       
       <h5 class="card-title edit">Feedback</h5>
       <textarea id="feedback" value=""><?php echo $row["feedback"];?></textarea>
+      
       <input type="button" class="btn btn-primary mt-3" id="mstatus" name="mstatus" value="submit" style="background-color: #012970;color:#fff;">
       </form>
       </div>
@@ -515,13 +518,14 @@ tinymce.init({
     $(document).ready(function () {
         $('#mstatus').click(function () {
           // e.preventDefault();
-        var tid = $('#tid').val(); 
+        var tid = $('#tid').val();
+        var eid = $('#eid').val(); 
         var m_status = $('#m_status').val();
         var feedback = tinymce.get('feedback').getContent();
             $.ajax({
                url: "../../API/update.php",
                 type: 'POST',
-                data:{ ops: 'update_mstatus', tid:tid, m_status:m_status, feedback: feedback},
+                data:{ ops: 'update_mstatus', tid:tid, eid:eid, m_status:m_status, feedback: feedback},
                 success: function (response) {
                     // Parse JSON response
                     var data = JSON.parse(response);
@@ -531,11 +535,6 @@ tinymce.init({
                             icon: 'success',
                             title: 'Success',
                             text: data.message
-                            // didClose: function() 
-                            // {
-                            // // Reload the page
-                            // window.location.reload();
-                            // }
                         });
                     } else {
                         // Show SweetAlert error message

@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     }
                 } 
                 else {
-                    echo json_encode(['status' => 'error', 'message' => 'Before Clock-out kindly stop your task']);
+                    echo json_encode(['status' => 'error', 'message' => 'Make sure to complete and stop your task before clocking out']);
                 }
             } 
             else {

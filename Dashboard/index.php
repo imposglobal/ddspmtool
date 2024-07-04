@@ -82,7 +82,7 @@ $totalWeeklyWorkingDays = MonthlyWorkingDays();
                     <i class="bi bi-calendar"></i>
                   </div>
                   <div class="ps-3">
-                    <p> <?php echo  $workingDaysInfo['remainingWorkingDays'] . " Days to go"; ?>  </p>
+                    <p style="margin-bottom:0px;"> <?php echo  $workingDaysInfo['remainingWorkingDays'] . " Days to go"; ?>  </p>
                      <span class="text-success small pt-1 fw-bold"> <?php echo $totalWeeklyWorkingDays;?> / <?php echo "$totalMonthlyWorkingDays";?></span> 
                      <span   class="text-muted small pt-2 ps-1">Days</span>            
                   </div>
