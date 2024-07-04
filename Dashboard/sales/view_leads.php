@@ -85,9 +85,9 @@ require('../../API/function.php');
 
                 
             <div class="row">
-              <div class="col-lg-12">
-      <!-- /********************************************** import form ****************************************************/ -->
+            
 
+              <div class="col-lg-12">
                     <?php
                       // Check if import success parameter is present in URL and show popup message
                       if (isset($_GET['import_success']) && $_GET['import_success'] === '1') {
@@ -102,14 +102,9 @@ require('../../API/function.php');
                         }
                     ?>
 
-                  <div class="mb-4 importbutton">
-                    <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
-                      <input  type="file" name="file" required>
-                      <input class="btn importbtn ms-2" type="submit" name="submit" value="Import">
-                    </form> 
-                  </div>
+                 
                   
-      <!-- /********************************************** export form ****************************************************/ -->
+      <!-- /********************** export form ******************/ -->
 
                   <form method="GET">
                       <div class="row">
@@ -136,13 +131,33 @@ require('../../API/function.php');
                          
                           <div class="col-lg-3 mb-4 text-start">
                               <button type="submit" name="show" class="btn btn-success">Show</button>
-
                               <button type="submit" formaction="../../API/export_leads_api.php" class="btn exportbtn ms-2">Export</button>
                           </div>
                       </div>
                   </form>
                  
               </div>
+
+
+              <!-- import button -->
+            <div class="col-lg-12 mt-2 mb-3">
+            <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                          <!-- Start Date -->
+                          <div class="col-lg-4 mb-4">
+                          <input  type="file" class="form-control" name="file" required>
+                          </div>
+                          <!-- End Date -->
+                          <div class="col-lg-3 mb-4">
+                          <input class="btn importbtn ms-2" type="submit" name="submit" value="Import">
+                          </div>
+              </div>
+            </form> 
+            </div> 
+             
+              <!-- import button -->
+
+
           </div>
 
 
