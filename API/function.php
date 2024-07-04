@@ -978,7 +978,7 @@ function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
                 
                 echo $status;
                 echo '<td>'. $mstatus.'</td>';            
-                echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
+                echo '<td><a href="../../Dashboard/task/view_task_detail.php?tid='. $tid.'&eid='. $eid.'"><i class="bi bi-info-circle-fill"></i>  <a class="ms-2" onclick="deleteTask('.$tid.')"><i class="icon text-danger bi bi-trash3"></i></a> </td>';
                 echo '</tr>';
             }
         } 
