@@ -92,8 +92,8 @@ require('../../API/function.php');
               <option selected disabled="true">Select Time</option>
               <option value="today">Today</option>
               <option value="yesterday">Yesterday</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
+              <option value="weekly">This Week</option>
+              <option value="monthly">This Month</option>
             </select>
           </div>
           <!-- time-->

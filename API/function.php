@@ -307,12 +307,13 @@ function get_project_count($role, $eid, $db)
 {
     if($role==0)
     {
-      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid WHERE projects.status = 'In Progress'";
+      $sql = "SELECT COUNT(DISTINCT pid) FROM task WHERE MONTH(created_at) = MONTH(CURRENT_DATE());";
       $result = mysqli_query($db, $sql);
     }
     else{
-      $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid 
-      WHERE task.eid = '$eid' AND projects.status = 'In Progress';";  
+    //   $sql = "SELECT COUNT(DISTINCT projects.pid) AS pid_count FROM projects INNER JOIN task ON projects.pid = task.pid 
+    //   WHERE task.eid = '$eid' AND projects.status = 'In Progress';";  
+    $sql = "SELECT COUNT(DISTINCT pid) FROM task WHERE eid = '$eid' AND MONTH(created_at) = MONTH(CURRENT_DATE());";
       $result = mysqli_query($db, $sql);
     }
   

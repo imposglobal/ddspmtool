@@ -84,7 +84,6 @@
 </script>
 
 <!-- Ajax Request for Clockout -->
-
 <script>
 function clockout() 
 {
