@@ -52,7 +52,18 @@ require('../../API/function.php');
       background-color: #012970;
       color: #fff;
     }
- 
+ .importbutton{
+  margin-left: 602px;
+ }
+ .importbtn{
+  background-color: orange;
+  color:#fff;
+ }
+ .importbtn:hover
+    {
+      background-color: orange;
+      color: #fff;
+    }
 
 </style>
 
@@ -72,10 +83,34 @@ require('../../API/function.php');
     <section class="section">
       <div class="row">
 
-      <!-- /********************************************** export form ****************************************************/ -->
                 
             <div class="row">
               <div class="col-lg-12">
+      <!-- /********************************************** import form ****************************************************/ -->
+
+                    <?php
+                      // Check if import success parameter is present in URL and show popup message
+                      if (isset($_GET['import_success']) && $_GET['import_success'] === '1') {
+                            echo '<script>
+                                    // Show popup message
+                                    alert("CSV file has been successfully imported.");
+
+                                    // Remove import_success parameter from URL
+                                    const urlWithoutParams = window.location.href.split("?")[0];
+                                    history.replaceState(null, null, urlWithoutParams);
+                                  </script>';
+                        }
+                    ?>
+
+                  <div class="mb-4 importbutton">
+                    <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
+                      <input  type="file" name="file" required>
+                      <input class="btn importbtn ms-2" type="submit" name="submit" value="Import">
+                    </form> 
+                  </div>
+                  
+      <!-- /********************************************** export form ****************************************************/ -->
+
                   <form method="GET">
                       <div class="row">
                           <!-- Start Date -->
@@ -101,10 +136,12 @@ require('../../API/function.php');
                          
                           <div class="col-lg-3 mb-4 text-start">
                               <button type="submit" name="show" class="btn btn-success">Show</button>
+
                               <button type="submit" formaction="../../API/export_leads_api.php" class="btn exportbtn ms-2">Export</button>
                           </div>
                       </div>
                   </form>
+                 
               </div>
           </div>
 
@@ -285,8 +322,9 @@ function deleteLead(lead_id) {
 
 </script>
 
-
  
+
+
 <?php 
 require('../footer.php');
 ?>
