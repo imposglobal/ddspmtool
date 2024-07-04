@@ -232,12 +232,26 @@ if (isset($_GET['eid']) && isset($_GET['pid'])) {
                     $decode_desc = html_entity_decode($removedesc);           
                    
                     // calculation for single task
-                    $single_task_total_time = strtotime($row['total_time']);
-                    $single_task_break_time = strtotime($row['all_breaks_of_a_task']);
+                    // $single_task_total_time = strtotime($row['total_time']);
+                    // $single_task_break_time = strtotime($row['all_breaks_of_a_task']);
+
+                    $single_task_total_time = !empty($row['total_time']) ? strtotime($row['total_time']) : 0;
+                    $single_task_break_time = !empty($row['all_breaks_of_a_task']) ? strtotime($row['all_breaks_of_a_task']) : 0;
 
                     // Subtract total_break from total_time
-                    $actual_time = $single_task_total_time - $single_task_break_time;
-                    $single_task_actual_time = gmdate('H:i:s', $actual_time);
+                    // $actual_time = $single_task_total_time - $single_task_break_time;
+                    // $single_task_actual_time = gmdate('H:i:s', $actual_time);
+
+
+                    if ($single_task_total_time > 0) 
+                    {
+                      $actual_time = $single_task_total_time - $single_task_break_time;
+                      $single_task_actual_time = gmdate('H:i:s', $actual_time);
+                    } 
+                    else 
+                    {
+                      $single_task_actual_time = ''; 
+                    }
 ?>
                     <tr>
                         <td><?php echo $i++; ?></td>

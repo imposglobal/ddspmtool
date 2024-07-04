@@ -41,6 +41,25 @@ require('../../API/function.php');
         font-family: "Poppins", sans-serif;
     }
 
+    #spinner {
+    display: none;
+    font-size: 14px;
+  }
+  #spinner:before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
 
 </style>
 <main id="main" class="main">
@@ -193,7 +212,7 @@ require('../../API/function.php');
 <?php 
 require('../footer.php');
 ?>
-<script>
+<!-- <script>
    // Function to handle form submission with jQuery AJAX
 $(document).ready(function() {
     $('#saveBtn').click(function(e) {
@@ -241,6 +260,80 @@ $(document).ready(function() {
                 title: 'Required!',
                 text: "Please fill all the fields"
             });
+        }
+    });
+});
+</script> -->
+
+
+<script>
+  $(document).ready(function() {
+    $('#saveBtn').click(function(e) {
+        e.preventDefault();
+
+        // Show spinner and hide icon
+        $('#btnIcon').addClass('spinner-hidden');
+        $('#saveBtn').append('<div class="spinner" id="spinner"></div>');
+        
+        // Disable the button to prevent multiple submissions
+        $('#saveBtn').prop('disabled', true);
+
+
+        var pname = $('#pname').val().trim(); // Trim whitespace
+        var sdate = $('#sdate').val().trim();
+        var edate = $('#edate').val().trim();
+        var ttype = $('#ttype').val().trim();
+        var status = $('#status').val().trim();
+        var title = $('#title').val().trim();
+        var eid = $('#eid').val().trim();
+        var description = tinymce.get('description').getContent().trim(); // Trim whitespace
+        var priority = $('#priority').val().trim();
+        var project_type = $('#project_type').val().trim(); // Trim whitespace
+
+        if(pname !== "" && description !== "" && sdate !== "" && edate !== "" && ttype !== "" && status !== "" &&  title !== "" && priority !== "" && project_type !== "") {
+            // AJAX request
+            $.ajax({
+                type: "POST",
+                url: "../../API/insert.php",
+                data: { ops: 'task', pname: pname, project_type: project_type, description: description, sdate:sdate, edate:edate, ttype:ttype, status:status, title:title, priority:priority, eid:eid },
+                success: function(response) {
+                    // Use SweetAlert for displaying success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: title,
+                        text: response
+                    });
+                    // Reset the form
+                    $('#taskform').trigger('reset');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    // Use SweetAlert for displaying error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred. Please try again later.'
+                    });
+                },
+                complete: function() {
+                    // Hide spinner and show icon
+                    $('#spinner').remove();
+                    $('#btnIcon').removeClass('spinner-hidden');
+                    // Re-enable the button
+                    $('#saveBtn').prop('disabled', false);
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required!',
+                text: "Please fill all the required fields"
+            });
+            // Hide spinner and show icon
+            $('#spinner').remove();
+            $('#btnIcon').removeClass('spinner-hidden');
+            // Re-enable the button
+            $('#saveBtn').prop('disabled', false);
         }
     });
 });

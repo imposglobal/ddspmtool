@@ -120,5 +120,27 @@ function clockout()
 }
 </script>
 
+
+
+<!-- tab closing -->
+
+
+
+
+     <!-- <script>
+        window.addEventListener('beforewindowunload', function (e) {
+            // Cancel the event
+            e.preventDefault(); 
+            // For most browsers
+            e.returnValue = 'Are you sure you want to leave?';
+            // For some older browsers
+            return 'Are you sure you want to leave?';
+        });
+    </script>  -->
+
+
+   
+
+    
 </body>
 </html>
