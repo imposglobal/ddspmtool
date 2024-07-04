@@ -7,7 +7,7 @@ if(isset($_SESSION['username'])) {
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
     $base_url="https://".$_SERVER['SERVER_NAME'];
-    if($base_url == "https://dds.doodlo.in/index.php"){
+    if($base_url == "https://dds.doodlo.in"){
       $base_url="https://".$_SERVER['SERVER_NAME'];
     }else{
       $base_url="https://".$_SERVER['SERVER_NAME']."/ddspmtool";
