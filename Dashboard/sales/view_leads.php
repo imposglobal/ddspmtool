@@ -65,6 +65,16 @@ require('../../API/function.php');
       color: #fff;
     }
 
+    .btn-empty
+    { 
+     background-color: #0b5ed7;
+     color:#fff;
+    }
+ .dicon
+ {
+  color:#fff;
+  margin-right:5px;
+ }
 </style>
 
 
@@ -140,22 +150,27 @@ require('../../API/function.php');
 
 
               <!-- import button -->
-            <div class="col-lg-12 mt-2 mb-3">
+            <div class="col-lg-5 mt-2 mb-3">
             <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
             <div class="row">
                           <!-- Start Date -->
-                          <div class="col-lg-4 mb-4">
+                          <div class="col-lg-9 mb-4">
                           <input  type="file" class="form-control" name="file" required>
                           </div>
                           <!-- End Date -->
                           <div class="col-lg-3 mb-4">
-                          <input class="btn importbtn ms-2" type="submit" name="submit" value="Import">
+                          <input class="btn importbtn" type="submit" name="submit" value="Import">
                           </div>
               </div>
             </form> 
             </div> 
              
               <!-- import button -->
+
+              <div class="col-lg-2 mt-2 mb-3">
+
+              <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Export</a>
+              </div>
 
 
           </div>
