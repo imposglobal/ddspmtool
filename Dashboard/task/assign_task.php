@@ -110,6 +110,7 @@ require('../../API/function.php');
                         <option value="ux-ui">UX & UI</option>
                         <option value="development">Development</option>
                         <option value="illustration">Illustration</option>
+                        <option value="products">Products</option>
                       </select>
                    </div>
                 </div>
