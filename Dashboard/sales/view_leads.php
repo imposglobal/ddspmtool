@@ -70,6 +70,12 @@ require('../../API/function.php');
      background-color: #0b5ed7;
      color:#fff;
     }
+
+    .btn-empty:hover
+    {
+     background-color: #0b5ed7;
+     color:#fff;
+    }
  .dicon
  {
   color:#fff;
@@ -169,7 +175,7 @@ require('../../API/function.php');
 
               <div class="col-lg-2 mt-2 mb-3">
 
-              <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Export</a>
+              <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Download</a>
               </div>
 
 
