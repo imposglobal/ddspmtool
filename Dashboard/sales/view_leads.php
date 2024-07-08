@@ -81,6 +81,11 @@ require('../../API/function.php');
   color:#fff;
   margin-right:5px;
  }
+
+ .download_empty_excel{
+    margin-left: 4px;
+    margin-top: -21px;
+}
 </style>
 
 
@@ -165,18 +170,21 @@ require('../../API/function.php');
                           </div>
                           <!-- End Date -->
                           <div class="col-lg-3 mb-4">
-                          <input class="btn importbtn" type="submit" name="submit" value="Import">
+                            <input class="btn importbtn" type="submit" name="submit" value="Import">
                           </div>
+                          <a href="../../API/empty_export_leads_api.php" class="download_empty_excel" >Download Template</a>
+
               </div>
+
             </form> 
+
             </div> 
-             
+
               <!-- import button -->
 
-              <div class="col-lg-2 mt-2 mb-3">
-
-              <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Download</a>
-              </div>
+              <!-- <div class="col-lg-2 mt-2 mb-3">
+                <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Download</a>
+              </div> -->
 
 
           </div>
