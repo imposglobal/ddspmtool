@@ -1,3 +1,49 @@
+<style>
+  .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .box {
+            position: absolute;
+            padding: 50px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #012970;
+            color: #fff;
+        }
+
+        h2, .box p {
+            margin: 0 20px;
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            bottom:30px;
+            width: 20px;
+            height: 20px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 50%;
+            background-color: #5c5c5c;
+            cursor: pointer;
+            text-decoration: none;
+        } 
+
+
+    
+</style>
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
@@ -5,6 +51,17 @@
     </div>
    
   </footer><!-- End Footer -->
+
+  <!-- alert popup -->
+  <div class="lightbox">
+        <div class="box">
+            <h2>Please make sure to clock out before closing this window.</h2>
+            <a href="#" class="close">X</a>
+        </div>
+  </div>
+
+  
+  <!-- alert popup -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -120,9 +177,36 @@ function clockout()
 }
 </script>
 
+<?php  
+if($role == 1)
+{
+?>
+ <script>
+        function addEvent(obj, evt, fn) {
+            if (obj.addEventListener) {
+                obj.addEventListener(evt, fn, false);
+            } else if (obj.attachEvent) {
+                obj.attachEvent("on" + evt, fn);
+            }
+        }
 
+        addEvent(document, 'mouseleave', function(evt) {
+            if (evt.clientY <= 0) {
+                $('.lightbox').slideDown();
+            }
+        });
+
+        $('a.close').click(function() {
+            $('.lightbox').slideUp();
+        });
+    </script>
+
+<?php
+}
+?>
 
 <!-- tab closing -->
+
 
 
 
