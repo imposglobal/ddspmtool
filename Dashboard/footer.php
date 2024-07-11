@@ -55,7 +55,11 @@
   <!-- alert popup -->
   <div class="lightbox">
         <div class="box">
-            <h2>Please make sure to clock out before closing this window.</h2>
+          <!-- <h2>Please make sure to clock out before closing this window.</h2> -->
+            <h4> Before closing this window, please ensure you have completed the following tasks:</h2>
+            <h2>1) Add your task.</h2>
+            <h2>2) Resume task.</h2>
+            <h2>3) Clock out.</h2>
             <a href="#" class="close">X</a>
         </div>
   </div>
