@@ -186,6 +186,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $row1 = $result1->fetch_assoc();
                                         $row2 = $result2->fetch_assoc();           
                                         $reason = $row1['reason'];
+
+                                       
                                         // creates a new DateTime object $time1 using the value of $row1['pause_time']
                                         $time1 = new DateTime($row1['pause_time']);
                                         $time2 = new DateTime($row2['start_time']);
@@ -193,8 +195,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $difference = $time1->diff($time2);
                                         // %H:%I:%S' specifies that the output should be in the format of hours, minutes, and seconds. 
                                         $formattedDifference = $difference->format('%H:%I:%S');
+
+                                        if($reason == "Other-Task")
+                                        {
+                                            $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00', '$reason', '$date')";
+                                        }
+                                        else
+                                        {
+                                            $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
+                                        }
                         
-                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
+                                      
                                         if($db->query($insertQuery)) 
                                         {
                                             $response['success'] = true;
