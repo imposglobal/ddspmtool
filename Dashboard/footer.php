@@ -1,4 +1,4 @@
-<style>
+ <style>
   .lightbox {
             display: none;
             position: fixed;
@@ -43,7 +43,7 @@
 
 
     
-</style>
+</style> 
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
@@ -55,7 +55,6 @@
   <!-- alert popup -->
   <div class="lightbox">
         <div class="box">
-          <!-- <h2>Please make sure to clock out before closing this window.</h2> -->
             <h4> Before closing this window, please ensure you have completed the following tasks:</h2>
             <h2>1) Add your task.</h2>
             <h2>2) Resume task.</h2>
@@ -180,7 +179,6 @@ function clockout()
   });
 }
 </script>
-
 <?php  
 if($role == 1)
 {
@@ -214,17 +212,6 @@ if($role == 1)
 
 
 
-
-     <!-- <script>
-        window.addEventListener('beforewindowunload', function (e) {
-            // Cancel the event
-            e.preventDefault(); 
-            // For most browsers
-            e.returnValue = 'Are you sure you want to leave?';
-            // For some older browsers
-            return 'Are you sure you want to leave?';
-        });
-    </script>  -->
 
 
    

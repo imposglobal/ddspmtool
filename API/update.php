@@ -196,16 +196,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         // %H:%I:%S' specifies that the output should be in the format of hours, minutes, and seconds. 
                                         $formattedDifference = $difference->format('%H:%I:%S');
 
-                                        if($reason == "Other-Task")
-                                        {
-                                            $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00', '$reason', '$date')";
-                                        }
-                                        else
-                                        {
-                                            $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
-                                        }
+                                        // if($reason == "Other-Task")
+                                        // {
+                                        //     $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','00:00:00', '$reason', '$date')";
+                                        // }
+                                        // else
+                                        // {
+                                        //     $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
+                                        // }
                         
-                                      
+                                        $insertQuery = "INSERT INTO `time_difference`(`tid`, `eid`, `pid`, `time`, `reason`, `date`) VALUES ('$tid','$eid','$pid','$formattedDifference', '$reason', '$date')";
                                         if($db->query($insertQuery)) 
                                         {
                                             $response['success'] = true;

@@ -155,7 +155,7 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
         while ($row = mysqli_fetch_assoc($result)) {
 
             $eid =  $row['eid'];
-            $data = $row["date"];
+            $date = $row["date"];
 
             // Initialize time variables
             $total_time = '';
@@ -169,17 +169,19 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             $time_difference = $logout_time - $login_time;
             $total_time = gmdate('H:i:s', $time_difference);
 
-            // Fetch total day task for the specific date
+            // Fetch total day task for the current date
             $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS total_day_task
                      FROM task_time
-                     WHERE eid = '$eid' AND task_time.date = '$data'";
+                     WHERE eid = '$eid' AND task_time.date = '$date'";
             $result1 = mysqli_query($db, $sql1);
             $row1 = mysqli_fetch_assoc($result1);
 
-             // Fetch break time for the specific date
+             // Fetch break time for the current date
             $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
                      FROM time_difference
-                     WHERE eid = '$eid' AND time_difference.date = '$data'";
+                     WHERE eid = '$eid' AND time_difference.date = '$date' AND time_difference.reason != 'Other-Task'";
+
+           
             $result2 = mysqli_query($db, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
 
