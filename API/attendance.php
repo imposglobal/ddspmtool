@@ -177,9 +177,13 @@ function get_attendance($role, $eid, $db, $start_date, $end_date, $current_page,
             $row1 = mysqli_fetch_assoc($result1);
 
              // Fetch break time for the current date
-            $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
+            // $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
+            //          FROM time_difference
+            //          WHERE eid = '$eid' AND time_difference.date = '$date' AND time_difference.reason != 'Other-Task'";
+
+             $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_day_break
                      FROM time_difference
-                     WHERE eid = '$eid' AND time_difference.date = '$date' AND time_difference.reason != 'Other-Task'";
+                     WHERE eid = '$eid' AND time_difference.date = '$date'";
 
            
             $result2 = mysqli_query($db, $sql2);
