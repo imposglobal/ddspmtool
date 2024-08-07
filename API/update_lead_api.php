@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Update Lead
                  case "updateLead":
                     
-                    if(isset($_POST['lead_id'], $_POST['client_name'], $_POST['business_name'], $_POST['industry'], $_POST['email_id'], $_POST['contact_number'], $_POST['services_looking'], $_POST['channel'], $_POST['status'], $_POST['notes'])) {
+                    if(isset($_POST['lead_id'], $_POST['client_name'], $_POST['business_name'], $_POST['industry'], $_POST['email_id'], $_POST['contact_number'],$_POST['category'], $_POST['services_looking'], $_POST['channel'], $_POST['status'], $_POST['notes'])) {
                         $lead_id = $_POST['lead_id'];
                         // $date = $_POST['date'];
                         $client_name = $_POST['client_name'];
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $industry = $_POST['industry'];
                         $email_id = $_POST['email_id'];
                         $contact_number = $_POST['contact_number'];
+                        $category = $_POST['category'];
                         $services_looking = $_POST['services_looking'];
                         $channel = $_POST['channel'];
                         $status = $_POST['status'];
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        
                         
                         
-                        $sql = "UPDATE sales_lead_generation SET  client_name = '$client_name', business_name = '$business_name', industry = '$industry', email_id = '$email_id', contact_number = '$contact_number', services_looking = '$services_looking', channel = '$channel', status = '$status', notes = '$notes' WHERE lead_id = '$lead_id' ";
+                        $sql = "UPDATE sales_lead_generation SET  client_name = '$client_name', business_name = '$business_name', industry = '$industry', email_id = '$email_id', contact_number = '$contact_number', category = '$category', services_looking = '$services_looking', channel = '$channel', status = '$status', notes = '$notes' WHERE lead_id = '$lead_id' ";
                         
                         if ($db->query($sql) === TRUE) 
                         {

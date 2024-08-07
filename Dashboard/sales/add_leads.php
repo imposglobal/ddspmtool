@@ -70,12 +70,6 @@ require('../../API/function.php');
                         <div class="row mt-3">
                             <div class="col-lg-">
                                 <div class="row">
-
-                                <!-- <div class="col-md-4">
-                                        <label class="ctitle mb-3">Date</label>
-                                        <input type="date" id="date" class="form-control"> <br>
-                                    </div> -->
-                                   
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Client Name</label>
                                         <input type="text" id="client_name" class="form-control" placeholder=" client Name">
@@ -87,9 +81,28 @@ require('../../API/function.php');
                                     </div> 
                                     <br><br>
                                     <div class="col-md-4">
-                                        <label class="ctitle mb-3">Industry</label>
-                                        <input type="text" id="industry" class="form-control" placeholder=" Industry"> <br><br>
-                                    </div>
+                                    <label class="ctitle mb-3">Industry</label>
+                                    <select id="industry" class="form-control">
+                                        <option value="">Select Industry</option>
+                                        <option value="banking_financial_services">Banking & Financial Services</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="insurance">Insurance</option>
+                                        <option value="retail_ecommerce">Retail & E-commerce</option>
+                                        <option value="telecommunications">Telecommunications</option>
+                                        <option value="travel_hospitality">Travel & Hospitality</option>
+                                        <option value="logistics">Logistics</option>
+                                        <option value="real_estate">Real Estate</option>
+                                        <option value="energy_utility">Energy & Utility</option>
+                                        <option value="it_technology">IT & Technology</option>
+                                        <option value="education_elearning">Education & E-Learning</option>
+                                        <option value="fmcg">FMCG</option>
+                                        <option value="manufacturing_supply_chain">Manufacturing & Supply Chain</option>
+                                        <option value="media_entertainment">Media & Entertainment</option>
+                                        <option value="ngos">NGOs</option>
+                                    </select>
+                                    <br><br>
+                                </div>
+
                                    
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Email ID</label>
@@ -101,6 +114,17 @@ require('../../API/function.php');
                                         <input type="text" id="contact_number" class="form-control" placeholder="Contact Number"> <br>
                                     </div>
                                     <div class="col-md-4">
+                                        <label class="ctitle mb-3">Category</label>
+                                        <select id="category" name="category" class="form-control">
+                                            <option value="">Select Category</option>
+                                            <option value="branding">Branding</option>
+                                            <option value="digital">Digital</option>
+                                            <option value="packaging">Packaging</option>
+                                            <option value="ecommerce">E-commerce</option>
+                                        </select>
+                                        <br><br>
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="ctitle mb-3">Looking For ?</label>
                                         <input type="text" id="services_looking" class="form-control" placeholder="Looking For ?"> <br><br>
                                     </div>
@@ -110,7 +134,16 @@ require('../../API/function.php');
                                     </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <input type="text" id="status" class="form-control" placeholder="Status"> <br> <br>
+                                        <select id="statuss" class="form-control">
+                                            <option value="">Select Status</option>
+                                            <option value="New Lead">New Lead</option>
+                                            <option value="Open">Open</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Quotation Shared">Quotation Shared</option>
+                                            <option value="On Boarded">On Boarded</option>
+                                            <option value="Dropout">Dropout</option>
+                                        </select>
+                                        <br> <br>
                                     </div>
                                 </div>
 
@@ -154,19 +187,20 @@ $(document).ready(function() {
         var industry = $('#industry').val().trim();
         var email_id = $('#email_id').val().trim();
         var contact_number = $('#contact_number').val().trim();
+        var category = $('#category').val().trim();
         var services_looking = $('#services_looking').val().trim();
         var channel = $('#channel').val().trim();
-        var status = $('#status').val().trim();
+        var status = $('#statuss').val().trim();
         var notes = tinymce.get('notes').getContent().trim();
 
         
 
-        if( client_name !== "" && business_name !== "" && industry !== "" && email_id !== "" && contact_number !== "" && services_looking !== "" && channel !== "" && status !== "" && notes !== ""  ) {
+        if( client_name !== "" && business_name !== "" && industry !== "" && email_id !== "" && contact_number !== "" && category !== "" && services_looking !== "" && channel !== "" && status !== "" && notes !== ""  ) {
             // AJAX request
             $.ajax({
                 type: "POST",
                 url: "../../API/sales_lead_generation_api.php",
-                data: { ops: 'sales_lead_generation',  client_name: client_name, business_name:business_name, industry:industry, email_id:email_id, contact_number:contact_number, services_looking:services_looking, channel:channel, status:status, notes:notes,},
+                data: { ops: 'sales_lead_generation',  client_name: client_name, business_name:business_name, industry:industry, email_id:email_id, contact_number:contact_number,category:category, services_looking:services_looking, channel:channel, status:status, notes:notes,},
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({

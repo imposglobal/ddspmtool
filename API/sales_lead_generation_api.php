@@ -13,13 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $industry = $_POST['industry'];
             $email_id = $_POST['email_id'];
             $contact_number = $_POST['contact_number'];
+            $category = $_POST['category'];
             $services_looking = $_POST['services_looking'];
             $channel = $_POST['channel'];
             $status = $_POST['status'];
             $notes = $_POST['notes'];
 
-            $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssss", $client_name, $business_name, $industry, $email_id, $contact_number, $services_looking, $channel, $status, $notes);
+            $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number,category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+            $stmt->bind_param("ssssssssss", $client_name, $business_name, $industry, $email_id, $contact_number,$category, $services_looking, $channel, $status, $notes);
 
             if ($stmt->execute()) {
                 echo "Lead Added successfully";
@@ -87,8 +88,8 @@ function get_leads($base_url, $db, $page = 1, $recordsPerPage = 10, $start_date 
             echo '<td>'. $row["services_looking"].'</td>';
             echo '<td>'. $row["status"].'</td>';
             echo '<td>
-                    <a href="../../Dashboard/sales/view_leads_details.php?lead_id='. $row["lead_id"].'"><i class=" bi bi-person-circle "></i></a>
-                    <a href="javascript:void(0);" onclick="openLeadDrawer('.$row["lead_id"].')"><i class=" bi bi-info-circle-fill"></i></a>
+                    <a href="../../Dashboard/sales/view_leads_details.php?lead_id='. $row["lead_id"].'"><i class=" bi bi-pencil-square "></i></a>
+                    <a href="javascript:void(0);" onclick="openLeadDrawer('.$row["lead_id"].')"><i class="bi bi-eye"></i></a>
                     <i onclick="deleteLead('. $row["lead_id"].')" class=" text-danger bi bi-trash3"></i>
                 </td>';
             echo '</tr>';

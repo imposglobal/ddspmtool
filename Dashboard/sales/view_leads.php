@@ -9,12 +9,6 @@ require('../sidebar.php');
 require('../../API/sales_lead_generation_api.php');
 require('../../API/function.php');
 
-
-
-
-
-
-
 ?>
 <style>
     .ctitle {
@@ -58,6 +52,12 @@ require('../../API/function.php');
  .importbtn{
   background-color: orange;
   color:#fff;
+ }
+ .searchfield{
+ margin-left:315px;
+}
+ .searchbtn{
+  margin-left:-36px;
  }
  .importbtn:hover
     {
@@ -121,33 +121,29 @@ require('../../API/function.php');
                                     history.replaceState(null, null, urlWithoutParams);
                                   </script>';
                         }
-                    ?>
-
-                 
-                  
+                    ?>        
       <!-- /********************** export form ******************/ -->
-
-                  <form method="GET">
+                    <form method="GET">
                       <div class="row">
                           <!-- Start Date -->
-                          <div class="col-lg-3 mb-4">
+                          <div class="col-lg-2 mb-4">
                               <input type="date" class="form-control" name="start_date">
                           </div>
                           <!-- End Date -->
-                          <div class="col-lg-3 mb-4">
+                          <div class="col-lg-2 mb-4">
                               <input type="date" class="form-control" name="end_date">
                           </div>
-                          <!-- time -->
-          <div class="col-lg-3 mb-4">
-            <select class="form-select" name="time_status">
-              <option selected disabled="true">Select Time</option>
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="weekly">This Week</option>
-              <option value="monthly">This Month</option>
-            </select>
-          </div>
-          <!-- time-->
+                            <!-- time -->
+                          <div class="col-lg-2 mb-4">
+                            <select class="form-select" name="time_status">
+                              <option selected disabled="true">Select Time</option>
+                              <option value="today">Today</option>
+                              <option value="yesterday">Yesterday</option>
+                              <option value="weekly">This Week</option>
+                              <option value="monthly">This Month</option>
+                            </select>
+                          </div>
+                          <!-- time-->
                           <!-- Buttons -->
                          
                           <div class="col-lg-3 mb-4 text-start">
@@ -155,7 +151,7 @@ require('../../API/function.php');
                               <button type="submit" formaction="../../API/export_leads_api.php" class="btn exportbtn ms-2">Export</button>
                           </div>
                       </div>
-                  </form>
+                    </form>
                  
               </div>
 
@@ -196,7 +192,23 @@ require('../../API/function.php');
             <div class="row">   
                 <div class="col-lg-12">
                     <div class="card-body">
-                        <h5 class="card-title pb-1 pt-4">Leads</h5>
+                        <!-- search bar form -->
+                        <div class="col-lg-12">  
+                          <form action="../../API/search_sales_data_api.php" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                              <div class="col-lg-2 mt-2">
+                                <h5 class="card-title pb-1 pt-4">Leads</h5>
+                              </div>
+                              <div class="col-lg-4 mt-4 searchfield">
+                                <input  type="text" class="form-control" name="search" placeholder="Search here......" required>
+                              </div>
+                              <div class="col-lg-3 mt-4 text-start searchbtn">
+                                <button type="submit" name="search" class="btn btn-success">Search</button>
+                              </div>
+                            </div>
+                          </form>               
+                        </div>
+                        <!-- search bar form -->
                         <hr>
                         <table class="table">
                 <thead>

@@ -82,6 +82,7 @@ if (isset($_GET['lead_id'])) {
             $industry = htmlspecialchars($row["industry"]);
             $email_id = htmlspecialchars($row["email_id"]);
             $contact_number = htmlspecialchars($row["contact_number"]);
+            $category = htmlspecialchars($row["category"]);
             $services_looking = htmlspecialchars($row["services_looking"]);
             $channel = htmlspecialchars($row["channel"]);
             $status = htmlspecialchars($row["status"]);
@@ -133,8 +134,26 @@ if (isset($_GET['lead_id'])) {
                                     </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Industry</label>
-                                        <input type="text" id="industry" value="<?php echo $industry;?>" class="form-control"> <br>
+                                        <select id="industry" name="industry" class="form-control">
+                                            <option value="banking_financial_services" <?php echo ($industry == 'banking_financial_services') ? 'selected' : ''; ?>>Banking & Financial Services</option>
+                                            <option value="healthcare" <?php echo ($industry == 'healthcare') ? 'selected' : ''; ?>>Healthcare</option>
+                                            <option value="insurance" <?php echo ($industry == 'insurance') ? 'selected' : ''; ?>>Insurance</option>
+                                            <option value="retail_ecommerce" <?php echo ($industry == 'retail_ecommerce') ? 'selected' : ''; ?>>Retail & E-commerce</option>
+                                            <option value="telecommunications" <?php echo ($industry == 'telecommunications') ? 'selected' : ''; ?>>Telecommunications</option>
+                                            <option value="travel_hospitality" <?php echo ($industry == 'travel_hospitality') ? 'selected' : ''; ?>>Travel & Hospitality</option>
+                                            <option value="logistics" <?php echo ($industry == 'logistics') ? 'selected' : ''; ?>>Logistics</option>
+                                            <option value="real_estate" <?php echo ($industry == 'real_estate') ? 'selected' : ''; ?>>Real Estate</option>
+                                            <option value="energy_utility" <?php echo ($industry == 'energy_utility') ? 'selected' : ''; ?>>Energy & Utility</option>
+                                            <option value="it_technology" <?php echo ($industry == 'it_technology') ? 'selected' : ''; ?>>IT & Technology</option>
+                                            <option value="education_elearning" <?php echo ($industry == 'education_elearning') ? 'selected' : ''; ?>>Education & E-Learning</option>
+                                            <option value="fmcg" <?php echo ($industry == 'fmcg') ? 'selected' : ''; ?>>FMCG</option>
+                                            <option value="manufacturing_supply_chain" <?php echo ($industry == 'manufacturing_supply_chain') ? 'selected' : ''; ?>>Manufacturing & Supply Chain</option>
+                                            <option value="media_entertainment" <?php echo ($industry == 'media_entertainment') ? 'selected' : ''; ?>>Media & Entertainment</option>
+                                            <option value="ngos" <?php echo ($industry == 'ngos') ? 'selected' : ''; ?>>NGOs</option>
+                                        </select>
+                                        <br>
                                     </div>
+
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Email ID</label>
                                         <input type="text" id="email_id" value="<?php echo $email_id;?>" class="form-control">
@@ -143,6 +162,17 @@ if (isset($_GET['lead_id'])) {
                                         <label class="ctitle mb-3">Contact Number</label>
                                         <input type="text" id="contact_number" value="<?php echo $contact_number;?>" class="form-control"> <br><br>
                                     </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label class="ctitle mb-3">Category</label>
+                                        <select id="category" name="category" class="form-control">
+                                            <option value="branding" <?php echo ($category == 'branding') ? 'selected' : ''; ?>>Branding</option>
+                                            <option value="digital" <?php echo ($category == 'digital') ? 'selected' : ''; ?>>Digital</option>
+                                            <option value="packaging" <?php echo ($category == 'packaging') ? 'selected' : ''; ?>>Packaging</option>
+                                            <option value="ecommerce" <?php echo ($category == 'ecommerce') ? 'selected' : ''; ?>>E-commerce</option>
+                                        </select>
+                                        <br><br>
+                                    </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Looking For ?</label>
                                         <input type="text" id="services_looking" value="<?php echo $services_looking;?>" class="form-control">
@@ -150,10 +180,20 @@ if (isset($_GET['lead_id'])) {
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Channel</label>
                                         <input type="text" id="channel" value="<?php echo $channel;?>" class="form-control">
+                                        <br><br>
                                     </div>
+                                  
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <input type="text" id="status" value="<?php echo $status;?>" class="form-control"> <br><br>
+                                        <select id="statuss" class="form-control">
+                                            <option value="New Lead" <?php echo ($status == 'New Lead') ? 'selected' : ''; ?>>New Lead</option>
+                                            <option value="open" <?php echo ($status == 'Open') ? 'selected' : ''; ?>>Open</option>
+                                            <option value="In Progress" <?php echo ($status == 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
+                                            <option value="Quotation Shared" <?php echo ($status == 'Quotation Shared') ? 'selected' : ''; ?>>Quotation Shared</option>
+                                            <option value="On Boarded" <?php echo ($status == 'On Boarded') ? 'selected' : ''; ?>>On Boarded</option>
+                                            <option value="Dropout" <?php echo ($status == 'Dropout') ? 'selected' : ''; ?>>Dropout</option>
+                                        </select>
+                                        <br><br>
                                     </div>
                                 </div>
  <!-- /****************************************************** add note****************************************************/ -->
@@ -237,9 +277,10 @@ tinymce.init({
             var industry = $('#industry').val();
             var email_id = $('#email_id').val();
             var contact_number = $('#contact_number').val();
+            var category = $('#category').val();
             var services_looking = $('#services_looking').val();
             var channel = $('#channel').val();
-            var status = $('#status').val();
+            var status = $('#statuss').val();
             var notes = tinymce.get('notes').getContent();
 
             $.ajax({
@@ -254,6 +295,7 @@ tinymce.init({
                     industry: industry,
                     email_id: email_id,
                     contact_number: contact_number,
+                    category: category,
                     services_looking: services_looking,
                     channel: channel,
                     status: status,
