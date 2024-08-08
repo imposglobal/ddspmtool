@@ -4,6 +4,7 @@ require('../header.php');
 <title>Dashboard - DDS</title>
 <?php 
 require('../sidebar.php');
+require('../../API/function.php');
 ?>
 <style>
     .ctitle {
@@ -49,8 +50,17 @@ require('../sidebar.php');
 
                                 <h5 class="ctitle mb-3">Client Name</h5>
                                
-                                <select id="cname" class="form-select" aria-label="Default select example">
-                                <option selected="">Select Project</option>  
+                                <select id="cid" class="form-select" aria-label="Default select example">
+                                <option selected="">Select Clients</option>  
+                                <?php 
+                                $sql1 = "select * from clients";
+                                $result = mysqli_query($db, $sql1);
+                                if (mysqli_num_rows($result) > 0) {
+                                while($row = mysqli_fetch_assoc($result)) {
+                                echo'<option value="'.$row['cid'].'">'.$row['business_name'].'</option>';
+                                }
+                                }
+                                ?>
                                 </select>
 
                                 <h5 class="ctitle mb-3">Project Name</h5>
@@ -67,6 +77,11 @@ require('../sidebar.php');
                             </div>
                            
                         </div>
+
+
+
+
+
 
                     </div>
                 </div>
@@ -89,7 +104,7 @@ require('../footer.php');
 $(document).ready(function() {
     $('#saveBtn').click(function(e) {
         e.preventDefault();
-        var cname = $('#cname').val().trim(); // Trim whitespace
+        var cid = $('#cid').val().trim(); // Trim whitespace
         var pname = $('#pname').val().trim(); // Trim whitespace
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
 
@@ -98,7 +113,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'project', cname: cname, pname: pname, description: description },
+                data: { ops: 'project', cid: cid, pname: pname, description: description },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
@@ -107,7 +122,7 @@ $(document).ready(function() {
                         text: response
                     });
                     // Reset the form
-                    $('#cname').val('');
+                    $('#cid').val('');
                     $('#pname').val('');
                     tinymce.get('description').setContent('');
                 },

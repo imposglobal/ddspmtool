@@ -6,33 +6,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['ops'];
 
-    switch ($operation) {
-        case "sales_lead_generation":  
-            $client_name = $_POST['client_name'];
-            $business_name = $_POST['business_name'];
-            $industry = $_POST['industry'];
-            $email_id = $_POST['email_id'];
-            $contact_number = $_POST['contact_number'];
-            $category = $_POST['category'];
-            $services_looking = $_POST['services_looking'];
-            $channel = $_POST['channel'];
-            $status = $_POST['status'];
-            $notes = $_POST['notes'];
+    // switch ($operation) {
+    //     case "sales_lead_generation":  
+    //         $client_name = $_POST['client_name'];
+    //         $business_name = $_POST['business_name'];
+    //         $industry = $_POST['industry'];
+    //         $email_id = $_POST['email_id'];
+    //         $contact_number = $_POST['contact_number'];
+    //         $category = $_POST['category'];
+    //         $services_looking = $_POST['services_looking'];
+    //         $channel = $_POST['channel'];
+    //         $status = $_POST['status'];
+    //         $notes = $_POST['notes'];
 
-            $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number,category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
-            $stmt->bind_param("ssssssssss", $client_name, $business_name, $industry, $email_id, $contact_number,$category, $services_looking, $channel, $status, $notes);
+    //         $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number,category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+    //         $stmt->bind_param("ssssssssss", $client_name, $business_name, $industry, $email_id, $contact_number,$category, $services_looking, $channel, $status, $notes);
 
-            if ($stmt->execute()) {
-                echo "Lead Added successfully";
-            } else {
-                echo "Error: " . $stmt->error;
-            }
-            $stmt->close();
-            break;
+    //         if ($stmt->execute()) {
+    //             echo "Lead Added successfully";
+    //         } else {
+    //             echo "Error: " . $stmt->error;
+    //         }
+    //         $stmt->close();
+    //         break;
+    //     default:
+    //         echo "Bad Gateway";
+    // }
 
-        default:
-            echo "Bad Gateway";
-    }
+
+        //  new code by shraddha
+        switch ($operation) {
+            case "sales_lead_generation":
+                $client_name = $_POST['client_name'];
+                $business_name = $_POST['business_name'];
+                $industry = $_POST['industry'];
+                $email_id = $_POST['email_id'];
+                $contact_number = $_POST['contact_number'];
+                $category = $_POST['category'];
+                $services_looking = $_POST['services_looking'];
+                $channel = $_POST['channel'];
+                $status = $_POST['status'];
+                $notes = $_POST['notes'];
+        
+                if ($status == 'on_boarded') {
+                    // Insert into clients table
+                    $stmt = $db->prepare("INSERT INTO clients (client_name, business_name, industry, email_id, contact_number, category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    if ($stmt === false) {
+                        echo "Error: " . $db->error;
+                        break;
+                    }
+                    $stmt->bind_param("ssssssssss", $client_name, $business_name, $industry, $email_id, $contact_number, $category, $services_looking, $channel, $status, $notes);
+                    if ($stmt->execute()) {
+                        echo "Client data added successfully. ";
+                    } else {
+                        echo "Error: " . $stmt->error;
+                    }
+                    $stmt->close();
+                }
+        
+                // Insert into sales_lead_generation table
+                $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number, category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                if ($stmt === false) {
+                    echo "Error: " . $db->error;
+                    break;
+                }
+                $stmt->bind_param("ssssssssss", $client_name, $business_name, $industry, $email_id, $contact_number, $category, $services_looking, $channel, $status, $notes);
+                if ($stmt->execute()) {
+                    echo "Lead added successfully.";
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
+                $stmt->close();
+        
+                // Close the database connection
+                $db->close();
+                break;
+        
+            default:
+                echo "Bad Gateway";
+        }
+        
+       
+
+        // end of new code by shraddha
+
 } else {
     echo "";
 }
