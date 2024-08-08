@@ -370,7 +370,7 @@ pagination($page, $totalPages, $search_data,$client_status);
         var queryString = new URLSearchParams(formData).toString();
         
         // Redirect to the same page with the new query string
-        window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+        window.location.href = 'https://dds.doodlo.in/Dashboard/sales/view_leads.php?' + queryString;
     });
 </script>
 
