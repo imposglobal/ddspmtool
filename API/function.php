@@ -412,24 +412,29 @@ function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
     // Calculate offset
     $offset = ($page - 1) * $recordsPerPage;
 
-    $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
-    
+    // $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+     $client_id = isset($_GET['client_id']) ? $_GET['client_id'] : 'All';
 
     // Initialize where conditions array
     $where_conditions = [];
 
     // Append filters to the query if a specific project is selected
-    if ($project_id !== 'All' && $project_id !== '') 
-    {
-     $where_conditions[] = "task.pid = '$project_id'";
-    }
+
+       if ($client_id !== 'All') {
+        $where_conditions[] = "projects.cid = '$client_id'";
+        }
+
+    // if ($project_id !== 'All' && $project_id !== '') 
+    // {
+    //  $where_conditions[] = "task.pid = '$project_id'";
+    // }
     
     // In the below SQL query, I have joined the task table with the projects table and the employee table. I used the GROUP BY clause to count the total number of tasks and the total number of employees based on the pid (project ID)
 
     // GROUP_CONCAT is an aggregate function in MySQL that concatenates values from multiple rows into a single string 
     // <a href ="employee_task.php?eid = employees.eid & pid= task.pid">employees.fname</a>
 
-    $sql = "SELECT projects.project_name, projects.status, projects.start_date, projects.end_date, DATE(projects.created_at) AS created_date, task.title, task.pid, task.description, 
+    $sql = "SELECT projects.project_name, projects.cid, projects.status, projects.start_date, projects.end_date, DATE(projects.created_at) AS created_date, task.title, task.pid, task.description, 
     employees.eid, GROUP_CONCAT(DISTINCT CONCAT('<a href=\"employee_task.php?eid=', employees.eid, '&pid=', task.pid, '\">', employees.fname, '</a>') ORDER BY employees.fname SEPARATOR ', ') AS employee_links, COUNT(task.tid) AS total_tasks, COUNT(DISTINCT task.eid) AS total_employees FROM task 
     INNER JOIN projects ON task.pid = projects.pid  
     INNER JOIN employees ON task.eid = employees.eid";

@@ -51,27 +51,31 @@ require('../../API/function.php');
     <div class="col-lg-12">
     <form method="GET">
     <div class="row">
-     <!-- project Name -->  
-    <div class="col-lg-4 mb-4">  
-    <select class="form-select" name="project_id">
-    <option selected>Select Project</option>
+
+     <!-- Client Name -->
+     <div class="col-lg-4 mb-4">  
+    <select class="form-select" name="client_id">
+    <option selected>Select Client</option>
     <option value="All">All</option>
     <?php
-    $sql = "SELECT * from projects ORDER BY created_at DESC";
+    $sql = "SELECT * from clients";
     $result = mysqli_query($db, $sql);
     if ($result && mysqli_num_rows($result) > 0)
     {
      while ($row = mysqli_fetch_assoc($result))
     {
     ?>    
-    <option value="<?php echo $row["pid"]?>"><?php echo $row["project_name"]?></option>
+    <option value="<?php echo $row["cid"]?>"><?php echo $row["business_name"]?></option>
     <?php 
     }
     }
     ?>
     </select>
     </div>
-<!-- project Name -->
+      <!--Client Name -->
+     <!-- project Name -->  
+    
+     <!-- project Name -->
 
 <!-- project type -->
 <div class="col-lg-4 mb-4">  

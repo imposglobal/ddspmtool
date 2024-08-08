@@ -2,7 +2,7 @@
 require("db.php");
 
  if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 'All';
+    $client_id = isset($_GET['client_id']) ? $_GET['client_id'] : 'All';
     $project_type = isset($_GET['project_type']) ? $_GET['project_type'] : 'All';
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
     $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
@@ -18,23 +18,24 @@ require("db.php");
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('No', 'Date', 'Project Name', 'Project Type', 'Employee Name', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time',  'Manager Status', 'Feedback'));
+    fputcsv($output, array('No', 'Date', 'Client Name', 'Project Name', 'Project Type', 'Employee Name', 'Title', 'Description', 'Priority', 'Status', 'Total Time', 'Break Time', 'Productive Time',  'Manager Status', 'Feedback'));
 
-    // Construct the SQL query with filters
-    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, task.project_type, task.title, task.status, 
-            task.estimated_time, task.priority, task.description, task.m_status, task.feedback, 
-            employees.fname, employees.lname, task_time.total_time
-            FROM task 
-            LEFT JOIN employees ON task.eid = employees.eid
-            INNER JOIN projects ON task.pid = projects.pid
-            INNER JOIN task_time ON task.tid = task_time.tid";
+    $sql = "SELECT task.tid, DATE(task.created_at) as created_date, projects.project_name, projects.cid, clients.business_name, task.project_type, task.title, task.status, 
+    task.estimated_time, task.priority, task.description, task.m_status, task.feedback, 
+    employees.fname, employees.lname, task_time.total_time
+    FROM task 
+    INNER JOIN projects ON task.pid = projects.pid
+    LEFT JOIN clients ON clients.cid = projects.cid
+    LEFT JOIN employees ON task.eid = employees.eid
+    INNER JOIN task_time ON task.tid = task_time.tid";
 
     // Initialize where conditions array
     $where_conditions = [];
 
     // Append filters to the query if a specific project is selected
-    if ($project_id !== 'All') {
-        $where_conditions[] = "task.pid = '$project_id'";
+   // Append filters to the query if a specific client is selected
+    if ($client_id !== 'All') {
+    $where_conditions[] = "projects.cid = '$client_id'";
     }
 
     // Append filters to the query if a specific project is selected
@@ -121,6 +122,7 @@ require("db.php");
             $data = array(
                 $i++,
                 htmlspecialchars($row["created_date"]),
+                htmlspecialchars($row['business_name']),
                 htmlspecialchars($row['project_name']),
                 htmlspecialchars($row['project_type']),
                 htmlspecialchars($row['fname'] . " " . $row['lname']),               
