@@ -94,7 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "";
 }
 
-function get_leads($base_url, $db, $page = 1, $recordsPerPage = 10, $start_date = null, $end_date = null) {
+function get_leads($base_url, $db, $page=1, $recordsPerPage, $start_date = null, $end_date = null) {
+
+    $recordsPerPage = $recordsPerPage > 1 ? $recordsPerPage : 10;
     $offset = ($page - 1) * $recordsPerPage;
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
 

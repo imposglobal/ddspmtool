@@ -22,10 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $output = fopen("php://output", "w");
 
     // Write headers to CSV
-    fputcsv($output, array('Lead ID', 'Lead Date', 'Client Name', 'Business Name', 'Industry', 'Email ID', 'Contact Number', 'Services Looking', 'Channel', 'Status', 'Notes'));
+    fputcsv($output, array('Lead ID', 'Lead Date', 'Client Name', 'Business Name', 'Industry', 'Email ID', 'Contact Number','Category', 'Services Looking', 'Channel', 'Status', 'Notes'));
 
     // Construct the SQL query with filters
-    $sql = "SELECT lead_id, created_at, client_name, business_name, industry, email_id, contact_number, services_looking, channel, status, notes 
+    $sql = "SELECT lead_id, created_at, client_name, business_name, industry, email_id, contact_number, category, services_looking, channel, status, notes 
             FROM sales_lead_generation";
 
     // Initialize where conditions array
@@ -95,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 htmlspecialchars($row['industry']),
                 htmlspecialchars($row['email_id']),
                 htmlspecialchars($row['contact_number']),
+                htmlspecialchars($row['category']),
                 htmlspecialchars($row['services_looking']),
                 htmlspecialchars($row['channel']),
                 htmlspecialchars($row['status']),

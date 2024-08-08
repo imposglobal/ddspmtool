@@ -20,6 +20,7 @@ if (isset($_GET['lead_id'])) {
         $industry = htmlspecialchars($row["industry"]);
         $email_id = htmlspecialchars($row["email_id"]);
         $contact_number = htmlspecialchars($row["contact_number"]);
+        $category = htmlspecialchars($row["category"]);
         $services_looking = htmlspecialchars($row["services_looking"]);
         $channel = htmlspecialchars($row["channel"]);
         $status = htmlspecialchars($row["status"]);
@@ -59,6 +60,10 @@ if (isset($_GET['lead_id'])) {
                         <p>'.$contact_number.'</span></p>
                     </div>
                      <hr>
+                      <div class="col-lg-4"> 
+                        <p><b>Category</b> </p> 
+                        <p>'.$category.'</span></p>
+                    </div>
                      <div class="col-lg-4"> 
                         <p><b>Looking For?</b> </p> 
                         <p>'.$services_looking.'</span></p>
@@ -67,7 +72,9 @@ if (isset($_GET['lead_id'])) {
                         <p> <b> Channel </b></p> 
                         <p>'.$channel.'</span></p>
                     </div>
-                    <div class="col-lg-4"> 
+                  
+                    <hr>
+                      <div class="col-lg-4"> 
                         <p><b> Status </b> </p> 
                         <p>'.$status.'</span></p>
                     </div>
