@@ -46,6 +46,13 @@ require('../sidebar.php');
                         <hr>
                         <div class="row mt-3">
                             <div class="col-lg-12">
+
+                                <h5 class="ctitle mb-3">Client Name</h5>
+                               
+                                <select id="cname" class="form-select" aria-label="Default select example">
+                                <option selected="">Select Project</option>  
+                                </select>
+
                                 <h5 class="ctitle mb-3">Project Name</h5>
                                 <input type="text" id="pname" class="form-control">
 
@@ -82,6 +89,7 @@ require('../footer.php');
 $(document).ready(function() {
     $('#saveBtn').click(function(e) {
         e.preventDefault();
+        var cname = $('#cname').val().trim(); // Trim whitespace
         var pname = $('#pname').val().trim(); // Trim whitespace
         var description = tinymce.get('description').getContent().trim(); // Trim whitespace
 
@@ -90,7 +98,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 url: "../../API/insert.php",
-                data: { ops: 'project', pname: pname, description: description },
+                data: { ops: 'project', cname: cname, pname: pname, description: description },
                 success: function(response) {
                     // Use SweetAlert for displaying success message
                     Swal.fire({
@@ -99,6 +107,7 @@ $(document).ready(function() {
                         text: response
                     });
                     // Reset the form
+                    $('#cname').val('');
                     $('#pname').val('');
                     tinymce.get('description').setContent('');
                 },

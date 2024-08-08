@@ -31,12 +31,12 @@ switch ($operation) {
     //project Add
     case "project":
 
-      
+      $cname = $_POST['cname'];
       $pname = $_POST['pname'];
       $desc = $_POST['description'];
       $created_at = date('y-m-d H:i:s');
 
-      $sql = "INSERT INTO projects (project_name, description, created_at) VALUES ('$pname', '$desc', '$created_at')";
+      $sql = "INSERT INTO projects (client_name, project_name, description, created_at) VALUES ('$cname','$pname', '$desc', '$created_at')";
       if ($db->query($sql) === TRUE) {
         echo "Project Added successfully";
         } else {
