@@ -54,15 +54,20 @@ require('../../API/function.php');
   color:#fff;
  }
  .searchfield{
- margin-left:315px;
+ margin-left:150px;
 }
  .searchbtn{
-  margin-left:-36px;
+  margin-left:-81px;
  }
  .importbtn:hover
     {
       background-color: orange;
       color: #fff;
+    }
+
+
+    .entries_perpage{
+      margin-right:20px;
     }
 
     .btn-empty
@@ -144,8 +149,23 @@ require('../../API/function.php');
                             </select>
                           </div>
                           <!-- time-->
+
+                          <!-- filter based on status -->
+                          <div class="col-lg-2 mb-4">
+                            <select class="form-select" name="client_status">
+                              <option selected disabled="true">Select Status</option>
+                              <option value="new_lead">New Lead</option>
+                              <option value="open">Open</option>
+                              <option value="in_progress">In Progress</option>
+                              <option value="quotation_shared">Quotation Shared</option>
+                              <option value="on_boarded">On Boarded</option>
+                              <option value="dropout">Dropout</option>
+
+                            </select>
+                          </div>
+                          <!-- filter based on status-->
+
                           <!-- Buttons -->
-                         
                           <div class="col-lg-3 mb-4 text-start">
                               <button type="submit" name="show" class="btn btn-success">Show</button>
                               <button type="submit" formaction="../../API/export_leads_api.php" class="btn exportbtn ms-2">Export</button>
@@ -159,7 +179,7 @@ require('../../API/function.php');
               <!-- import button -->
             <div class="col-lg-5 mt-2 mb-3">
             <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
-            <div class="row">
+              <div class="row">
                           <!-- Start Date -->
                           <div class="col-lg-9 mb-4">
                           <input  type="file" class="form-control" name="file" required>
@@ -176,13 +196,6 @@ require('../../API/function.php');
 
             </div> 
 
-              <!-- import button -->
-
-              <!-- <div class="col-lg-2 mt-2 mb-3">
-                <a href="../../API/empty_export_leads_api.php"  class="btn btn-empty"><i class="bi bi-download dicon"></i>Download</a>
-              </div> -->
-
-
           </div>
 
 
@@ -194,13 +207,23 @@ require('../../API/function.php');
                     <div class="card-body">
                         <!-- search bar form -->
                         <div class="col-lg-12">  
-                          <form action="../../API/search_sales_data_api.php" method="POST" enctype="multipart/form-data">
+                          <form id="searchdata"  method="GET" enctype="multipart/form-data">
                             <div class="row">
                               <div class="col-lg-2 mt-2">
                                 <h5 class="card-title pb-1 pt-4">Leads</h5>
                               </div>
+                              <div class="col-lg-2 mt-4 entries_perpage">
+                                <select class="form-control " name="entries_per_page" id="entries_per_page" >
+                                <option value="">Entries per page</option>
+                                  <option value="10">10</option>
+                                  <option value="25">25</option>
+                                  <option value="75">75</option>
+                                  <option value="100">100</option>
+                                 </select>                            
+                              </div>
+                              
                               <div class="col-lg-4 mt-4 searchfield">
-                                <input  type="text" class="form-control" name="search" placeholder="Search here......" required>
+                                <input  type="text" class="form-control" name="search_data" placeholder="Search here......" required>
                               </div>
                               <div class="col-lg-3 mt-4 text-start searchbtn">
                                 <button type="submit" name="search" class="btn btn-success">Search</button>
@@ -229,13 +252,27 @@ require('../../API/function.php');
                 <tbody>
                   <?php 
                     // Usage:
-                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                    $recordsPerPage = 10;
-                    $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
-                    $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+                    // $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                    // $recordsPerPage = 10;
+                    // $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+                    // $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+                    // $search_data = isset($_GET['search_data']) ? $_GET['search_data'] : '';
+                    // $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
 
-                    get_leads($base_url,$db, $page, $recordsPerPage, $startDate, $endDate);
+                    // get_leads($base_url,$db, $page, $recordsPerPage, $startDate, $endDate);
                   ?> 
+
+                      <?php
+                      $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                      $recordsPerPage = isset($_GET['entries_per_page']) ? intval($_GET['entries_per_page']) : 10;
+                      $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+                      $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+                      $search_data = isset($_GET['search_data']) ? $_GET['search_data'] : '';
+                      $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
+
+                      get_leads($base_url, $db, $page, $recordsPerPage, $startDate, $endDate);
+                      ?>
+
                 </tbody>
               </table>
 
@@ -248,27 +285,50 @@ require('../../API/function.php');
         
       </div>
       <?php 
-      //for Leads pagination 
-      $sql = "SELECT COUNT(*) AS total FROM sales_lead_generation";
-      if ($startDate && $endDate) {
-        $sql .= " WHERE created_at BETWEEN '$startDate' AND '$endDate'";
-    }
-      $result = mysqli_query($db, $sql);
-      $row = mysqli_fetch_assoc($result);
-      $totalRecords = $row['total'];
-      $totalPages = ceil($totalRecords / $recordsPerPage);
-      
-      pagination($page, $totalPages);
-      ?>
+// for Leads pagination 
+$sql = "SELECT COUNT(*) AS total FROM sales_lead_generation WHERE 1=1";
+
+$where_conditions = [];
+
+if ($startDate && $endDate) {
+    $where_conditions[] = "created_at BETWEEN '$startDate' AND '$endDate'";
+}
+
+/*********************** Query to search data by name ,email,mobile number  *************************/
+if (!empty($search_data)) {
+    $search_data = mysqli_real_escape_string($db, $search_data); // Prevent SQL injection
+    $where_conditions[] = "(client_name LIKE '%$search_data%' 
+                           OR email_id LIKE '%$search_data%' 
+                           OR contact_number LIKE '%$search_data%')";
+}
+
+/*********************** Query to search data by status  *************************/
+
+if (!empty($client_status)) {
+  $client_status = mysqli_real_escape_string($db, $client_status); // Prevent SQL injection
+  // $where_conditions[] = "(status LIKE '%$client_status%')";
+  $where_conditions[] = "status = '$client_status'";
+}
 
 
+if (!empty($where_conditions)) {
+    $sql .= " AND " . implode(" AND ", $where_conditions);
+}
 
+$result = mysqli_query($db, $sql);
+$row = mysqli_fetch_assoc($result);
+$totalRecords = $row['total'];
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+pagination($page, $totalPages, $search_data,$client_status);
+?>
 
 
 
     </section>
-
-  </main><!-- End #main -->
+  </main>
+  
+  <!-- End #main -->
 
 
 
@@ -294,6 +354,27 @@ require('../../API/function.php');
             <!-- /*************************************************** drawer code end ********************************************************************/ -->
             
 
+<!-- script for entries per page -->
+    <script>
+    document.getElementById('entries_per_page').addEventListener('change', function() {
+        // Get the form element
+        var form = document.getElementById('searchdata');
+        
+        // Create a FormData object from the form
+        var formData = new FormData(form);
+        
+        // Add the selected value to FormData
+        formData.set('entries_per_page', this.value);
+        
+        // Convert FormData to query string
+        var queryString = new URLSearchParams(formData).toString();
+        
+        // Redirect to the same page with the new query string
+        window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+    });
+</script>
+
+<!-- script for entries per page -->
 
   <script>
 function openLeadDrawer(lead_id) {
@@ -374,12 +455,7 @@ function deleteLead(lead_id) {
     });
 }
 
-
-
 </script>
-
- 
-
 
 <?php 
 require('../footer.php');

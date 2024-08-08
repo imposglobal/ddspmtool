@@ -41,6 +41,14 @@ function get_leads($base_url, $db, $page = 1, $recordsPerPage = 10, $start_date 
     $offset = ($page - 1) * $recordsPerPage;
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
 
+    /************************************ get search data from user*****************************************/
+    $search_data = isset($_GET['search_data']) ? $_GET['search_data'] : '';
+
+    $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
+
+
+
+
     $sql = "SELECT * FROM sales_lead_generation WHERE 1=1";
     $where_conditions = [];
 
@@ -64,6 +72,21 @@ function get_leads($base_url, $db, $page = 1, $recordsPerPage = 10, $start_date 
         case 'monthly':
             $where_conditions[] = "MONTH(created_at) = MONTH(CURRENT_DATE())";
             break;
+    }
+
+/*********************** Query to search data by name ,email,mobile number  *************************/
+    if (!empty($search_data)) {
+        $search_data = mysqli_real_escape_string($db, $search_data); // Prevent SQL injection
+        $where_conditions[] = "(client_name LIKE '%$search_data%' 
+                               OR email_id LIKE '%$search_data%' 
+                               OR contact_number LIKE '%$search_data%')";
+    }
+/*********************** Query to search data by status  *************************/
+
+    if (!empty($client_status)) {
+        $client_status = mysqli_real_escape_string($db, $client_status); // Prevent SQL injection
+        // $where_conditions[] = "(status LIKE '%$client_status%')";
+        $where_conditions[] = "status = '$client_status'";
     }
 
     if (!empty($where_conditions)) {

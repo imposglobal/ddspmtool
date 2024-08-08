@@ -5,14 +5,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
     $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
     $time_status = isset($_GET['time_status']) ? $_GET['time_status'] : '';
+    $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
 
-       // Check if start_date and end_date are the same
-       if ($start_date === $end_date) {
+    // Check if start_date and end_date are the same
+    if ($start_date === $end_date) {
         $end_date = date('Y-m-d', strtotime($end_date . ' +1 day'));
     }
-
-    
-
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
@@ -41,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $where_conditions[] = "created_at <= '$end_date'";
     }
 
-    // Add conditions based on the selected status
+    // Add conditions based on the selected time status
     switch ($time_status) {
         case 'today':
             $where_conditions[] = "DATE(created_at) = CURRENT_DATE()";
@@ -55,6 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         case 'monthly':
             $where_conditions[] = "MONTH(created_at) = MONTH(CURRENT_DATE())";
             break;
+    }
+
+    // Add client_status condition if it is not empty
+    if (!empty($client_status)) {
+        $where_conditions[] = "status = '$client_status'";
     }
 
     // Combine where conditions if any
@@ -82,8 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Fetch and write data to CSV
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-
-            $decode_notes= RemoveHTMLTags($row["notes"]);
+            $decode_notes = RemoveHTMLTags($row["notes"]);
 
             $data = array(
                 htmlspecialchars($row['lead_id']),
@@ -97,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 htmlspecialchars($row['channel']),
                 htmlspecialchars($row['status']),
                 $decode_notes
-                
             );
             fputcsv($output, $data);
         }

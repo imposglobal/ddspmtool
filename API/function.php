@@ -216,7 +216,7 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 
 // pagination new code
 
-function pagination($currentPage, $totalPages)
+function pagination($currentPage, $totalPages,$search_data = '', $client_status = '')
 {
     echo '<tr><td colspan="5">';
     echo '<ul class="pagination justify-content-center">';

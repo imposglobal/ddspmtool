@@ -134,14 +134,14 @@ require('../../API/function.php');
                                     </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <select id="statuss" class="form-control">
+                                        <select id="status" class="form-control">
                                             <option value="">Select Status</option>
-                                            <option value="New Lead">New Lead</option>
-                                            <option value="Open">Open</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Quotation Shared">Quotation Shared</option>
-                                            <option value="On Boarded">On Boarded</option>
-                                            <option value="Dropout">Dropout</option>
+                                            <option value="new_lead">New Lead</option>
+                                            <option value="open">Open</option>
+                                            <option value="in_progress">In Progress</option>
+                                            <option value="quotation_shared">Quotation Shared</option>
+                                            <option value="on_boarded">On Boarded</option>
+                                            <option value="dropout">Dropout</option>
                                         </select>
                                         <br> <br>
                                     </div>
@@ -190,7 +190,7 @@ $(document).ready(function() {
         var category = $('#category').val().trim();
         var services_looking = $('#services_looking').val().trim();
         var channel = $('#channel').val().trim();
-        var status = $('#statuss').val().trim();
+        var status = $('#status').val().trim();
         var notes = tinymce.get('notes').getContent().trim();
 
         
