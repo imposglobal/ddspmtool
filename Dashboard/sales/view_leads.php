@@ -209,12 +209,38 @@ require('../../API/function.php');
                         <div class="col-lg-12">  
                           <form id="searchdata"  method="GET" enctype="multipart/form-data">
                             <div class="row">
-                              <div class="col-lg-2 mt-2">
+                            <div class="col-lg-4">
+                            <div class="d-flex flex-row">
+                            <div> <h5 class="card-title pb-1 pt-4">Leads</h5></div>
+                            <div class="px-2 pt-3"> 
+                              <select class="form-control " name="entries_per_page" id="entries_per_page" >
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="75">75</option>
+                                <option value="100">100</option>
+                               </select>      
+                            </div>
+                            </div>
+                            </div>
+
+                            <div class="col-lg-8 text-end">
+                            <div class="d-flex flex-row justify-content-end">
+                            <div class="searchfield px-5 pt-4">
+                            <input  type="text" class="form-control" name="search_data" placeholder="Search here......" required>
+                            </div>
+                            <div class="searchbtn px-5 pt-4">
+                            <button type="submit" name="search" class="btn btn-success">Search</button>
+                            </div>
+                            </div>
+                            </div>
+
+
+                              <!-- <div class="col-lg-2 mt-2">
                                 <h5 class="card-title pb-1 pt-4">Leads</h5>
                               </div>
                               <div class="col-lg-2 mt-4 entries_perpage">
                                 <select class="form-control " name="entries_per_page" id="entries_per_page" >
-                                <option value="">Entries per page</option>
+                                
                                   <option value="10">10</option>
                                   <option value="25">25</option>
                                   <option value="75">75</option>
@@ -227,7 +253,10 @@ require('../../API/function.php');
                               </div>
                               <div class="col-lg-3 mt-4 text-start searchbtn">
                                 <button type="submit" name="search" class="btn btn-success">Search</button>
-                              </div>
+                              </div> -->
+
+
+
                             </div>
                           </form>               
                         </div>

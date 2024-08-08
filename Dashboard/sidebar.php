@@ -39,8 +39,16 @@
         </a>
       </li><!-- End view leads Nav -->
       
-      <hr/>
+      
 
+       <!-- View leads -->
+       <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/sales/clients.php">
+          <i class="bi bi-person"></i>
+          <span>Clients</span>
+        </a>
+      </li><!-- End view leads Nav -->
+      <hr/>
       <?php } ?>
      
 <!-- /*************************************** Sales End *************************************************************/ -->
