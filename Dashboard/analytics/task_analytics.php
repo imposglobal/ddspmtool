@@ -53,12 +53,12 @@ require('../../API/function.php');
     <div class="row">
 
      <!-- Client Name -->
-     <div class="col-lg-4 mb-4">  
+    <div class="col-lg-4 mb-4">  
     <select class="form-select" name="client_id">
     <option selected>Select Client</option>
     <option value="All">All</option>
     <?php
-    $sql = "SELECT * from clients";
+    $sql = "SELECT * from clients ORDER BY cid DESC";
     $result = mysqli_query($db, $sql);
     if ($result && mysqli_num_rows($result) > 0)
     {
@@ -73,9 +73,7 @@ require('../../API/function.php');
     </select>
     </div>
       <!--Client Name -->
-     <!-- project Name -->  
-    
-     <!-- project Name -->
+
 
 <!-- project type -->
 <div class="col-lg-4 mb-4">  
