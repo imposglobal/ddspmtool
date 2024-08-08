@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $status = $_POST['status'];
                 $notes = $_POST['notes'];
         
-                if ($status == 'on_boarded') {
+                if ($status == 'On Boarded') {
                     // Insert into clients table
                     $stmt = $db->prepare("INSERT INTO clients (client_name, business_name, industry, email_id, contact_number, category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     if ($stmt === false) {
