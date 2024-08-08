@@ -185,13 +185,13 @@ if (isset($_GET['lead_id'])) {
                                   
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <select id="statuss" class="form-control">
-                                            <option value="New Lead" <?php echo ($status == 'New Lead') ? 'selected' : ''; ?>>New Lead</option>
-                                            <option value="open" <?php echo ($status == 'Open') ? 'selected' : ''; ?>>Open</option>
-                                            <option value="In Progress" <?php echo ($status == 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
-                                            <option value="Quotation Shared" <?php echo ($status == 'Quotation Shared') ? 'selected' : ''; ?>>Quotation Shared</option>
-                                            <option value="On Boarded" <?php echo ($status == 'On Boarded') ? 'selected' : ''; ?>>On Boarded</option>
-                                            <option value="Dropout" <?php echo ($status == 'Dropout') ? 'selected' : ''; ?>>Dropout</option>
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="new_lead" <?php echo ($status == 'new_lead') ? 'selected' : ''; ?>>New Lead</option>
+                                            <option value="open" <?php echo ($status == 'open') ? 'selected' : ''; ?>>Open</option>
+                                            <option value="in_progress" <?php echo ($status == 'in_progress') ? 'selected' : ''; ?>>In Progress</option>
+                                            <option value="quotation_shared" <?php echo ($status == 'quotation_shared') ? 'selected' : ''; ?>>Quotation Shared</option>
+                                            <option value="on_boarded" <?php echo ($status == 'on_boarded') ? 'selected' : ''; ?>>On Boarded</option>
+                                            <option value="dropout" <?php echo ($status == 'dropout') ? 'selected' : ''; ?>>Dropout</option>
                                         </select>
                                         <br><br>
                                     </div>
@@ -280,7 +280,7 @@ tinymce.init({
             var category = $('#category').val();
             var services_looking = $('#services_looking').val();
             var channel = $('#channel').val();
-            var status = $('#statuss').val();
+            var status = $('#status').val();
             var notes = tinymce.get('notes').getContent();
 
             $.ajax({
