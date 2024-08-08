@@ -54,6 +54,7 @@ require('../../API/get_clients.php');
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Client</th>
                     <th scope="col">Buisness Name</th>
                     <th scope="col">Industry</th>
