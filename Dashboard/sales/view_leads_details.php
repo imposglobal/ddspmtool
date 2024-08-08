@@ -135,21 +135,21 @@ if (isset($_GET['lead_id'])) {
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Industry</label>
                                         <select id="industry" name="industry" class="form-control">
-                                            <option value="banking_financial_services" <?php echo ($industry == 'banking_financial_services') ? 'selected' : ''; ?>>Banking & Financial Services</option>
-                                            <option value="healthcare" <?php echo ($industry == 'healthcare') ? 'selected' : ''; ?>>Healthcare</option>
-                                            <option value="insurance" <?php echo ($industry == 'insurance') ? 'selected' : ''; ?>>Insurance</option>
-                                            <option value="retail_ecommerce" <?php echo ($industry == 'retail_ecommerce') ? 'selected' : ''; ?>>Retail & E-commerce</option>
-                                            <option value="telecommunications" <?php echo ($industry == 'telecommunications') ? 'selected' : ''; ?>>Telecommunications</option>
-                                            <option value="travel_hospitality" <?php echo ($industry == 'travel_hospitality') ? 'selected' : ''; ?>>Travel & Hospitality</option>
-                                            <option value="logistics" <?php echo ($industry == 'logistics') ? 'selected' : ''; ?>>Logistics</option>
-                                            <option value="real_estate" <?php echo ($industry == 'real_estate') ? 'selected' : ''; ?>>Real Estate</option>
-                                            <option value="energy_utility" <?php echo ($industry == 'energy_utility') ? 'selected' : ''; ?>>Energy & Utility</option>
-                                            <option value="it_technology" <?php echo ($industry == 'it_technology') ? 'selected' : ''; ?>>IT & Technology</option>
-                                            <option value="education_elearning" <?php echo ($industry == 'education_elearning') ? 'selected' : ''; ?>>Education & E-Learning</option>
-                                            <option value="fmcg" <?php echo ($industry == 'fmcg') ? 'selected' : ''; ?>>FMCG</option>
-                                            <option value="manufacturing_supply_chain" <?php echo ($industry == 'manufacturing_supply_chain') ? 'selected' : ''; ?>>Manufacturing & Supply Chain</option>
-                                            <option value="media_entertainment" <?php echo ($industry == 'media_entertainment') ? 'selected' : ''; ?>>Media & Entertainment</option>
-                                            <option value="ngos" <?php echo ($industry == 'ngos') ? 'selected' : ''; ?>>NGOs</option>
+                                            <option value="Banking Financial Services" <?php echo ($industry == 'Banking Financial Services') ? 'selected' : ''; ?>>Banking & Financial Services</option>
+                                            <option value="Healthcare" <?php echo ($industry == 'Healthcare') ? 'selected' : ''; ?>>Healthcare</option>
+                                            <option value="Insurance" <?php echo ($industry == 'Insurance') ? 'selected' : ''; ?>>Insurance</option>
+                                            <option value="Retail E-commerce" <?php echo ($industry == 'Retail E-commerce') ? 'selected' : ''; ?>>Retail & E-commerce</option>
+                                            <option value="Telecommunications" <?php echo ($industry == 'Telecommunications') ? 'selected' : ''; ?>>Telecommunications</option>
+                                            <option value="Travel Hospitality" <?php echo ($industry == 'Travel Hospitality') ? 'selected' : ''; ?>>Travel & Hospitality</option>
+                                            <option value="Logistics" <?php echo ($industry == 'Logistics') ? 'selected' : ''; ?>>Logistics</option>
+                                            <option value="Real Estate" <?php echo ($industry == 'Real Estate') ? 'selected' : ''; ?>>Real Estate</option>
+                                            <option value="Energy Utility" <?php echo ($industry == 'Energy Utility') ? 'selected' : ''; ?>>Energy & Utility</option>
+                                            <option value="IT Technology" <?php echo ($industry == 'IT Technology') ? 'selected' : ''; ?>>IT & Technology</option>
+                                            <option value="Education E-Learning" <?php echo ($industry == 'Education E-Learning') ? 'selected' : ''; ?>>Education & E-Learning</option>
+                                            <option value="FMCG" <?php echo ($industry == 'FMCG') ? 'selected' : ''; ?>>FMCG</option>
+                                            <option value="Manufacturing Supply Chain" <?php echo ($industry == 'Manufacturing Supply Chain') ? 'selected' : ''; ?>>Manufacturing & Supply Chain</option>
+                                            <option value="Media Entertainment" <?php echo ($industry == 'Media Entertainment') ? 'selected' : ''; ?>>Media & Entertainment</option>
+                                            <option value="NGOs" <?php echo ($industry == 'NGOs') ? 'selected' : ''; ?>>NGOs</option>
                                         </select>
                                         <br>
                                     </div>
@@ -166,10 +166,10 @@ if (isset($_GET['lead_id'])) {
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Category</label>
                                         <select id="category" name="category" class="form-control">
-                                            <option value="branding" <?php echo ($category == 'branding') ? 'selected' : ''; ?>>Branding</option>
-                                            <option value="digital" <?php echo ($category == 'digital') ? 'selected' : ''; ?>>Digital</option>
-                                            <option value="packaging" <?php echo ($category == 'packaging') ? 'selected' : ''; ?>>Packaging</option>
-                                            <option value="ecommerce" <?php echo ($category == 'ecommerce') ? 'selected' : ''; ?>>E-commerce</option>
+                                            <option value="Branding" <?php echo ($category == 'Branding') ? 'selected' : ''; ?>>Branding</option>
+                                            <option value="Digital" <?php echo ($category == 'Digital') ? 'selected' : ''; ?>>Digital</option>
+                                            <option value="Packaging" <?php echo ($category == 'Packaging') ? 'selected' : ''; ?>>Packaging</option>
+                                            <option value="E-commerce" <?php echo ($category == 'E-commerce') ? 'selected' : ''; ?>>E-commerce</option>
                                         </select>
                                         <br><br>
                                     </div>
@@ -185,13 +185,13 @@ if (isset($_GET['lead_id'])) {
                                   
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <select id="status" name="status" class="form-control">
-                                            <option value="new_lead" <?php echo ($status == 'new_lead') ? 'selected' : ''; ?>>New Lead</option>
-                                            <option value="open" <?php echo ($status == 'open') ? 'selected' : ''; ?>>Open</option>
-                                            <option value="in_progress" <?php echo ($status == 'in_progress') ? 'selected' : ''; ?>>In Progress</option>
-                                            <option value="quotation_shared" <?php echo ($status == 'quotation_shared') ? 'selected' : ''; ?>>Quotation Shared</option>
-                                            <option value="on_boarded" <?php echo ($status == 'on_boarded') ? 'selected' : ''; ?>>On Boarded</option>
-                                            <option value="dropout" <?php echo ($status == 'dropout') ? 'selected' : ''; ?>>Dropout</option>
+                                        <select id="statuss" name="status" class="form-control">
+                                            <option value="New Lead" <?php echo ($status == 'New Lead') ? 'selected' : ''; ?>>New Lead</option>
+                                            <option value="Open" <?php echo ($status == 'Open') ? 'selected' : ''; ?>>Open</option>
+                                            <option value="In Progress" <?php echo ($status == 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
+                                            <option value="Quotation Shared" <?php echo ($status == 'Quotation Shared') ? 'selected' : ''; ?>>Quotation Shared</option>
+                                            <option value="On Boarded" <?php echo ($status == 'On Boarded') ? 'selected' : ''; ?>>On Boarded</option>
+                                            <option value="Dropout" <?php echo ($status == 'Dropout') ? 'selected' : ''; ?>>Dropout</option>
                                         </select>
                                         <br><br>
                                     </div>
@@ -280,9 +280,8 @@ tinymce.init({
             var category = $('#category').val();
             var services_looking = $('#services_looking').val();
             var channel = $('#channel').val();
-            var status = $('#status').val();
+            var status = $('#statuss').val();
             var notes = tinymce.get('notes').getContent();
-
             $.ajax({
                url: "../../API/update_lead_api.php",
                 type: 'POST',

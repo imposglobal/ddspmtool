@@ -84,21 +84,21 @@ require('../../API/function.php');
                                     <label class="ctitle mb-3">Industry</label>
                                     <select id="industry" class="form-control">
                                         <option value="">Select Industry</option>
-                                        <option value="banking_financial_services">Banking & Financial Services</option>
-                                        <option value="healthcare">Healthcare</option>
-                                        <option value="insurance">Insurance</option>
-                                        <option value="retail_ecommerce">Retail & E-commerce</option>
-                                        <option value="telecommunications">Telecommunications</option>
-                                        <option value="travel_hospitality">Travel & Hospitality</option>
-                                        <option value="logistics">Logistics</option>
-                                        <option value="real_estate">Real Estate</option>
-                                        <option value="energy_utility">Energy & Utility</option>
-                                        <option value="it_technology">IT & Technology</option>
-                                        <option value="education_elearning">Education & E-Learning</option>
-                                        <option value="fmcg">FMCG</option>
-                                        <option value="manufacturing_supply_chain">Manufacturing & Supply Chain</option>
-                                        <option value="media_entertainment">Media & Entertainment</option>
-                                        <option value="ngos">NGOs</option>
+                                        <option value="Banking Financial Services">Banking & Financial Services</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                        <option value="Insurance">Insurance</option>
+                                        <option value="Retail E-commerce">Retail & E-commerce</option>
+                                        <option value="Telecommunications">Telecommunications</option>
+                                        <option value="Travel Hospitality">Travel & Hospitality</option>
+                                        <option value="Logistics">Logistics</option>
+                                        <option value="Real Estate">Real Estate</option>
+                                        <option value="Energy Utility">Energy & Utility</option>
+                                        <option value="IT Technology">IT & Technology</option>
+                                        <option value="Education E-Learning">Education & E-Learning</option>
+                                        <option value="FMCG">FMCG</option>
+                                        <option value="Manufacturing Supply Chain">Manufacturing & Supply Chain</option>
+                                        <option value="Media Entertainment">Media & Entertainment</option>
+                                        <option value="NGOs">NGOs</option>
                                     </select>
                                     <br><br>
                                 </div>
@@ -117,10 +117,10 @@ require('../../API/function.php');
                                         <label class="ctitle mb-3">Category</label>
                                         <select id="category" name="category" class="form-control">
                                             <option value="">Select Category</option>
-                                            <option value="branding">Branding</option>
-                                            <option value="digital">Digital</option>
-                                            <option value="packaging">Packaging</option>
-                                            <option value="ecommerce">E-commerce</option>
+                                            <option value="Branding">Branding</option>
+                                            <option value="Digital">Digital</option>
+                                            <option value="Packaging">Packaging</option>
+                                            <option value="E-commerce">E-commerce</option>
                                         </select>
                                         <br><br>
                                     </div>
@@ -134,14 +134,14 @@ require('../../API/function.php');
                                     </div>
                                     <div class="col-md-4">
                                         <label class="ctitle mb-3">Status</label>
-                                        <select id="status" class="form-control">
+                                        <select id="statuss" class="form-control">
                                             <option value="">Select Status</option>
-                                            <option value="new_lead">New Lead</option>
-                                            <option value="open">Open</option>
-                                            <option value="in_progress">In Progress</option>
-                                            <option value="quotation_shared">Quotation Shared</option>
-                                            <option value="on_boarded">On Boarded</option>
-                                            <option value="dropout">Dropout</option>
+                                            <option value="New Lead">New Lead</option>
+                                            <option value="Open">Open</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Quotation Shared">Quotation Shared</option>
+                                            <option value="On Boarded">On Boarded</option>
+                                            <option value="Dropout">Dropout</option>
                                         </select>
                                         <br> <br>
                                     </div>
@@ -190,7 +190,7 @@ $(document).ready(function() {
         var category = $('#category').val().trim();
         var services_looking = $('#services_looking').val().trim();
         var channel = $('#channel').val().trim();
-        var status = $('#status').val().trim();
+        var status = $('#statuss').val().trim();
         var notes = tinymce.get('notes').getContent().trim();
 
         

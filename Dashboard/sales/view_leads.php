@@ -154,12 +154,12 @@ require('../../API/function.php');
                           <div class="col-lg-2 mb-4">
                             <select class="form-select" name="client_status">
                               <option selected disabled="true">Select Status</option>
-                              <option value="new_lead">New Lead</option>
-                              <option value="open">Open</option>
-                              <option value="in_progress">In Progress</option>
-                              <option value="quotation_shared">Quotation Shared</option>
-                              <option value="on_boarded">On Boarded</option>
-                              <option value="dropout">Dropout</option>
+                              <option value="New Lead">New Lead</option>
+                              <option value="Open">Open</option>
+                              <option value="In Progress">In Progress</option>
+                              <option value="Quotation Shared">Quotation Shared</option>
+                              <option value="On Boarded">On Boarded</option>
+                              <option value="Dropout">Dropout</option>
 
                             </select>
                           </div>
@@ -317,13 +317,13 @@ if (!empty($where_conditions)) {
 
 $result = mysqli_query($db, $sql);
 $row = mysqli_fetch_assoc($result);
-$totalRecords = $row['total'];
-$totalPages = ceil($totalRecords / $recordsPerPage);
+// $totalRecords = $row['total'];
+// $totalPages = ceil($totalRecords / $recordsPerPage);
+$totalRecords = isset($row['total']) ? $row['total'] : 0;
+$totalPages = $recordsPerPage > 0 ? ceil($totalRecords / $recordsPerPage) : 0;
 
 pagination($page, $totalPages, $search_data,$client_status);
 ?>
-
-
 
     </section>
   </main>
@@ -370,7 +370,9 @@ pagination($page, $totalPages, $search_data,$client_status);
         var queryString = new URLSearchParams(formData).toString();
         
         // Redirect to the same page with the new query string
-        window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+        //window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+        window.location.href = 'https://dds.doodlo.in/Dashboard/sales/view_leads.php?' + queryString;
+
     });
 </script>
 
