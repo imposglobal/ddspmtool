@@ -23,10 +23,7 @@ function get_clients($db, $page = 1, $recordsPerPage = 10){
             echo '<td>'.htmlspecialchars($row["created_date"]).'</td>';
             echo '<td>'. $row["client_name"].'</td>';
             echo '<td>'. $row["business_name"].'</td>';
-            echo '<td>'. $row["industry"].'</td>';
             echo '<td>'. $row["status"].'</td>';
-            // echo '<td><i onclick="deleteClient('. $row["cid"].',\''. $row["business_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
-
             echo '<td>
            <i onclick="deleteClient('. $row["cid"].',\''. $row["business_name"].'\')" class="icon text-danger bi bi-trash3"></i></td>';
             echo '</tr>';

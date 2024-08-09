@@ -25,6 +25,16 @@ require('../../API/get_clients.php');
       margin:0 5px;
       cursor: pointer;
     }
+    .exportbtn
+    {
+      background-color: #012970;
+      color:#fff;
+    }
+    .exportbtn:hover
+    {
+      background-color: #012970;
+      color: #fff;
+    }
 </style>
 
 <main id="main" class="main">
@@ -38,6 +48,46 @@ require('../../API/get_clients.php');
         </ol>
       </nav>
     </div><!-- End Page Title -->
+
+    <!-- filter -->
+    <section class="section">
+    <form method="GET">
+    <div class="row">
+    <!-- status -->
+<div class="col-lg-4 mb-4">  
+<select class="form-select" name="time_status">
+    <option selected>Select Time</option>
+    <option value="today">Today</option>
+    <option value="yesterday">Yesterday</option>
+    <option value="weekly">This Week</option>
+    <option value="monthly">This Month</option> 
+</select>
+ </div>
+ <!-- status -->
+
+ <!-- start date -->
+ <div class="col-lg-3 mb-4">  
+ <input type="date" class="form-control" name="start_date">
+ </div>
+ <!-- start date -->
+
+<!-- end date -->
+<div class="col-lg-3 mb-4">  
+<input type="date" class="form-control" name="end_date">
+</div>
+<!-- end date -->
+
+<div class="col-lg-2 text-start">
+<button type="submit" name="show" class="btn btn-success">Show</button> 
+<button type="submit" formaction="../../API/export_clients.php" class="btn exportbtn ms-2">Export</button>  
+</div>
+
+
+     </div>
+     </form>
+    </section>
+
+    <!-- filter -->
 
     <section class="section">
       <div class="row">
@@ -57,7 +107,6 @@ require('../../API/get_clients.php');
                     <th scope="col">Date</th>
                     <th scope="col">Client</th>
                     <th scope="col">Buisness Name</th>
-                    <th scope="col">Industry</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
