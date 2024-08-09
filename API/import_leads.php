@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
         fgetcsv($file);
 
         // Prepare the SQL statement with placeholders
-        $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO sales_lead_generation (client_name, business_name, industry, email_id, contact_number,category, services_looking, channel, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)");
 
         // Process the CSV file line by line
         while (($row = fgetcsv($file, 1000, ',')) !== FALSE) {
@@ -83,16 +83,17 @@ if (isset($_POST['submit'])) {
             $row[5] = sprintf('%s', $row[5]);// Assuming contact_number is at index 4 (zero-indexed)
             // Bind the CSV data to the prepared statement
             $stmt->bind_param(
-                "sssssssss",
+                "ssssssssss",
                 $row[0],  // client_name
                 $row[1],  // business_name
                 $row[2],  // industry
                 $row[3],  // email_id
                 $row[4],  // contact_number (converted to string)
-                $row[5],  // services_looking
-                $row[6],  // channel
-                $row[7],  // status
-                $row[8]   // notes
+                $row[5],  // category
+                $row[6],  // services_looking
+                $row[7],  // channel
+                $row[8],  // status
+                $row[9]   // notes
             );
 
             // Execute the prepared statement

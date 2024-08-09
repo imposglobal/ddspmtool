@@ -138,6 +138,7 @@ function get_leads($base_url, $db, $page=1, $recordsPerPage, $start_date = null,
         $search_data = mysqli_real_escape_string($db, $search_data); // Prevent SQL injection
         $where_conditions[] = "(client_name LIKE '%$search_data%' 
                                OR email_id LIKE '%$search_data%' 
+                               OR business_name LIKE '%$search_data%'
                                OR contact_number LIKE '%$search_data%')";
     }
 /*********************** Query to search data by status  *************************/

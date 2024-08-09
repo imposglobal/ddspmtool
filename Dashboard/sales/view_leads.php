@@ -178,7 +178,7 @@ require('../../API/function.php');
 
               <!-- import button -->
             <div class="col-lg-5 mt-2 mb-3">
-            <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
+              <form action="../../API/import_leads.php" method="POST" enctype="multipart/form-data">
               <div class="row">
                           <!-- Start Date -->
                           <div class="col-lg-9 mb-4">
@@ -214,10 +214,14 @@ require('../../API/function.php');
                             <div> <h5 class="card-title pb-1 pt-4">Leads</h5></div>
                             <div class="px-2 pt-3"> 
                               <select class="form-control " name="entries_per_page" id="entries_per_page" >
+                                <!-- <option value="10">10</option> -->
                                 <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="75">75</option>
-                                <option value="100">100</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>                               
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
                                </select>      
                             </div>
                             </div>
@@ -279,18 +283,6 @@ require('../../API/function.php');
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
-                    // Usage:
-                    // $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                    // $recordsPerPage = 10;
-                    // $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
-                    // $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
-                    // $search_data = isset($_GET['search_data']) ? $_GET['search_data'] : '';
-                    // $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
-
-                    // get_leads($base_url,$db, $page, $recordsPerPage, $startDate, $endDate);
-                  ?> 
-
                       <?php
                       $page = isset($_GET['page']) ? $_GET['page'] : 1;
                       $recordsPerPage = isset($_GET['entries_per_page']) ? intval($_GET['entries_per_page']) : 10;
@@ -301,10 +293,8 @@ require('../../API/function.php');
 
                       get_leads($base_url, $db, $page, $recordsPerPage, $startDate, $endDate);
                       ?>
-
                 </tbody>
               </table>
-
                     </div>
                 </div>
             </div>
@@ -352,14 +342,14 @@ $totalRecords = isset($row['total']) ? $row['total'] : 0;
 $totalPages = $recordsPerPage > 0 ? ceil($totalRecords / $recordsPerPage) : 0;
 
 pagination($page, $totalPages, $search_data,$client_status);
+// pagination($page, $totalPages, $search_data,$client_status,$startDate, $endDate);
+
 ?>
 
     </section>
   </main>
   
   <!-- End #main -->
-
-
 
   <!-- /*************************************************** drawer code ********************************************************/  -->
 
@@ -399,8 +389,12 @@ pagination($page, $totalPages, $search_data,$client_status);
         var queryString = new URLSearchParams(formData).toString();
         
         // Redirect to the same page with the new query string
-        window.location.href = 'https://dds.doodlo.in/Dashboard/sales/view_leads.php?' + queryString;
-    });
+         //window.location.href = 'https://dds.doodlo.in/Dashboard/sales/view_leads.php?' + queryString;
+         window.location.reload();
+
+       // window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+
+});
 </script>
 
 <!-- script for entries per page -->

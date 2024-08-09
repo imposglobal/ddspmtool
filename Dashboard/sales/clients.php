@@ -35,6 +35,20 @@ require('../../API/get_clients.php');
       background-color: #012970;
       color: #fff;
     }
+
+    .importbtn{
+  background-color: orange;
+  color:#fff;
+ }
+ .importbtn:hover
+    {
+      background-color: orange;
+      color: #fff;
+    }
+ .download_empty_excel{
+    margin-left: 4px;
+    margin-top: -21px;
+}
 </style>
 
 <main id="main" class="main">
@@ -83,6 +97,27 @@ require('../../API/get_clients.php');
                 </div>
             </div>
         </form>
+
+        <div class="col-lg-5 mt-2 mb-3">
+            <form action="../../API/import_client_leads.php" method="POST" enctype="multipart/form-data">
+              <div class="row">
+                          <!-- Start Date -->
+                          <div class="col-lg-9 mb-4">
+                          <input  type="file" class="form-control" name="file" required>
+                          </div>
+                          <!-- End Date -->
+                          <div class="col-lg-3 mb-4">
+                            <input class="btn importbtn" type="submit" name="submit" value="Import">
+                          </div>
+                          <a href="../../API/empty_export_clients_api.php" class="download_empty_excel" >Download Template</a>
+
+              </div>
+
+            </form> 
+
+            </div> 
+
+
     </section>
 
     <!-- filter -->

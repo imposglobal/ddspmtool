@@ -2,7 +2,7 @@
 
     // Set headers for CSV export
     header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=sales_lead_generation.csv");
+    header("Content-Disposition: attachment; filename=client_leads.csv");
     header("Pragma: no-cache");
     header("Expires: 0");
 
