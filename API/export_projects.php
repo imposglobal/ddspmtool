@@ -47,7 +47,13 @@ require("db.php");
     if (!empty($start_date)) {
         $where_conditions[] = "task.created_at >= '$start_date'";
     }
+    // if (!empty($end_date)) {
+    //     $where_conditions[] = "task.created_at <= '$end_date'";
+    // }
+
+    // date('Y-m-d 23:59:59', strtotime($end_date)), which correctly includes the entire day of the end_date.
     if (!empty($end_date)) {
+        $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
         $where_conditions[] = "task.created_at <= '$end_date'";
     }
 

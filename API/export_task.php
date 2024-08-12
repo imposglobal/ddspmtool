@@ -9,6 +9,7 @@ require("db.php");
     $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
     $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
+
     // Set headers for CSV export
     header("Content-Type: text/csv");
     header("Content-Disposition: attachment; filename=employee_tasks.csv");
@@ -52,9 +53,16 @@ require("db.php");
     if (!empty($start_date)) {
         $where_conditions[] = "task.created_at >= '$start_date'";
     }
+
+
+    // date('Y-m-d 23:59:59', strtotime($end_date)), which correctly includes the entire day of the end_date.
     if (!empty($end_date)) {
+        $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
         $where_conditions[] = "task.created_at <= '$end_date'";
     }
+    // if (!empty($end_date)) {
+    //     $where_conditions[] = "task.created_at <= '$end_date'";
+    // }
 
     // Add conditions based on the selected status
     switch ($time_status) {
