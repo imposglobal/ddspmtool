@@ -213,16 +213,16 @@ require('../../API/function.php');
                             <div class="d-flex flex-row">
                             <div> <h5 class="card-title pb-1 pt-4">Leads</h5></div>
                             <div class="px-2 pt-3"> 
-                              <select class="form-control " name="entries_per_page" id="entries_per_page" >
-                                <!-- <option value="10">10</option> -->
-                                <option value="10">10</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>                               
-                                <option value="200">200</option>
-                                <option value="300">300</option>
-                                <option value="400">400</option>
-                                <option value="500">500</option>
-                               </select>      
+                            <form id="searchdata" method="GET" action="../../API/function.php">
+                                <select class="form-control" name="entries_per_page" id="entries_per_page">
+                                    <option value="10">10</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    
+                                </select>
+                                <!-- Other form inputs here -->
+                            </form>      
                             </div>
                             </div>
                             </div>
@@ -286,12 +286,12 @@ require('../../API/function.php');
                       <?php
                       $page = isset($_GET['page']) ? $_GET['page'] : 1;
                       $recordsPerPage = isset($_GET['entries_per_page']) ? intval($_GET['entries_per_page']) : 10;
-                      $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
-                      $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+                      $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+                      $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
                       $search_data = isset($_GET['search_data']) ? $_GET['search_data'] : '';
                       $client_status = isset($_GET['client_status']) ? $_GET['client_status'] : '';
 
-                      get_leads($base_url, $db, $page, $recordsPerPage, $startDate, $endDate);
+                      get_leads($base_url, $db, $page, $recordsPerPage, $start_date, $end_date);
                       ?>
                 </tbody>
               </table>
@@ -309,8 +309,8 @@ $sql = "SELECT COUNT(*) AS total FROM sales_lead_generation WHERE 1=1";
 
 $where_conditions = [];
 
-if ($startDate && $endDate) {
-    $where_conditions[] = "created_at BETWEEN '$startDate' AND '$endDate'";
+if ($start_date && $end_date) {
+    $where_conditions[] = "created_at BETWEEN '$start_date' AND '$end_date'";
 }
 
 /*********************** Query to search data by name ,email,mobile number  *************************/
@@ -318,6 +318,7 @@ if (!empty($search_data)) {
     $search_data = mysqli_real_escape_string($db, $search_data); // Prevent SQL injection
     $where_conditions[] = "(client_name LIKE '%$search_data%' 
                            OR email_id LIKE '%$search_data%' 
+                           OR business_name LIKE '%$search_data%'
                            OR contact_number LIKE '%$search_data%')";
 }
 
@@ -334,15 +335,16 @@ if (!empty($where_conditions)) {
     $sql .= " AND " . implode(" AND ", $where_conditions);
 }
 
+$entries_per_page = isset($_GET['entries_per_page']) ? intval($_GET['entries_per_page']) : 10;
 $result = mysqli_query($db, $sql);
 $row = mysqli_fetch_assoc($result);
 // $totalRecords = $row['total'];
 // $totalPages = ceil($totalRecords / $recordsPerPage);
 $totalRecords = isset($row['total']) ? $row['total'] : 0;
-$totalPages = $recordsPerPage > 0 ? ceil($totalRecords / $recordsPerPage) : 0;
+$totalPages = $recordsPerPage > 0 ? ceil($totalRecords / $entries_per_page) : 0;
 
-pagination($page, $totalPages, $search_data,$client_status);
-// pagination($page, $totalPages, $search_data,$client_status,$startDate, $endDate);
+//pagination($page, $totalPages, $search_data,$client_status);
+ pagination($page, $totalPages, $search_data,$client_status,$start_date, $end_date , $entries_per_page);
 
 ?>
 
@@ -371,10 +373,8 @@ pagination($page, $totalPages, $search_data,$client_status);
                <!-- end of drawer -->
             
             <!-- /*************************************************** drawer code end ********************************************************************/ -->
-            
-
-<!-- script for entries per page -->
-    <script>
+<!-- script for entries per page  -->
+    <!-- <script>
     document.getElementById('entries_per_page').addEventListener('change', function() {
         // Get the form element
         var form = document.getElementById('searchdata');
@@ -390,10 +390,19 @@ pagination($page, $totalPages, $search_data,$client_status);
         
         // Redirect to the same page with the new query string
          //window.location.href = 'https://dds.doodlo.in/Dashboard/sales/view_leads.php?' + queryString;
-         window.location.reload();
+         window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
 
-       // window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
+});
+</script> -->
 
+
+<script>
+document.getElementById('entries_per_page').addEventListener('change', function() {
+    var form = document.getElementById('searchdata');
+    var formData = new FormData(form);
+    formData.set('entries_per_page', this.value);
+    var queryString = new URLSearchParams(formData).toString();
+    window.location.href = 'http://localhost/ddspmtool/Dashboard/sales/view_leads.php?' + queryString;
 });
 </script>
 
@@ -424,10 +433,6 @@ function openLeadDrawer(lead_id) {
     });
 }
 </script>
-
-
-
-
 <!-- code to delete users -->
 <script>
 

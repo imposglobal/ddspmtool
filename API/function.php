@@ -216,58 +216,14 @@ function get_tasks($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 
 // pagination new code
 
-function pagination($currentPage, $totalPages,$search_data = '', $client_status = '')
-{
-    echo '<tr><td colspan="5">';
-    echo '<ul class="pagination justify-content-center">';
-    
-    // Previous page link
-    if ($currentPage > 1) {
-        echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage - 1).'">Previous</a></li>';
-    }
-
-    // Determine the range of page links to show
-    $startPage = max(1, $currentPage - 2);
-    $endPage = min($totalPages, $currentPage + 2);
-
-    if ($currentPage <= 3) {
-        $startPage = 1;
-        $endPage = min(5, $totalPages);
-    } elseif ($currentPage >= $totalPages - 2) {
-        $endPage = $totalPages;
-        $startPage = max(1, $totalPages - 4);
-    }
-
-    // Page links
-    for ($i = $startPage; $i <= $endPage; $i++) {
-        echo '<li class="page-item ';
-        if ($i == $currentPage) echo 'active';
-        echo '"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
-    }
-
-    // Next page link
-    if ($currentPage < $totalPages) {
-        echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage + 1).'">Next</a></li>';
-    }
-    
-    echo '</ul>';
-    echo '</td></tr>';
-}
-
-
-/*******************************  pagination code by krushna ***********************************/
-
-// function pagination($currentPage, $totalPages, $search_data = '', $client_status = '', $startDate = '', $endDate = '')
+// function pagination($currentPage, $totalPages,$search_data = '', $client_status = '')
 // {
 //     echo '<tr><td colspan="5">';
 //     echo '<ul class="pagination justify-content-center">';
-
-//     // Construct the base URL with the filter parameters
-//     $queryParams = "search_data=" . urlencode($search_data) . "&client_status=" . urlencode($client_status) . "&startDate=" . urlencode($startDate) . "&endDate=" . urlencode($endDate);
-
+    
 //     // Previous page link
 //     if ($currentPage > 1) {
-//         echo '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage - 1) . '&' . $queryParams . '">Previous</a></li>';
+//         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage - 1).'">Previous</a></li>';
 //     }
 
 //     // Determine the range of page links to show
@@ -286,20 +242,66 @@ function pagination($currentPage, $totalPages,$search_data = '', $client_status 
 //     for ($i = $startPage; $i <= $endPage; $i++) {
 //         echo '<li class="page-item ';
 //         if ($i == $currentPage) echo 'active';
-//         echo '"><a class="page-link" href="?page=' . $i . '&' . $queryParams . '">' . $i . '</a></li>';
+//         echo '"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
 //     }
 
 //     // Next page link
 //     if ($currentPage < $totalPages) {
-//         echo '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage + 1) . '&' . $queryParams . '">Next</a></li>';
+//         echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage + 1).'">Next</a></li>';
 //     }
-
+    
 //     echo '</ul>';
 //     echo '</td></tr>';
 // }
 
 
-/*******************************  pagination code by krushna *******************************/
+/*******************************  pagination code start by krushna ***********************************/
+
+function pagination($currentPage, $totalPages, $search_data = '', $client_status = '', $start_date = '', $end_date = '', $entries_per_page = 10)
+{
+    echo '<tr><td colspan="5">';
+    echo '<ul class="pagination justify-content-center">';
+
+    // Construct the base URL with the filter parameters
+    $queryParams = "search_data=" . urlencode($search_data) .
+                    "&client_status=" . urlencode($client_status) .
+                    "&start_date=" . urlencode($start_date) .
+                    "&end_date=" . urlencode($end_date) .
+                    "&entries_per_page=" . urlencode($entries_per_page);
+
+    // Previous page link
+    if ($currentPage > 1) {
+        echo '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage - 1) . '&' . $queryParams . '">Previous</a></li>';
+    }
+
+    // Determine the range of page links to show
+    $startPage = max(1, $currentPage - 2);
+    $endPage = min($totalPages, $currentPage + 2);
+
+    if ($currentPage <= 3) {
+        $startPage = 1;
+        $endPage = min(5, $totalPages);
+    } elseif ($currentPage >= $totalPages - 2) {
+        $endPage = $totalPages;
+        $startPage = max(1, $totalPages - 4);
+    }
+
+    // Page links
+    for ($i = $startPage; $i <= $endPage; $i++) {
+        echo '<li class="page-item ';
+        if ($i == $currentPage) echo 'active';
+        echo '"><a class="page-link" href="?page=' . $i . '&' . $queryParams . '">' . $i . '</a></li>';
+    }
+
+    // Next page link
+    if ($currentPage < $totalPages) {
+        echo '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage + 1) . '&' . $queryParams . '">Next</a></li>';
+    }
+
+    echo '</ul>';
+    echo '</td></tr>';
+}
+/*******************************  pagination code end by krushna *******************************/
 
 
 //get task count in dashboard
