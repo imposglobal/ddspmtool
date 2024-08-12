@@ -78,6 +78,7 @@ function get_clients($db, $page = 1, $recordsPerPage = 10){
             echo '<td>'. htmlspecialchars($row["business_name"]).'</td>';
             echo '<td>'. htmlspecialchars($row["status"]).'</td>';
             echo '<td>
+                   <a href="../../Dashboard/sales/view_leads_details.php?lead_id='. $row["lead_id"].'"><i class=" bi bi-pencil-square "></i></a>
                    <i onclick="deleteClient('. htmlspecialchars($row["cid"]).', \''. htmlspecialchars($row["business_name"]).'\')" class="icon text-danger bi bi-trash3"></i>
                   </td>';
             echo '</tr>';
