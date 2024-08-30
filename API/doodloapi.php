@@ -1,14 +1,6 @@
 <?php
-$allowedOrigins = [
-   'https://doodlodesigns.com',
-];
- 
-if(in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins))
-{
- $http_origin = $_SERVER['HTTP_ORIGIN'];
-} else {
- $http_origin = "'https://doodlodesigns.com";
-}
-header("Access-Control-Allow-Origin: $http_origin");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 echo"hii"; ?>
