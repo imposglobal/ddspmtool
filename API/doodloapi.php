@@ -2,9 +2,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
+header("Content-Type: application/json; charset=UTF-8"); // Set content type to JSON
 
-// Initialize an empty response array
 $response = [];
 
 // Read the raw input
@@ -15,15 +14,24 @@ $data = json_decode($json, true);
 
 // Check if data was received and process it
 if (is_array($data)) {
-    // Assign received data to response array
-    $response = [
-        'name' => $data['name'] ?? '',
-        'email' => $data['email'] ?? '',
-        'message' => $data['message'] ?? '',
-        'code' => $data['code'] ?? '',
-        'phone' => $data['phone'] ?? '',
-        'services' => $data['services'] ?? []
-    ];
+    if (isset($data['name'])) {
+        $response['name'] = $data['name'];
+    }
+    if (isset($data['email'])) {
+        $response['email'] = $data['email'];
+    }
+    if (isset($data['message'])) {
+        $response['message'] = $data['message'];
+    }
+    if (isset($data['code'])) {
+        $response['code'] = $data['code'];
+    }
+    if (isset($data['phone'])) {
+        $response['phone'] = $data['phone'];
+    }
+    if (isset($data['services'])) {
+        $response['services'] = $data['services'];
+    }
 } else {
     $response['error'] = 'Invalid JSON input';
 }
