@@ -33,7 +33,12 @@ if (is_array($data)) {
     $message = $conn->real_escape_string($data['message']);
     $code = $conn->real_escape_string($data['code']);
     $phone = $conn->real_escape_string($data['phone']);
+
+    // Check if services is set and encode it as JSON
     $services = isset($data['services']) ? json_encode($data['services']) : '';
+
+    // Debugging: Log or output the services data
+    error_log("Services: " . $services);
 
     // SQL to insert data
     $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
