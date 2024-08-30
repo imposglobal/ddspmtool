@@ -9,8 +9,14 @@ $response = [];
 // Read the raw input
 $json = file_get_contents('php://input');
 
+// Debugging: Log the raw JSON input
+file_put_contents('php://stderr', "Raw JSON Input: $json\n");
+
 // Decode the JSON input into a PHP array
 $data = json_decode($json, true);
+
+// Debugging: Log the decoded data
+file_put_contents('php://stderr', "Decoded Data: " . print_r($data, true) . "\n");
 
 // Check if data was received and process it
 if (is_array($data)) {
