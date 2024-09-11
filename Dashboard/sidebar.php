@@ -16,6 +16,7 @@
   <?php if($role == 0){ ?>         
      <hr/>
      <?php }?>
+
 <!-- /***************************************** Sales Start *****************************************************************/ -->
 
   <!-- Sales managment section start-->
@@ -37,7 +38,8 @@
           <i class="bi bi-person"></i>
           <span>View Leads</span>
         </a>
-      </li><!-- End view leads Nav -->
+      </li>
+      <!-- End view leads Nav -->
       
       
 
@@ -54,6 +56,27 @@
 <!-- /*************************************** Sales End *************************************************************/ -->
 
    
+<!-- /***************************************** Sales Start *****************************************************************/ -->
+
+  <!-- Sales managment section start-->
+  <?php if($role == 0){ ?>
+      <li class="nav-heading">Leads</li>
+    
+      
+      <!-- View leads -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?php echo $base_url;?>/Dashboard/websiteleads/view_website_leads.php">
+          <i class="bi bi-person"></i>
+          <span>Website Leads</span>
+        </a>
+      </li>
+      <!-- End view leads Nav -->
+      
+      <hr/>
+      <?php } ?>
+     
+<!-- /*************************************** Sales End *************************************************************/ -->
+
 
 
   <!-- /******************************************* Tasks Start ********************************************** */ -->
