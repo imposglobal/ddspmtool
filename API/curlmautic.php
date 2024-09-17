@@ -1,10 +1,7 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// function start
 /**
  * Function to get the OAuth access token
  *
@@ -95,83 +92,28 @@ function createContact($accessToken, $contactData) {
     // Return response
     return $result;
 }
-// function End
 
-$response = [];
+// Get the access token
+$accessToken = getAccessToken();
 
-// Database connection parameters
-$servername = "localhost";
-$username = "ballapo7_pmtool";
-$password = "pmtool@2024";
-$dbname = "ballapo7_pmtool";
+// Check if the access token was retrieved successfully
+if (strpos($accessToken, 'Error:') === false && strpos($accessToken, 'JSON decode error:') === false) {
+    // Define the contact data including tags
+    $contactData = [
+        'firstname' => 'John',
+        'lastname' => 'Doe',
+        'email' => 'john.doe@example.com',
+        'phone' => '123-456-7890',
+        'tags' => ['Doodlo'] // Tags to be added
+    ];
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+    // Create the contact
+    $response = createContact($accessToken, $contactData);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Read the raw input
-$json = file_get_contents('php://input');
-
-// Decode the JSON input into a PHP array
-$data = json_decode($json, true);
-
-// Check if data was received and process it
-if (is_array($data)) {
-    $name = $conn->real_escape_string($data['name']);
-    $email = $conn->real_escape_string($data['email']);
-    $message = $conn->real_escape_string($data['message']);
-    $code = $conn->real_escape_string($data['code']);
-    $phone = $conn->real_escape_string($data['phone']);
-
-    // Check if services is set and encode it as JSON
-    $services = isset($data['services']) ? json_encode($data['services']) : '';
-
-    // Debugging: Log or output the services data
-    error_log("Services: " . $services);
-
-    // SQL to insert data
-    $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
-            VALUES ('$name', '$email', '$message', '$code', '$phone', '$services')";
-
-
-    if ($conn->query($sql) === TRUE) {
-        $response['success'] = 'Record added successfully';
-        // Get the access token
-        $accessToken = getAccessToken();
-
-        // Check if the access token was retrieved successfully
-        if (strpos($accessToken, 'Error:') === false && strpos($accessToken, 'JSON decode error:') === false) {
-            // Define the contact data including tags
-            $contactData = [
-                'firstname' => $name,
-                'lastname' => ' ',
-                'email' => $email,
-                'phone' => $phone,
-                'tags' => ['Doodlo'] // Tags to be added
-            ];
-
-            // Create the contact
-            $response = createContact($accessToken, $contactData);
-
-           
+    // Output the response
+    echo 'Response: ' . $response;
 } else {
     // Output the error
     echo $accessToken;
 }
-    } else {
-        $response['error'] = 'Error: ' . $conn->error;
-    }
-} else {
-    $response['error'] = 'Invalid JSON input';
-}
-
-// Close connection
-$conn->close();
-
-// Output the response as JSON
-echo json_encode($response);
 ?>
