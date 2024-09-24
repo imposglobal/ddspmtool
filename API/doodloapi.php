@@ -7,7 +7,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 function welcomeEmail($email, $name, $message,  $codnum, $services){
     $employeeName = $name;
-    $to = 'rollikuts@gmail.com';
+    $to = 'hitesh@doodlodesigns.com';
     $subject = $name . ' DDS Website Lead';
     $message = "
         <p><b>Name - </b> $employeeName</p>
