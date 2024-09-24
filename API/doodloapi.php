@@ -28,11 +28,11 @@ function welcomeEmail($email, $name, $message,  $codnum, $services){
     $headers .= "Importance: High" . "\r\n"; // Set the importance level of the email
 
     // Sending email
-    // if (mail($to, $subject, $message, $headers)) {
+    if (mail($to, $subject, $message, $headers)) {
      
-    // } else {
+    } else {
       
-    // }
+    }
 }
 
 // function start
