@@ -6,10 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // Email Noti
 function welcomeEmail($email, $name, , $codnum, $message , $services){
-    $employeeName = $fname . " " . $lname;
-    $to = $email;
-    $subject = $fname.'-'.'Lead Entry From DDS Website';
-    $message = "
+    
 <html>
 <head>
   <title>Email Form Submission</title>
