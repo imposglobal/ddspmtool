@@ -4,73 +4,6 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Email Noti
-function welcomeEmail($email, $name, $fname, $codnum, $message, $services) {
-    $emailContent = "
-    <html>
-    <head>
-        <title>Email Form Submission</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
-            }
-            th, td {
-                padding: 10px;
-                text-align: left;
-            }
-        </style>
-    </head>
-    <body>
-        <h2>Form Submission Details</h2>
-        <table>
-            <tr>
-                <th>Name</th>
-                <td>{$fname}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{$email}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{$codnum}</td>
-            </tr>
-            <tr>
-                <th>Services</th>
-                <td>{$services}</td>
-            </tr>
-            <tr>
-                <th>Message</th>
-                <td>{$message}</td>
-            </tr>
-        </table>
-    </body>
-    </html>
-    ";
-
-    // Headers for the email
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n";
-    $headers .= "Reply-To: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n"; 
-    $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n"; 
-    $headers .= "X-Priority: 1" . "\r\n"; 
-    $headers .= "X-MSMail-Priority: High" . "\r\n"; 
-    $headers .= "Importance: High" . "\r\n";
-
-    // Send email
-    mail($email, "Form Submission Details", $emailContent, $headers);
-    // if (mail($email, "Form Submission Details", $emailContent, $headers)) {
-    //     return "Email sent successfully!";
-    // } else {
-    //     return "Failed to send email!";
-    // }
-}
-
 
 
 
@@ -206,9 +139,7 @@ if (is_array($data)) {
     // SQL to insert data
     $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
             VALUES ('$name', '$email', '$message', '$code', '$phone', '$services')";
-      $codnum = $code. $phone;
-     welcomeEmail($email, $name, , $codnum, $message , $services);
-
+   
 
     if ($conn->query($sql) === TRUE) {
         $response['success'] = 'Record added successfully';
