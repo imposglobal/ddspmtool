@@ -37,5 +37,5 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
     }
 }
 
-//welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
+welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
 ?>
