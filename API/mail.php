@@ -30,11 +30,11 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
     $headers .= "Importance: High" . "\r\n"; // Set the importance level of the email
 
     // Sending email
-    if (mail($to, $subject, $message, $headers)) {
+    // if (mail($to, $subject, $message, $headers)) {
      
-    } else {
+    // } else {
       
-    }
+    // }
 }
 
 welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
