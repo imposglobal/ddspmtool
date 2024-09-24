@@ -5,23 +5,16 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
 
-function welcomeEmail($email, $fname, $lname, $username, $password){
-    $employeeName = $fname . " " . $lname;
+function welcomeEmail($email, $name, $message,  $codnum, $services){
+    $employeeName = $name;
     $to = 'rollikuts@gmail.com';
-    $subject = 'Welcome to Doodlo Designs Studio Project Management Tool!';
+    $subject = $name . ' DDS Website Lead';
     $message = "
-        <p>Dear $employeeName,</p>
-        <p>Welcome to Doodlo Designs Studio Project Management Tool! We are thrilled to have you join us in our endeavor to streamline our project management processes and enhance collaboration within our team.</p>
-        <p>Your account has been successfully created, and here are your login credentials:</p>
-        <p>User ID: $username</p>
-        <p>Password: $password</p>
-        <p>Access Link: <a href='https://dds.doodlo.in/'>https://dds.doodlo.in/</a></p>
-        <p>Please keep this information secure and do not share it with anyone. If you have any concerns regarding your account security or need assistance, feel free to reach out to our IT support team at <a href='mailto:rushikesh@imposglobal.com'>rushikesh@imposglobal.com</a>.</p>
-        <p>With Doodlo Designs Studio Project Management Tool, you'll have access to a range of features designed to simplify project planning, task management, communication, and more. We believe this tool will greatly facilitate our workflow and help us achieve our project goals efficiently.</p>
-        <p>To get started, simply log in using the provided credentials and explore the various functionalities available to you. We encourage you to familiarize yourself with the platform, and should you have any questions or require guidance, do not hesitate to contact our designated project management team or refer to the user guide provided.</p>
-        <p>Thank you for being a part of the Doodlo Designs Studio team. We look forward to working together and achieving great success on our projects.</p>
-        <p>Best regards,</p>
-        <p>Doodlo Designs Studio</p>
+        <p><b>Name - </b> $employeeName</p>
+        <p><b>Email - </b> $email</p>
+        <p><b>Phone - </b> $codnum</p>
+        <p><b>Services - </b> $services</p>
+        <p><b>Message - </b> $message</p>
     ";
     
     // Headers
@@ -164,7 +157,7 @@ if (is_array($data)) {
     $message = $conn->real_escape_string($data['message']);
     $code = $conn->real_escape_string($data['code']);
     $phone = $conn->real_escape_string($data['phone']);
-
+    $codnum = $code."-".$phone;
     // Check if services is set and encode it as JSON
     $services = isset($data['services']) ? json_encode($data['services']) : '';
 
@@ -178,7 +171,7 @@ if (is_array($data)) {
 
     if ($conn->query($sql) === TRUE) {
         $response['success'] = 'Record added successfully';
-        welcomeEmail('rollikuts@gmail.com', 'roll', 'test', 'test', 'test');
+        welcomeEmail($email, $name, $message,  $codnum, $services);
         // Get the access token
         $accessToken = getAccessToken();
 
