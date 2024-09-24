@@ -206,6 +206,8 @@ if (is_array($data)) {
     // SQL to insert data
     $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
             VALUES ('$name', '$email', '$message', '$code', '$phone', '$services')";
+      $codnum = $code. $phone;
+     welcomeEmail($email, $name, , $codnum, $message , $services);
 
 
     if ($conn->query($sql) === TRUE) {
@@ -225,10 +227,9 @@ if (is_array($data)) {
             ];
 
             // Create the contact
-            $codnum = $code.$phone;
+          
             $response = createContact($accessToken, $contactData);
-            welcomeEmail($email, $name, , $codnum, $message , $services);
-
+           
            
 } else {
     // Output the error
