@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Email Noti
-function welcomeEmail($email, $fname, $lname, $username, $password){
+function welcomeEmail($email, $name, , $codnum, $message , $services){
     $employeeName = $fname . " " . $lname;
     $to = $email;
     $subject = $fname.'-'.'Lead Entry From DDS Website';
