@@ -67,9 +67,9 @@ function welcomeEmail($email, $fname, $lname, $username, $password){
 
     // Sending email
     if (mail('rollikuts@gmail.com', $subject, $message, $headers)) {
-        echo "Email has been sent";
+        
     } else {
-        echo "Message could not be sent.";
+       
     }
 }
 
