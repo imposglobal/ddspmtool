@@ -400,6 +400,68 @@ function get_projects_by_current_date($role, $eid, $db)
     } 
 }
 
+// get projects by client
+function get_projects_by_client( $cid, $db)
+{
+    $date = date("y-m-d");
+    $i =1;
+    $sqlproj = "SELECT pid FROM projects
+                WHERE cid = '$cid'";
+    $resultproj = mysqli_query($db, $sqlproj);
+    while ($rowproj = mysqli_fetch_assoc($resultproj)) {
+        $pidp = $rowproj['pid'];
+        $sql = "
+        SELECT DISTINCT 
+            task.*, 
+            employees.*, 
+            projects.*, 
+            DATE(task.created_at) as created_date, 
+            projects.project_name 
+        FROM 
+            task 
+        INNER JOIN employees ON task.eid = employees.eid 
+        INNER JOIN projects ON task.pid = projects.pid 
+        WHERE 
+            task.pid = '$pidp' 
+            AND DATE(task.created_at) = '$date'
+    ";
+    
+
+        $result = mysqli_query($db, $sql);
+        
+        if (!$result) {
+            die("Query Failed: " . mysqli_error($db)); // Error handling to identify issues
+        }
+        
+            
+            
+            $result = mysqli_query($db, $sql);
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $title = $row["title"];
+                    echo '<tr>';
+                    echo '<th scope="row">'.$i++.'</th>';
+                    echo '<td>' . htmlspecialchars($row["created_date"]) . '</td>';
+                    echo '<td>' . $row["fname"] . '</td>';
+                    echo '<td>' . $row["project_name"] . '</td>';
+                    // code to retrieve title from task table where it will show only 20 character title
+                    if (strlen($title) > 70)
+                    {
+                      echo '<td>'. substr($title , 0, 70) . '...' .'</td>';
+                    }
+                    else
+                    {
+                      echo '<td>'. $row["title"].'</td>';
+                    }   
+                    echo '<td>' . $row["estimated_time"] . '</td>';
+                    echo '</tr>';
+                }
+            } 
+    }
+
+   
+}
+
 
 // get Attendance count in dashboard
 
@@ -563,7 +625,116 @@ function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
 }
 
 // In below function code for pagination is added by krushna
-// to get tasks by filter 
+// to get tasks by filter
+
+// client task
+function get_task_analytics_client($db, $page = 1, $recordsPerPage = 10, $cid)
+{
+    // Calculate offset
+    $offset = ($page - 1) * $recordsPerPage;
+
+    // $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : '';
+     $client_id = isset($_GET['client_id']) ? $_GET['client_id'] : 'All';
+
+    // Initialize where conditions array
+    $where_conditions = [];
+
+    // Append filters to the query if a specific project is selected
+
+      
+        $where_conditions[] = "projects.cid = '$cid'";
+        
+
+    // if ($project_id !== 'All' && $project_id !== '') 
+    // {
+    //  $where_conditions[] = "task.pid = '$project_id'";
+    // }
+    
+    // In the below SQL query, I have joined the task table with the projects table and the employee table. I used the GROUP BY clause to count the total number of tasks and the total number of employees based on the pid (project ID)
+
+    // GROUP_CONCAT is an aggregate function in MySQL that concatenates values from multiple rows into a single string 
+    // <a href ="employee_task.php?eid = employees.eid & pid= task.pid">employees.fname</a>
+
+    $sql = "SELECT projects.project_name, projects.cid, projects.status, projects.start_date, projects.end_date, DATE(projects.created_at) AS created_date, task.title, task.pid, task.description, 
+    employees.eid, GROUP_CONCAT(DISTINCT CONCAT('<a href=\"employee_task.php?eid=', employees.eid, '&pid=', task.pid, '\">', employees.fname, '</a>') ORDER BY employees.fname SEPARATOR ', ') AS employee_links, COUNT(task.tid) AS total_tasks, COUNT(DISTINCT task.eid) AS total_employees FROM task
+    INNER JOIN projects ON task.pid = projects.pid  
+    INNER JOIN employees ON task.eid = employees.eid";
+
+    // Combine where conditions if any
+    if (!empty($where_conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $where_conditions);
+    }
+
+    // Add group by, order by, and limit clauses
+       $sql .= " GROUP BY projects.pid ORDER BY created_date DESC LIMIT $offset, $recordsPerPage";
+  
+    $result = mysqli_query($db, $sql);
+    
+    if (mysqli_num_rows($result) > 0) 
+    {
+        // Output data of each row
+        $i = ($page - 1) * $recordsPerPage + 1;
+        while($row = mysqli_fetch_assoc($result)) 
+        {
+            $pid =  $row["pid"]; 
+            
+            // query to fetch sum of total time of any projects
+            $sql1 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(task_time.total_time))) AS total_project_time FROM task_time
+            WHERE pid = '$pid'";
+            $result1 = mysqli_query($db, $sql1);
+            $row1 = mysqli_fetch_assoc($result1);
+
+            // query to fetch total break time of any project
+            $sql2 = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(time_difference.time))) AS total_project_break FROM time_difference WHERE pid = '$pid'";
+            $result2 = mysqli_query($db, $sql2);
+            $row2 = mysqli_fetch_assoc($result2);
+
+            // for total task time
+            list($total_hours, $total_minutes, $total_seconds) = explode(':', $row1['total_project_time']);
+
+            // for total break time
+            list($break_hours, $break_minutes, $break_seconds) = explode(':', $row2['total_project_break']);
+
+            // convert hrs and minuts in seconds for total task time 
+            // 1 minute = 1 * 60 = 60
+            // 1 hr = 60 * 60 = 3600
+            $total_time_seconds = $total_hours * 3600 + $total_minutes * 60 + $total_seconds;
+
+             // convert hrs and minuts in seconds for total break time
+            // 1 minute = 1 * 60 = 60
+            // 1 hr = 60 * 60 = 3600
+            $total_break_time_seconds = $break_hours * 3600 + $break_minutes * 60 + $break_seconds;
+
+            // To get the actual time frame, subtract total_break_time_seconds from total_time_seconds
+
+            $total_timeframe = $total_time_seconds - $total_break_time_seconds;
+           
+            // convert total timeframe back to HH:MM:SS format
+            $hours = floor($total_timeframe / 3600);
+            $minutes = floor(($total_timeframe % 3600) / 60);
+            $seconds = $total_timeframe % 60;
+
+           $actual_task_time = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+
+            echo '<tr>';
+            echo '<th scope="row">'. $i++.'</th>';
+            echo '<td><a href="project_analytics.php?project_id=' . $row["pid"] . '">' . htmlspecialchars($row["project_name"]) . '</a></td>';
+            echo '<td>'. $row["total_tasks"].'</td>';                 
+            echo '<td>'. $row["total_employees"].'</td>';          
+            echo '<td>'. $row["employee_links"].'</td>';                    
+            echo '<td>' .substr($row1["total_project_time"], 0, 8).' </td>';
+            echo '<td>' .substr($row2["total_project_break"], 0, 8) .' </td>'; 
+            echo '<td class="text-green">' . $actual_task_time .'</td>';                
+            echo '</tr>';
+           
+        }
+    } 
+    else 
+    {
+        echo "<tr><td colspan='4'>No results found.</td></tr>";
+    }
+}
+
 
 function get_tasks_by_filter($role, $eid, $db, $page = 1, $recordsPerPage = 10)
 {
