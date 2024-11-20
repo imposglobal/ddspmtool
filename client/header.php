@@ -4,11 +4,11 @@ $session = session_start();
 if(isset($_SESSION['username'])) {
     $name = $_SESSION['name'];
     $cid = $_SESSION['cid'];
-    $base_url="http://".$_SERVER['SERVER_NAME'];
-    if($base_url == "http://localhost/ddspmtool/"){
-      $base_url="http://".$_SERVER['SERVER_NAME'];
+    $base_url="https://".$_SERVER['SERVER_NAME'];
+    if($base_url == "https://dds.doodlo.in"){
+      $base_url="https://".$_SERVER['SERVER_NAME'];
     }else{
-      $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
+      $base_url="https://".$_SERVER['SERVER_NAME']."/ddspmtool";
     }
 
 } else {
