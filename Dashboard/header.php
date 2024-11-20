@@ -6,11 +6,11 @@ if(isset($_SESSION['username'])) {
     $desgn = $_SESSION['design'];
     $eid = $_SESSION['eid'];
     $role = $_SESSION['role'];
-    $base_url="https://".$_SERVER['SERVER_NAME'];
-    if($base_url == "https://dds.doodlo.in"){
-      $base_url="https://".$_SERVER['SERVER_NAME'];
+    $base_url="http://".$_SERVER['SERVER_NAME'];
+    if($base_url == "http://localhost/ddspmtool/"){
+      $base_url="http://".$_SERVER['SERVER_NAME'];
     }else{
-      $base_url="https://".$_SERVER['SERVER_NAME']."/ddspmtool";
+      $base_url="http://".$_SERVER['SERVER_NAME']."/ddspmtool";
     }
 
 } else {
@@ -33,8 +33,8 @@ if(isset($_SESSION['username'])) {
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="https://dds.doodlo.in/assets/img/favicon.png" rel="icon">
-  <link href="https://dds.doodlo.in/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://dds.doodlo.in/assets/img/logo.png" rel="icon">
+  <link href="https://dds.doodlo.in/assets/img/logo.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">

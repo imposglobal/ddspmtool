@@ -118,7 +118,7 @@ require('../../API/function.php');
                     <div class="card-body">
                       <h5 class="card-title">Select Task Type</h5>
                       <select id="ttype" class="form-select" aria-label="Default select example">
-                        <option selected="">Select Task Type</option>
+                        <option selected="" disabled>Select Task Type</option>
                         <option value="Research">Research</option>
                         <option value="Original Project">Original Project</option>
                         <option value="Changes">Changes</option>
@@ -131,9 +131,9 @@ require('../../API/function.php');
                     <div class="card-body">
                       <h5 class="card-title">Select Project</h5>
                       <select id="pname" class="form-select" aria-label="Default select example">
-                        <option selected="">Select Project</option>
+                        <option selected="" disabled>Select Project</option>
                         <?php 
-                        $sql = "SELECT * FROM projects";
+                        $sql = "SELECT * FROM projects ORDER BY pid DESC";
                         $result = mysqli_query($db, $sql);
                         if (mysqli_num_rows($result) > 0) {
                           while($row = mysqli_fetch_assoc($result)) {
@@ -150,7 +150,7 @@ require('../../API/function.php');
                     <div class="card-body">
                       <h5 class="card-title">Select Project Type</h5>
                       <select id="project_type" class="form-select" aria-label="Default select example">
-                        <option selected="">Select Project Type</option>
+                        <option selected="" disabled>Select Project Type</option>
                         <option value="social-media">Social Media</option>
                         <option value="branding">Branding</option>
                         <option value="packaging">Packaging</option>
