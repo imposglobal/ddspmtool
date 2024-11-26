@@ -33,8 +33,8 @@ if(isset($_SESSION['username'])) {
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="https://dds.doodlo.in/assets/img/logo.png" rel="icon">
-  <link href="https://dds.doodlo.in/assets/img/logo.png" rel="apple-touch-icon">
+  <link href="https://dds.doodlo.in/assets/img/Favicon2.png" rel="icon">
+  <link href="https://dds.doodlo.in/assets/img/Favicon2.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
