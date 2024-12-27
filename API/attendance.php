@@ -1,4 +1,9 @@
 <?php
+// Report all PHP errors
+error_reporting(E_ALL);
+
+// Report all PHP errors
+error_reporting(-1);
 require("db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
