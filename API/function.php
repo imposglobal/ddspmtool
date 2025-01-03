@@ -628,7 +628,7 @@ function get_task_analytics($db, $page = 1, $recordsPerPage = 10)
 // to get tasks by filter
 
 // client task
-function get_task_analytics_client($db, $page = 1, $recordsPerPage = 10, $cid)
+function get_task_analytics_client($db, $page = 1, $cid, $recordsPerPage = 10)
 {
     // Calculate offset
     $offset = ($page - 1) * $recordsPerPage;
