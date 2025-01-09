@@ -85,7 +85,7 @@ require('../../API/function.php');
                     // Usage:
                     $page = isset($_GET['page']) ? $_GET['page'] : 1;
                     $recordsPerPage = 10;
-                    get_task_analytics_client($db, $page, $recordsPerPage,$cid);
+                    get_task_analytics_client($db, $cid, $page, $recordsPerPage);
                   ?> 
                 </tbody>
               </table>

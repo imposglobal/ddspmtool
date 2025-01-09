@@ -4,8 +4,10 @@ $session = session_start();
 if(isset($_SESSION['username'])) {
     $name = $_SESSION['name'];
     $desgn = $_SESSION['design'];
-    $eid = $_SESSION['eid'];
-    $role = $_SESSION['role'];
+    // $eid = $_SESSION['eid'];
+    // $role = $_SESSION['role'];
+    $eid = isset($_SESSION['eid']) ? $_SESSION['eid'] : null;  // Default to null if not set
+    $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;  // Default to null if not set
     $base_url="https://".$_SERVER['SERVER_NAME'];
     if($base_url == "https://dds.doodlo.in"){
       $base_url="https://".$_SERVER['SERVER_NAME'];

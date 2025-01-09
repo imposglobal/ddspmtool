@@ -159,7 +159,8 @@ require('../../API/function.php');
                         <option value="illustration">Illustration</option>
                         <option value="products">Products</option>
                         <option value="paid-ads">Paid Ads</option>
-                        <option value="seo">SEO</option>   
+                        <option value="seo">SEO</option>
+                        <option value="paid-ads&eso">Paid Ads & SEO</option>   
                       </select>
                    </div>
                 </div>

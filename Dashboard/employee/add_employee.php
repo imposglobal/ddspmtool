@@ -116,10 +116,12 @@
                         <option value="Jr. Graphics Designer">Jr. Graphics Designer</option>
                         <option value="Intermediate Graphics Designer">Intermediate Graphics Designer</option>
                         <option value="Illustrator Designer">Illustrator Designer</option>
+                        <option value="Visual Designer">Visual Designer</option>
                         <option value="Design Intern">Design Intern</option>
                         <option value="Digital Marketing Executive">Digital Marketing Executive</option>
                         <option value="Digital Marketing Intern">Digital Marketing Intern</option>
                         <option value="Digital Marketing Manager">Digital Marketing Manager</option>
+                       
                      </select>
                      <div class="invalid-feedback">
                         Please select a valid Designation.
