@@ -40,7 +40,7 @@ require('../../API/function.php');
       <h1>Projects</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/Dashboard/index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo $base_url;?>/client/dashboard.php">Home</a></li>
           <li class="breadcrumb-item active">Projects Analytics</li>
         </ol>
       </nav>
