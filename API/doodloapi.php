@@ -4,206 +4,89 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
+/**
+ * Function to send email via SMTP without using external libraries
+ */
+function welcomeEmail($email, $name, $message, $codnum, $services) {
+    $smtpHost = 'mail.doodlodesign.com'; // Replace with your SMTP server
+    $smtpPort = 465; // Typically 587 for TLS or 465 for SSL
+    $smtpUser = 'support@doodlodesign.com'; // Your SMTP username
+    $smtpPass = 'YXgLE6m)v}6o'; // Your SMTP password
 
-function welcomeEmail($email, $name, $message,  $codnum, $services){
-    $employeeName = $name;
-    $to = 'hitesh@doodlodesigns.com';
-    $subject = $name . ' DDS Website Lead';
-    $message = "
-        <p><b>Name - </b> $employeeName</p>
+    $to = 'rushikesh@imposglobal.com';
+    $subject = "$name DDS Website Lead";
+
+    $emailBody = "
+        <p><b>Name - </b> $name</p>
         <p><b>Email - </b> $email</p>
         <p><b>Phone - </b> $codnum</p>
         <p><b>Services - </b> $services</p>
         <p><b>Message - </b> $message</p>
     ";
-    
-    // Headers
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n";
-    $headers .= "Reply-To: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n"; // Set the reply-to address
-    $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n"; // Add information about the mailer
-    $headers .= "X-Priority: 1" . "\r\n"; // Set the priority of the email (1 is highest)
-    $headers .= "X-MSMail-Priority: High" . "\r\n"; // Set the priority for Microsoft email clients
-    $headers .= "Importance: High" . "\r\n"; // Set the importance level of the email
 
-    // Sending email
-    if (mail($to, $subject, $message, $headers)) {
-     
-    } else {
-      
-    }
-}
-
-// function start
-/**
- * Function to get the OAuth access token
- *
- * @return string The access token or an error message
- */
-function getAccessToken() {
-    // Initialize cURL
-    $ch = curl_init();
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_URL, 'https://marketing.k99bs.com/oauth/v2/token');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'grant_type' => 'client_credentials',
-        'client_id' => '4_kszm8z5f3eo00s84wogkcs8c4gggooow00gsckc8kc04wsggg',
-        'client_secret' => '513t8hjf4nk8gc8wk0sko0kswwwoowkkkcsggsk8okgos8o000'
-    ]));
-
-    // Set headers
-    $headers = [
-        'Content-Type: application/x-www-form-urlencoded'
+    // SMTP commands
+    $commands = [
+        "HELO $smtpHost\r\n",
+        "AUTH LOGIN\r\n",
+        base64_encode($smtpUser) . "\r\n",
+        base64_encode($smtpPass) . "\r\n",
+        "MAIL FROM: <$smtpUser>\r\n",
+        "RCPT TO: <$to>\r\n",
+        "DATA\r\n",
+        "Subject: $subject\r\n" .
+        "To: $to\r\n" .
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" .
+        "$emailBody\r\n.\r\n",
+        "QUIT\r\n"
     ];
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-    // Execute cURL request
-    $result = curl_exec($ch);
+    // Connect to SMTP server
+    $socket = stream_socket_client("tcp://$smtpHost:$smtpPort", $errno, $errstr, 10);
 
-    // Check for cURL errors
-    if (curl_errno($ch)) {
-        $error = 'Error: ' . curl_error($ch);
-        curl_close($ch);
-        return $error;
+    if (!$socket) {
+        return "Failed to connect: $errstr ($errno)";
     }
 
-    // Decode JSON response
-    $responseData = json_decode($result, true);
+    $response = '';
 
-    // Close cURL session
-    curl_close($ch);
+    foreach ($commands as $command) {
+        fwrite($socket, $command);
+        $response .= fgets($socket, 512);
+    }
 
-    // Check if decoding was successful
-    if (json_last_error() === JSON_ERROR_NONE) {
-        // Return access token
-        return $responseData['access_token'] ?? 'No access token found';
+    fclose($socket);
+
+    // Check for successful response
+    if (strpos($response, '250 OK') !== false) {
+        return true; // Email sent successfully
     } else {
-        return 'JSON decode error: ' . json_last_error_msg();
+        return "Failed to send email. Response: $response";
     }
 }
 
-/**
- * Function to create a contact in Mautic with tags
- *
- * @param string $accessToken The OAuth access token
- * @param array $contactData The contact data to be sent
- * @return string The response from Mautic or an error message
- */
-function createContact($accessToken, $contactData) {
-    // Initialize cURL
-    $ch = curl_init();
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_URL, 'https://marketing.k99bs.com/api/contacts/new');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($contactData));
-    
-    // Set headers
-    $headers = [
-        'Content-Type: application/json',
-        'Authorization: Bearer ' . $accessToken
-    ];
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    // Execute cURL request
-    $result = curl_exec($ch);
-
-    // Check for cURL errors
-    if (curl_errno($ch)) {
-        $error = 'Error: ' . curl_error($ch);
-        curl_close($ch);
-        return $error;
-    }
-
-    // Close cURL session
-    curl_close($ch);
-
-    // Return response
-    return $result;
-}
-// function End
-
+// Example usage of the function
 $response = [];
+$data = json_decode(file_get_contents('php://input'), true);
 
-// Database connection parameters
-$servername = "localhost";
-$username = "ballapo7_pmtool";
-$password = "pmtool@2024";
-$dbname = "ballapo7_pmtool";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Read the raw input
-$json = file_get_contents('php://input');
-
-// Decode the JSON input into a PHP array
-$data = json_decode($json, true);
-
-// Check if data was received and process it
 if (is_array($data)) {
-    $name = $conn->real_escape_string($data['name']);
-    $email = $conn->real_escape_string($data['email']);
-    $message = $conn->real_escape_string($data['message']);
-    $code = $conn->real_escape_string($data['code']);
-    $phone = $conn->real_escape_string($data['phone']);
-    $codnum = $code."-".$phone;
-    // Check if services is set and encode it as JSON
+    $name = $data['name'];
+    $email = $data['email'];
+    $message = $data['message'];
+    $code = $data['code'];
+    $phone = $data['phone'];
+    $codnum = $code . "-" . $phone;
     $services = isset($data['services']) ? json_encode($data['services']) : '';
 
-    // Debugging: Log or output the services data
-    error_log("Services: " . $services);
+    $emailResult = welcomeEmail($email, $name, $message, $codnum, $services);
 
-    // SQL to insert data
-    $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
-            VALUES ('$name', '$email', '$message', '$code', '$phone', '$services')";
-   
-
-    if ($conn->query($sql) === TRUE) {
-        $response['success'] = 'Record added successfully';
-        welcomeEmail($email, $name, $message,  $codnum, $services);
-        // Get the access token
-        $accessToken = getAccessToken();
-
-        // Check if the access token was retrieved successfully
-        if (strpos($accessToken, 'Error:') === false && strpos($accessToken, 'JSON decode error:') === false) {
-            // Define the contact data including tags
-            $contactData = [
-                'firstname' => $name,
-                'lastname' => ' ',
-                'email' => $email,
-                'phone' => $phone,
-                'tags' => ['Doodlo'] // Tags to be added
-            ];
-
-            // Create the contact
-          
-            $response = createContact($accessToken, $contactData);
-           
-           
-} else {
-    // Output the error
-    echo $accessToken;
-}
+    if ($emailResult === true) {
+        $response['success'] = 'Email sent successfully';
     } else {
-        $response['error'] = 'Error: ' . $conn->error;
+        $response['error'] = $emailResult;
     }
 } else {
     $response['error'] = 'Invalid JSON input';
 }
-
-// Close connection
-$conn->close();
 
 // Output the response as JSON
 echo json_encode($response);
