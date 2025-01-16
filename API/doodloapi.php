@@ -8,6 +8,51 @@ require '../assets/PHPMailer/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Send Feedback Email
+function sendFeedbackEmail($email, $name, $message, $codnum, $services)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP configuration
+        $mail->isSMTP();
+        $mail->Host = 'mail.doodlodesign.com';  // SMTP server
+        $mail->SMTPAuth = true;
+        $mail->Username = 'support@doodlodesign.com'; // SMTP username
+        $mail->Password = 'doodlo@2025'; // SMTP password  
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; // Use 587 for STARTTLS
+        $mail->Timeout = 30;
+
+        // Load the feedback.html template from URL
+        $feedbackTemplate = file_get_contents('https://dds.doodlo.in/API/feedback.html');
+
+        // Replace placeholders in the feedback template (if any)
+        $feedbackTemplate = str_replace('{{name}}', $name, $feedbackTemplate);
+
+        // Set sender and recipient
+        $mail->setFrom('support@doodlodesign.com', 'Doodlo Design Studio');
+        $mail->addAddress($email, $name);  // Send to the user's email
+
+        // Set email subject for feedback email
+        $mail->Subject = 'Your Feedback Request';
+
+        // Set the feedback email body content (from the HTML template)
+        $mail->isHTML(true);
+        $mail->Body = $feedbackTemplate;
+        $mail->AltBody = 'Please check your email client for the feedback request.';
+
+        // Send the feedback email
+        if (!$mail->send()) {
+            //echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        }
+
+    } catch (Exception $e) {
+        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+    }
+}
+
+// Notification Email
 function welcomeEmail($email, $name, $message, $codnum, $services)
 {
     $mail = new PHPMailer(true);
@@ -26,6 +71,7 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
         // Set sender and recipient
         $mail->setFrom('support@doodlodesign.com', 'Doodlo Design Studio');
         $mail->addAddress('rushikesh@imposglobal.com', $name); // Replace with the correct recipient email
+        $mail->addAddress('hitesh@imposglobal.com', $name); // Replace with the correct recipient email
 
         // Set email subject
         $mail->Subject = $name . ' DDS Website Lead';
@@ -91,6 +137,7 @@ if (is_array($data)) {
     if ($conn->query($sql) === TRUE) {
         $response['success'] = 'Record added successfully';
         welcomeEmail($email, $name, $message,  $codnum, $services);
+        sendFeedbackEmail($email, $name, $message, $codnum, $services);
     } else {
         $response['error'] = 'Error: ' . $conn->error;
     }
