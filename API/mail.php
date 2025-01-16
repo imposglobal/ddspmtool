@@ -84,7 +84,7 @@ function welcomeEmail($email, $fname, $lname, $username, $password) {
 }
 
 // Test the function
-welcomeEmail('imposglobal1806@gmail.com', 'John', 'Doe', 'johndoe', 'password123');
+//welcomeEmail('imposglobal1806@gmail.com', 'John', 'Doe', 'johndoe', 'password123');
 ?>
 
 
