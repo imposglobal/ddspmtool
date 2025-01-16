@@ -27,10 +27,10 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
         $mail->setFrom('support@doodlodesign.com', 'Doodlo Design Studio');
         $mail->addAddress('rushikesh@imposglobal.com', $name); // Replace with the correct recipient email
 
-        // Set email subject for welcome email
+        // Set email subject
         $mail->Subject = $name . ' DDS Website Lead';
 
-        // Set email body content for welcome email
+        // Set email body content (correct variable embedding)
         $mail->isHTML(true);
         $mail->Body = '<p><b>Name - </b>' . $name . '</p>
                        <p><b>Email - </b>' . $email . '</p>
@@ -39,38 +39,16 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
                        <p><b>Message - </b>' . $message . '</p>';
         $mail->AltBody = 'Name: ' . $name . '\nEmail: ' . $email . '\nPhone: ' . $codnum . '\nServices: ' . $services . '\nMessage: ' . $message;
 
-        // Send the welcome email
-        if (!$mail->send()) {
-            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        // Send email
+        if ($mail->send()) {
+            //echo 'Message has been sent';
         }
-
-        // Load the feedback.html template
-        $feedbackTemplate = file_get_contents('feedback.html');
-
-        // Replace placeholders in the feedback template (if any)
-        $feedbackTemplate = str_replace('{{name}}', $name, $feedbackTemplate);
-
-        // Send the feedback email
-        $mail->clearAddresses();  // Clear the previous recipient (welcome email)
-        $mail->addAddress($email, $name);  // Send to the user's email
-
-        // Set email subject for feedback email
-        $mail->Subject = 'Woohoo! Your Form Has Landed. We'll Be in Touch Soon!';
-
-        // Set the feedback email body content (from the HTML template)
-        $mail->isHTML(true);
-        $mail->Body = $feedbackTemplate;
-        $mail->AltBody = 'Please check your email client for the feedback request.';
-
-        // Send the feedback email
-        if (!$mail->send()) {
-            //echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-        }
-
     } catch (Exception $e) {
         echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
     }
 }
+
+$response = [];
 
 // Database connection parameters
 $servername = "localhost";
@@ -93,15 +71,13 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 // Check if data was received and process it
-$response = [];
 if (is_array($data)) {
     $name = $conn->real_escape_string($data['name']);
     $email = $conn->real_escape_string($data['email']);
     $message = $conn->real_escape_string($data['message']);
     $code = $conn->real_escape_string($data['code']);
     $phone = $conn->real_escape_string($data['phone']);
-    $codnum = $code . "-" . $phone;
-
+    $codnum = $code."-".$phone;
     // Check if services is set and encode it as JSON
     $services = isset($data['services']) ? json_encode($data['services']) : '';
 
@@ -111,7 +87,7 @@ if (is_array($data)) {
     // SQL to insert data
     $sql = "INSERT INTO contact_form (name, email, message, code, phone, services)
             VALUES ('$name', '$email', '$message', '$code', '$phone', '$services')";
-
+   
     if ($conn->query($sql) === TRUE) {
         $response['success'] = 'Record added successfully';
         welcomeEmail($email, $name, $message,  $codnum, $services);
