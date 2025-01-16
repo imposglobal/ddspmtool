@@ -60,7 +60,7 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
 
         // Set sender and recipient
         $mail->setFrom('support@doodlodesign.com', 'Rushikesh');
-        $mail->addAddress('shraddha@doodlodesign.com', $name); // Replace with the correct recipient email
+        $mail->addAddress('rushikesh@imposglobal.com', $name); // Replace with the correct recipient email
 
         // Set email subject
         $mail->Subject = $name . ' DDS Website Lead';
