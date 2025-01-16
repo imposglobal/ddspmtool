@@ -35,7 +35,7 @@ function sendFeedbackEmail($email, $name, $message, $codnum, $services)
         $mail->addAddress($email, $name);  // Send to the user's email
 
         // Set email subject for feedback email
-        $mail->Subject = 'Your Feedback Request';
+        $mail->Subject = 'Woohoo! Your Form Has Landed. We'll Be in Touch Soon!';
 
         // Set the feedback email body content (from the HTML template)
         $mail->isHTML(true);
