@@ -5,35 +5,86 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
 
-function welcomeEmail($email, $name, $message,  $codnum, $services){
-    $employeeName = $name;
-    $to = 'rushikesh@imposglobal.com';
-    $subject = $name . ' DDS Website Lead';
-    $message = "
-        <p><b>Name - </b> $employeeName</p>
-        <p><b>Email - </b> $email</p>
-        <p><b>Phone - </b> $codnum</p>
-        <p><b>Services - </b> $services</p>
-        <p><b>Message - </b> $message</p>
-    ";
+// function welcomeEmail($email, $name, $message,  $codnum, $services){
+//     $employeeName = $name;
+//     $to = 'rushikesh@imposglobal.com';
+//     $subject = $name . ' DDS Website Lead';
+//     $message = "
+//         <p><b>Name - </b> $employeeName</p>
+//         <p><b>Email - </b> $email</p>
+//         <p><b>Phone - </b> $codnum</p>
+//         <p><b>Services - </b> $services</p>
+//         <p><b>Message - </b> $message</p>
+//     ";
     
-    // Headers
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n";
-    $headers .= "Reply-To: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n"; // Set the reply-to address
-    $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n"; // Add information about the mailer
-    $headers .= "X-Priority: 1" . "\r\n"; // Set the priority of the email (1 is highest)
-    $headers .= "X-MSMail-Priority: High" . "\r\n"; // Set the priority for Microsoft email clients
-    $headers .= "Importance: High" . "\r\n"; // Set the importance level of the email
+//     // Headers
+//     $headers = "MIME-Version: 1.0" . "\r\n";
+//     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+//     $headers .= "From: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n";
+//     $headers .= "Reply-To: Doodlo Designs Studio <support@doodlodesign.com>" . "\r\n"; // Set the reply-to address
+//     $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n"; // Add information about the mailer
+//     $headers .= "X-Priority: 1" . "\r\n"; // Set the priority of the email (1 is highest)
+//     $headers .= "X-MSMail-Priority: High" . "\r\n"; // Set the priority for Microsoft email clients
+//     $headers .= "Importance: High" . "\r\n"; // Set the importance level of the email
 
-    // Sending email
-    if (mail($to, $subject, $message, $headers)) {
+//     // Sending email
+//     if (mail($to, $subject, $message, $headers)) {
      
-    } else {
+//     } else {
       
+//     }
+// }
+
+
+
+// with smtp configuration
+
+require '../assets/PHPMailer/vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function welcomeEmail($email, $name, $message, $codnum, $services)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP configuration
+        $mail->isSMTP();
+        $mail->Host = 'mail.doodlodesign.com';  // SMTP server
+        $mail->SMTPAuth = true;
+        $mail->Username = 'support@doodlodesign.com'; // SMTP username
+        $mail->Password = 'doodlo@2025'; // SMTP password  
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; // Use 587 for STARTTLS
+        $mail->Timeout = 30;
+
+        // Set sender and recipient
+        $mail->setFrom('support@doodlodesign.com', 'Rushikesh');
+        $mail->addAddress('shraddha@doodlodesign.com', $name); // Replace with the correct recipient email
+
+        // Set email subject
+        $mail->Subject = $name . ' DDS Website Lead';
+
+        // Set email body content (correct variable embedding)
+        $mail->isHTML(true);
+        $mail->Body = '<p><b>Name - </b>' . $name . '</p>
+                       <p><b>Email - </b>' . $email . '</p>
+                       <p><b>Phone - </b>' . $codnum . '</p>
+                       <p><b>Services - </b>' . $services . '</p>
+                       <p><b>Message - </b>' . $message . '</p>';
+        $mail->AltBody = 'Name: ' . $name . '\nEmail: ' . $email . '\nPhone: ' . $codnum . '\nServices: ' . $services . '\nMessage: ' . $message;
+
+        // Send email
+        if ($mail->send()) {
+            echo 'Message has been sent';
+        }
+    } catch (Exception $e) {
+        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
     }
 }
+
+// Test the function with sample data
+// welcomeEmail('rollikuts@gmail.com', 'Roll', 'Test', 'testuser', 'testpassword');
 
 // function start
 /**
