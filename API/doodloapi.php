@@ -64,7 +64,7 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
 
         // Send the feedback email
         if (!$mail->send()) {
-            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+            //echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
         }
 
     } catch (Exception $e) {
