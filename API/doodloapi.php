@@ -8,6 +8,29 @@ require '../assets/PHPMailer/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Fetch Feedback Template using cURL
+function getFeedbackTemplate() {
+    $url = 'https://dds.doodlo.in/API/feedback.html';
+    
+    // Initialize cURL session
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as string
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects if any
+    
+    // Execute the request
+    $response = curl_exec($ch);
+    
+    // Check for errors
+    if (curl_errno($ch)) {
+        echo 'cURL Error: ' . curl_error($ch);
+    }
+    
+    // Close the cURL session
+    curl_close($ch);
+    
+    return $response;
+}
+
 // Send Feedback Email
 function sendFeedbackEmail($email, $name, $message, $codnum, $services)
 {
@@ -24,8 +47,8 @@ function sendFeedbackEmail($email, $name, $message, $codnum, $services)
         $mail->Port = 587; // Use 587 for STARTTLS
         $mail->Timeout = 30;
 
-        // Load the feedback.html template from URL
-        $feedbackTemplate = file_get_contents('https://dds.doodlo.in/API/feedback.html');
+        // Fetch the template using cURL
+        $feedbackTemplate = getFeedbackTemplate();
 
         // Replace placeholders in the feedback template (if any)
         $feedbackTemplate = str_replace('{{name}}', $name, $feedbackTemplate);
@@ -35,7 +58,7 @@ function sendFeedbackEmail($email, $name, $message, $codnum, $services)
         $mail->addAddress($email, $name);  // Send to the user's email
 
         // Set email subject for feedback email
-        $mail->Subject = 'Woohoo! Your Form Has Landed. We'll Be in Touch Soon!';
+        $mail->Subject = 'Woohoo! Your Form Has Landed. We\'ll Be in Touch Soon!';
 
         // Set the feedback email body content (from the HTML template)
         $mail->isHTML(true);
