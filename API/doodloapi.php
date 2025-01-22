@@ -96,6 +96,12 @@ function welcomeEmail($email, $name, $message, $codnum, $services)
         $mail->addAddress('hitesh@doodlodesigns.com', $name); // Replace with the correct recipient email
         $mail->addAddress('payal@doodlodesigns.com', $name); // Replace with the correct recipient email
 
+        // Add Reply-To address
+        $mail->addReplyTo('hitesh@doodlodesigns.com', 'Doodlo Design Studio');
+    
+        // Add CC address
+        $mail->addCC('payal@doodlodesigns.com'); // Replace with the correct CC email
+
         // Set email subject
         $mail->Subject = $name . ' DDS Website Lead';
 
