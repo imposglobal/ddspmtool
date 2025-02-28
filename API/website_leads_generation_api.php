@@ -73,7 +73,7 @@ function get_leads($base_url, $db, $page=1, $recordsPerPage, $start_date = null,
             echo '<tr>';
             echo '<th scope="row">'. $i++.'</th>';
             //$created_date = date("Y-m-d", strtotime($row["created_at"]));
-            date = new DateTime($row["created_at"]);
+            date = new DateTime(strtotime($row["created_at"]));
             $created_date = $date->format('d M Y h:i:s A');
             echo '<td>'.$created_date .'</td>';
             echo '<td>'. $row["name"].'</td>';
