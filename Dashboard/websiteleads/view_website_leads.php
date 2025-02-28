@@ -11,6 +11,9 @@ require('../../API/function.php');
 
 ?>
 <style>
+    th {
+    width: 1%;
+}
     .ctitle {
     padding: 20px 0 0px 0;
     font-size: 16px;
