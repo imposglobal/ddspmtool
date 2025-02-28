@@ -12,11 +12,8 @@ if (isset($_GET['id'])) {
 
     if ($query && mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
-        
-        //$created_date = date("Y-m-d", strtotime($row["created_at"]));
-        date = new DateTime($row["created_at"]);
-        $created_date = $date->format('d M Y h:i:s A');
-        $date = htmlspecialchars($created_date);
+        $created_date = new DateTime($row["created_at"]);
+        $date = $created_date->format('d M Y h:i:s A');
         $name = htmlspecialchars($row["name"]);
         $email = htmlspecialchars($row["email"]);
         $message = htmlspecialchars($row["message"]);
